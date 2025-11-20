@@ -1,0 +1,158 @@
+{
+  "name": "bybyteblockly",
+  "version": "0.0.0",
+  "description": "Blockly and Arduino coding standalone software for ByByte DIY robots",
+  "author": {
+    "name": "ByByte DIY and Builder community",
+    "email": "support@bybyte-diy.com"
+  },
+  "license": "GPL-2.0",
+  "main": "electronApp.js",
+  "keywords": [
+    "blockly",
+    "BLOCKLY",
+    "arduino",
+    "ARDUINO",
+    "electron",
+    "ELECTRON",
+    "ByByte-diy",
+    "serialport",
+    "SERIALPORT",
+    "electron-builder",
+    "electron-updater",
+    "PYTHON",
+    "python",
+    "PYFLAKES",
+    "pyflakes",
+    "ampy",
+    "AMPY",
+    "microbit",
+    "MICROBIT"
+  ],
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps && npm run rebuild",
+    "start": "electron .",
+    "compiler": "npm run rebuild && electron-builder --win --ia32",
+    "compilerWinX64": "npm run rebuild && electron-builder --win --x64",
+    "compiler:mac": "npm run rebuild && electron-builder --mac",
+    "compiler:linux:x64": "npm run rebuild && electron-builder --linux --x64",
+    "compilerlinux": "rm -rf dist && npm run rebuild && electron-builder --linux --x64",
+    "compilerlinux32": "rm -rf dist && npm run rebuild && electron-builder --linux --ia32",
+    "deb64": "electron-installer-debian --src dist/linux-unpacked --dest dist/installers/ --arch amd64 --config debconfig.json",
+    "deb32": "electron-installer-debian --src dist/linux-unpacked32 --dest dist/installers/ --arch ia32 --config debconfig.json",
+    "publier": "npm run rebuild && electron-builder --win --ia32 -p always",
+    "rebuild": "electron-rebuild -f -w serialport"
+  },
+  "build": {
+    "appId": "com.electron.bybyteblockly",
+    "asar": false,
+    "directories": {
+      "buildResources": "./build",
+      "output": "./dist"
+    },
+    "nsis": {
+      "installerIcon": "build/install.ico",
+      "uninstallerIcon": "build/app.ico",
+      "oneClick": false,
+      "perMachine": true,
+      "deleteAppDataOnUninstall": true,
+      "allowToChangeInstallationDirectory": true,
+      "runAfterFinish": true,
+      "include": "build/bybyteblockly.nsh"
+    },
+    "win": {
+      "target": [
+        "portable",
+        "nsis",
+        "zip"
+      ],
+      "icon": "build/app.ico"
+    },
+    "mac": {
+      "category": "public.app-category.graphics-design",
+      "icon": "build/file.icns"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 120,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "build/app.png",
+      "asarUnpack": [
+        "**/*.node"
+      ]
+    },
+    "fileAssociations": {
+      "ext": "bloc",
+      "name": "BLOC file",
+      "role": "Editor",
+      "icon": "build/file.ico"
+    },
+    "files": [
+      "**/*",
+      "!dist",
+      "!.git",
+      "!.github",
+      "!*.md",
+      "!.vscode"
+    ],
+    "extraFiles": [
+      "compilation",
+      "driversUSB"
+    ],
+    "extraResources": [
+      "dev-app-update.yml",
+      "app-update.yml"
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "repo": "ByByteBlockly",
+        "owner": "ByByte-diy",
+        "releaseType": "release"
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ByByte-diy/ByByteBlockly"
+  },
+  "bugs": {
+    "url": "https://github.com/ByByte-diy/ByByteBlockly/issues"
+  },
+  "devDependencies": {
+    "electron": "^39.2.3",
+    "electron-builder": "^26.0.12",
+    "electron-installer-debian": "^3.2.0",
+    "electron-installer-dmg": "^5.0.1",
+    "electron-rebuild": "^3.2.9"
+  },
+  "dependencies": {
+    "@serialport/bindings-cpp": "^13.0.1",
+    "@serialport/stream": "^13.0.0",
+    "ajv": "^6.12.6",
+    "decompress-zip": "^0.2.2",
+    "electron-updater": "^6.6.2",
+    "extract-zip": "^2.0.1",
+    "fs-extra": "^8.1.0",
+    "ftp": "0.3.10",
+    "node-gyp": "^10.0.1",
+    "serialport": "^13.0.0",
+    "tableify": "^1.1.1",
+    "virtual-serialport": "^4.0.1"
+  }
+}

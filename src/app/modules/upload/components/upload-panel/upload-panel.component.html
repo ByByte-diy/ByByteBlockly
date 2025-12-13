@@ -1,0 +1,26 @@
+<div class="upload-panel">
+  <div class="actions">
+    <button 
+      class="btn btn-primary btn-upload"
+      (click)="onCompileAndUpload()"
+      [disabled]="isProcessing || !isDeviceReady"
+      title="Compile and upload to the device">
+      <span class="btn-icon">⬆</span>
+      <span class="btn-text">Upload</span>
+    </button>
+
+    <button 
+      class="btn btn-secondary btn-compile"
+      (click)="onCompileOnly()"
+      [disabled]="isProcessing"
+      title="Compile only without upload">
+      <span class="btn-icon">⚙</span>
+      <span class="btn-text">Compile</span>
+    </button>
+  </div>
+
+  <div class="status-indicator" [ngClass]="getStatusClass()">
+    <span class="status-icon">{{ getStatusIcon() }}</span>
+    <span class="status-message">{{ message }}</span>
+  </div>
+</div>

@@ -39,6 +39,12 @@ only the English part after = in between the quotes "" in visual studio is the t
 4. Then open a pull request [here in github](https://github.com/ByByte-diy/ByByteBlockly/pulls) or just attach the files in a
 [new issue](https://github.com/ByByte-diy/ByByteBlockly/issues).
 
+## 🎉 New Angular Architecture
+
+This project has been migrated to Angular 17 with a clean architecture supporting both Web and Electron platforms!
+
+See [ANGULAR_MIGRATION.md](ANGULAR_MIGRATION.md) for detailed migration information.
+
 ## How to run project
 
 You will need to have Node.js installed on your computer. Recommended version is 22.0 or higher.
@@ -61,6 +67,20 @@ npm install -g node-gyp
 4. Install required node modules. Execute following on the source code directory
 ```bash
 npm install
+```
+
+### Development Mode
+
+**Web version (browser):**
+```bash
+npm run start:web
+# Open http://localhost:4200 in your browser
+```
+
+**Electron version (desktop):**
+```bash
+npm run start:electron
+# Electron window will open automatically
 ```
 
 5. Install Arduino CLI
@@ -86,9 +106,21 @@ arduino-cli core update-index
 ```
 
 7. Build the application
-You can use electron-builder to pack your electron app in zip, nsis (Installer), portable (App without installation) formats.
+
+**Web version (for hosting):**
 ```bash
-cd ../../     # go back to the repository's top directory
+npm run build:web
+# Output: dist/web/
+```
+
+**Electron version:**
+```bash
+npm run build:electron
+# Output: dist/packages/ (.exe, .deb, .AppImage, etc.)
+```
+
+Or use legacy commands:
+```bash
 npm run compiler          # Windows 32-bit
 npm run compilerWinX64    # Windows 64-bit
 npm run compiler:mac      # macOS

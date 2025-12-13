@@ -5,7 +5,15 @@ var fs = require('fs')
 
 function getStaticPath() {
 	var segments = Array.prototype.slice.call(arguments)
-	var base = path.join(__dirname, 'www')
+	// First check Angular build
+	var base = path.join(__dirname, 'dist', 'electron')
+	if (!fs.existsSync(base)) {
+		// Fallback to old path for compatibility
+		base = path.join(__dirname, 'www')
+	}
+	if (!fs.existsSync(base)) {
+		base = path.join(process.resourcesPath, 'dist', 'electron')
+	}
 	if (!fs.existsSync(base)) {
 		base = path.join(process.resourcesPath, 'www')
 	}
@@ -21,6 +29,9 @@ autoUpdater.autoDownload = false
 autoUpdater.logger = null
 ipcMain.handle('app:getVersion', function () {
 	return app.getVersion()
+})
+ipcMain.handle('app:getUserDataPath', function () {
+	return app.getPath('userData')
 })
 ipcMain.on('window-control', function(event, action) {
 	var targetWindow = BrowserWindow.fromWebContents(event.sender)
@@ -59,11 +70,30 @@ function createWindow () {
 		movable: true,
 		webPreferences: defaultWebPreferences
 	})
+	
+	var indexPath = getStaticPath('index.html')
+	console.log('Loading app from:', indexPath)
+	
 	if (process.platform == 'win32' && process.argv.length >= 2) {
-		mainWindow.loadFile(getStaticPath('index.html'), {query: {url: process.argv[1]}})
+		mainWindow.loadFile(indexPath, {query: {url: process.argv[1]}})
 	} else {
-		mainWindow.loadFile(getStaticPath('index.html'))
+		mainWindow.loadFile(indexPath)
 	}
+	
+	// Open DevTools in development mode
+	if (process.env.NODE_ENV === 'development' || !app.isPackaged) {
+		mainWindow.webContents.openDevTools()
+	}
+	
+	// Logging errors
+	mainWindow.webContents.on('did-fail-load', function(event, errorCode, errorDescription) {
+		console.error('Failed to load:', errorCode, errorDescription)
+	})
+	
+	mainWindow.webContents.on('console-message', function(event, level, message, line, sourceId) {
+		console.log('Console:', message)
+	})
+	
 	mainWindow.setMenu(null)
 	mainWindow.on('closed', function () {
 		mainWindow = null

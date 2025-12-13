@@ -1,0 +1,60 @@
+<div class="device-selector">
+  <div class="selectors-row">
+  <div class="selector-group">
+    <label for="board-select">Плата:</label>
+    <select 
+      id="board-select" 
+      [value]="selectedBoard?.id || ''" 
+      (change)="onBoardChange($any($event.target).value)"
+      class="selector">
+      <option value="" disabled>Оберіть плату</option>
+      <option *ngFor="let board of boards" [value]="board.id">
+        {{ board.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="selector-group">
+    <label for="port-select">Порт:</label>
+    <div class="port-selector-wrapper">
+      <select 
+        id="port-select" 
+        [value]="selectedPort?.path || ''" 
+        (change)="onPortChange($any($event.target).value)"
+        [disabled]="ports.length === 0"
+        class="selector">
+        <option value="" disabled>
+          {{ ports.length === 0 ? 'Ports not found' : 'Select a port' }}
+        </option>
+        <option *ngFor="let port of ports" [value]="port.path">
+          {{ port.path }} {{ port.friendlyName ? '- ' + port.friendlyName : '' }}
+        </option>
+      </select>
+      <button 
+        (click)="refreshPorts()" 
+        [disabled]="isRefreshing"
+        class="refresh-btn"
+        title="Refresh the list of ports">
+        {{ isRefreshing ? '⟳' : '🔄' }}
+      </button>
+      <!-- Web Serial API: button for selecting a device -->
+      <button 
+        *ngIf="needsPortRequest()"
+        (click)="requestNewPort()" 
+        [disabled]="isRefreshing"
+        class="connect-device-btn"
+        title="Select a device (Web Serial API)">
+        🔌 Connect Device
+      </button>
+    </div>
+  </div>
+  </div>
+
+  <!-- Hint for Web Serial API -->
+  <div *ngIf="needsPortRequest()" class="web-serial-hint">
+    <small>
+      💡 <strong>Web version:</strong> Click "Connect Device" to select your Arduino/device.
+      Your browser will show a list of available USB devices.
+    </small>
+  </div>
+</div>

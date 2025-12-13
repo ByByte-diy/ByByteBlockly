@@ -30,6 +30,13 @@
     "MICROBIT"
   ],
   "scripts": {
+    "ng": "ng",
+    "start:web": "ng serve",
+    "build:web": "ng build --configuration production",
+    "start:electron": "npm run build:electron:dev && electron .",
+    "build:electron:dev": "ng run bybyte-blockly:build-electron:development",
+    "build:electron:prod": "ng run bybyte-blockly:build-electron:production",
+    "build:electron": "npm run build:electron:prod && npm run rebuild && electron-builder",
     "postinstall": "electron-builder install-app-deps && npm run rebuild",
     "start": "electron .",
     "compiler": "npm run rebuild && electron-builder --win --ia32",
@@ -48,7 +55,7 @@
     "asar": false,
     "directories": {
       "buildResources": "./build",
-      "output": "./dist"
+      "output": "./dist/packages"
     },
     "nsis": {
       "installerIcon": "build/install.ico",
@@ -103,12 +110,19 @@
       "icon": "build/file.ico"
     },
     "files": [
-      "**/*",
-      "!dist",
+      "electronApp.js",
+      "package.json",
+      "dist/electron/**/*",
+      "www/**/*",
+      "!www/blocs&generateurs/**/*",
+      "!www/examples/**/*",
+      "!dist/web",
+      "!dist/packages",
       "!.git",
       "!.github",
       "!*.md",
-      "!.vscode"
+      "!.vscode",
+      "!src"
     ],
     "extraFiles": [
       "compilation",
@@ -135,24 +149,39 @@
     "url": "https://github.com/ByByte-diy/ByByteBlockly/issues"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^17.3.17",
+    "@angular/cli": "^17.3.17",
+    "@angular/compiler-cli": "^17.3.12",
     "electron": "^39.2.3",
     "electron-builder": "^26.0.12",
     "electron-installer-debian": "^3.2.0",
     "electron-installer-dmg": "^5.0.1",
-    "electron-rebuild": "^3.2.9"
+    "electron-rebuild": "^3.2.9",
+    "typescript": "5.2"
   },
   "dependencies": {
+    "@angular/common": "^17.3.12",
+    "@angular/compiler": "^17.3.12",
+    "@angular/core": "^17.3.12",
+    "@angular/forms": "^17.3.12",
+    "@angular/platform-browser": "^17.3.12",
+    "@angular/platform-browser-dynamic": "^17.3.12",
+    "@angular/router": "^17.3.12",
     "@serialport/bindings-cpp": "^13.0.1",
     "@serialport/stream": "^13.0.0",
     "ajv": "^6.12.6",
+    "blockly": "^12.3.1",
     "decompress-zip": "^0.2.2",
     "electron-updater": "^6.6.2",
     "extract-zip": "^2.0.1",
     "fs-extra": "^8.1.0",
     "ftp": "0.3.10",
     "node-gyp": "^10.0.1",
+    "rxjs": "^7.8.2",
     "serialport": "^13.0.0",
     "tableify": "^1.1.1",
-    "virtual-serialport": "^4.0.1"
+    "tslib": "^2.8.1",
+    "virtual-serialport": "^4.0.1",
+    "zone.js": "^0.14.10"
   }
 }

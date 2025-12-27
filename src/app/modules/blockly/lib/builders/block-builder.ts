@@ -176,14 +176,19 @@ export class BlockBuilder {
 
   /**
    * Add dropdown field
+   * @param name Field name
+   * @param options Dropdown options
+   * @param defaultValue Default value
+   * @param inputName Optional: name of the input to attach this field to
    */
   // prettier-ignore
-  addDropdownField(name: string, options: DropdownBoardOptionT[], defaultValue?: string): this {
+  addDropdownField(name: string, options: DropdownBoardOptionT[], defaultValue?: string, inputName?: string): this {
     this.config.fields!.push({
       type: "dropdown",
       name,
       options,
       value: defaultValue,
+      inputName,
     });
     return this;
   }
@@ -298,10 +303,18 @@ export class BlockBuilder {
   }
 
   /**
-   * Set tooltip
+   * Set tooltip (string or dynamic function)
    */
-  setTooltip(tooltip: string): this {
+  setTooltip(tooltip: string | (() => string)): this {
     this.config.tooltip = tooltip;
+    return this;
+  }
+
+  /**
+   * Set inputs inline (horizontal layout)
+   */
+  setInputsInline(inline: boolean = true): this {
+    this.config.inputsInline = inline;
     return this;
   }
 
@@ -495,9 +508,24 @@ export class BlockBuilder {
           );
         }
 
+        // Set inputs inline
+        if (config.inputsInline !== undefined) {
+          this.setInputsInline(config.inputsInline);
+        }
+
         // Set properties
         if (config.tooltip) {
-          this.setTooltip(config.tooltip);
+          // Check if tooltip is a function
+          if (typeof config.tooltip === 'function') {
+            this.setTooltip(config.tooltip);
+          } else if (config.tooltip.includes('%{BKY_')) {
+            // Use function to resolve %{BKY_...} tokens dynamically
+            this.setTooltip(() => {
+              return Blockly.utils.parsing.replaceMessageReferences(config.tooltip as string);
+            });
+          } else {
+            this.setTooltip(config.tooltip);
+          }
         }
         if (config.helpUrl) {
           this.setHelpUrl(config.helpUrl);
@@ -544,9 +572,16 @@ function createField(fieldConfig: FieldConfig): Blockly.Field {
       return new Blockly.FieldDropdown(fieldConfig.options || []);
     case "checkbox":
       return new Blockly.FieldCheckbox(fieldConfig.value || "FALSE");
-    case "angle":
-      // FieldAngle not available in this version, use number instead
-      return new Blockly.FieldNumber(fieldConfig.value || 90, 0, 360);
+    case "angle": {
+      // Create number field with degree suffix
+      const angleField = new Blockly.FieldNumber(fieldConfig.value || 90, 0, 360);
+      // Override getText to show degree symbol
+      const originalGetText = angleField.getText.bind(angleField);
+      angleField.getText = function() {
+        return originalGetText() + "°";
+      };
+      return angleField;
+    }
     case "color":
       // FieldColour might not be available, use text field
       return new Blockly.FieldTextInput(fieldConfig.value || "#ff0000");

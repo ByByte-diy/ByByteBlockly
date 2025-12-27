@@ -4,5 +4,6 @@
     ],
     "cSpell.words": [
         "Blockly"
-    ]
+    ],
+    "cmake.sourceDirectory": "/home/vergilium/dev/arduino/ByByte/ByByteBlockly/node_modules/nan"
 }

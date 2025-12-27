@@ -3,21 +3,21 @@
  * Logic blocks for Arduino programming
  */
 import { BlockRegistry } from "../../lib/registry";
-import { IToolboxCategoryMetadata } from "../../types";
+import { IToolboxCategoryConfig } from "../../types";
 import { BlockLevelE } from "../../types/block.types";
-import { CATEGORY_COLOR, CATEGORY_NAME } from "./config";
+import { CATEGORY_COLOR, CATEGORY_NAME, CATEGORY_ORDER } from "./config";
 import {
   switchBlock,
   switchVarBlock,
   caseBreakBlock,
   caseDefaultBlock,
 } from "./switch.block";
-import { ifBlock } from "./if.block";
+import { ifBlock, ifIfBlock, ifElseifBlock, ifElseBlock } from "./if.block";
 import { boolBlock } from "./bool.block";
 import { repeatBlock } from "./repeat.block";
 import { forBlock } from "./for.block";
-
-export const CATEGORY_ORDER = 4;
+import { flowStatementsBlock } from "./flow.block";
+import { logicOperationBlock } from "./operation.block";
 
 /**
  * All base blocks (only blocks that appear in toolbox)
@@ -27,6 +27,8 @@ export const LOGIC_BLOCKS = [
   switchBlock,
   repeatBlock,
   forBlock,
+  flowStatementsBlock,
+  logicOperationBlock,
   boolBlock,
 ];
 
@@ -34,9 +36,14 @@ export const LOGIC_BLOCKS = [
  * Mutator helper blocks (not shown in toolbox, only in mutator dialog)
  */
 export const MUTATOR_BLOCKS = [
+  // Switch mutator helpers
   switchVarBlock,
   caseBreakBlock,
   caseDefaultBlock,
+  // If mutator helpers
+  ifIfBlock,
+  ifElseifBlock,
+  ifElseBlock,
 ];
 
 /**
@@ -56,8 +63,16 @@ export function initialize(): void {
     requiredPlatform: "both",
     order: CATEGORY_ORDER,
     minLevel: BlockLevelE.INTERMEDIATE,
-  } as IToolboxCategoryMetadata);
+  } as IToolboxCategoryConfig);
 }
 
 // Export individual blocks
-export { ifBlock, boolBlock, switchBlock, repeatBlock, forBlock };
+export {
+  ifBlock,
+  boolBlock,
+  switchBlock,
+  repeatBlock,
+  forBlock,
+  flowStatementsBlock,
+  logicOperationBlock,
+};

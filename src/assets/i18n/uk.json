@@ -1,0 +1,25 @@
+{
+  "language": {
+    "name": "English",
+    "flag": "🇬🇧",
+    "rtl": false
+  },
+  "ui": {
+    "btn_ok": "👌 OK",
+    "btn_close": "Закрити",
+    "btn_accept": "Прийняти",
+    "btn_config": "⚙️ Налаштування",
+    "btn_about": "⏱️ Про програму",
+    "btn_new": "📄 Новий",
+    "btn_open": "📂 Відкрити",
+    "btn_example": "🎓 Приклади",
+    "btn_term": "🔍 Монітор порту",
+    "btn_save": "💾 Зберегти",
+    "btn_print": "📷 Скріншот",
+    "btn_export": "📤 Експорт",
+    "btn_import": "📥 Імпорт",
+    "aboutcardLabel": "Плата ...",
+    "usbLabel": "USB",
+    "aboutusbLabel": "🔌 Зв'язок між платою та комп'ютером"
+  }
+}

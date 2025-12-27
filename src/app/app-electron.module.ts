@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core';
 import { SharedModule } from './shared/shared.module';
 import { ElectronPlatformModule } from './platform/electron/electron-platform.module';
+import { I18nModule } from './modules/language';
 
 /**
  * App Module for Electron platform
@@ -14,6 +15,7 @@ import { ElectronPlatformModule } from './platform/electron/electron-platform.mo
   imports: [
     BrowserModule,
     CoreModule,
+    I18nModule,
     ElectronPlatformModule,
     SharedModule
   ],

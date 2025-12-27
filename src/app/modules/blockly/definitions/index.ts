@@ -2,10 +2,12 @@
  * Block Definitions - Barrel export
  */
 
-import { BlockRegistry } from '../lib/registry/block-registry';
-import * as generic from './generic/index';
-import * as logic from './logic/index';
-import * as math from './math/index';
+import { BlockRegistry } from "../lib/registry/block-registry";
+import * as generic from "./generic/index";
+import * as logic from "./logic/index";
+import * as math from "./math/index";
+import * as variables from "./variables/index";
+import * as text from "./text/index";
 
 /**
  * Initialize all block definitions
@@ -15,9 +17,9 @@ export function initializeAllBlocks(): void {
   BlockRegistry.initializeMutators();
 
   // Register all blocks in the registry
-  [generic, logic, math].forEach((module) => {
+  [generic, logic, math, variables, text].forEach((module) => {
     module.initialize();
   });
 
   BlockRegistry.setInitialized();
-} 
+}

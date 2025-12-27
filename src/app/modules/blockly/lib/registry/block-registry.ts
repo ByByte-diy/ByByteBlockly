@@ -9,7 +9,7 @@ import {
   PlatformT,
   BlockLevelE,
 } from "../../types/block.types";
-import { IToolboxCategoryMetadata } from "../../types";
+import { IToolboxCategoryConfig } from "../../types";
 import { MutatorRegistry } from "./mutator-registry";
 
 /**
@@ -17,7 +17,8 @@ import { MutatorRegistry } from "./mutator-registry";
  */
 export class BlockRegistry {
   private static blocks = new Map<string, BlockDefinition>();
-  private static categoriesMap = new Map<string, IToolboxCategoryMetadata>();
+  private static categoriesMap = new Map<string, IToolboxCategoryConfig>();
+
   private static initialized = false;
 
   /**
@@ -155,26 +156,17 @@ export class BlockRegistry {
   /**
    * Register a category
    */
-  static registerCategory(
-    name: string,
-    metadata: IToolboxCategoryMetadata
-  ): void {
-    this.categoriesMap.set(name, metadata);
+  static registerCategory(name: string, config: IToolboxCategoryConfig): void {
+    this.categoriesMap.set(name, config);
   }
 
-  /**
-   * Get all categories
-   */
-  static getCategories(): string[] {
-    return Array.from(this.categoriesMap.keys());
-  }
 
   /**
    * Get category metadata by name
    */
-  static getCategoryMetadata(
+  static getCategoryConfig(
     name: string
-  ): IToolboxCategoryMetadata | undefined {
+  ): IToolboxCategoryConfig | undefined {
     return this.categoriesMap.get(name);
   }
 
@@ -189,7 +181,15 @@ export class BlockRegistry {
    * Clear a category
    */
   static removeCategory(name: string): void {
-    this.categoriesMap.delete(name);
+      this.categoriesMap.delete(name);
+  }
+
+  /**
+   * Get all dynamic categories
+   */
+  static getCategories(
+  ): string[] {
+    return Array.from(this.categoriesMap.keys());
   }
 
   /**

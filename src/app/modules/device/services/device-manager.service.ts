@@ -4,6 +4,12 @@ import { ISerial } from '@core/interfaces';
 import { IBoard } from '@app/modules/device/types/device-board.type';
 import { BOARDS } from '@app/modules/device/constants/device-boards.const';
 import { ISerialPortInfo } from '@app/core/models/serial-port.model';
+import { BlocksLoaderService } from '@app/modules/blockly/services/blocks-loader.service';
+
+/**
+ * Default board
+ */
+export const DEFAULT_BOARD = BOARDS.uno;
 
 /**
  * Service for managing devices (boards and ports)
@@ -12,14 +18,14 @@ import { ISerialPortInfo } from '@app/core/models/serial-port.model';
   providedIn: 'root'
 })
 export class DeviceManagerService {
-  private selectedBoardSubject = new BehaviorSubject<IBoard | null>(null);
+  private selectedBoardSubject = new BehaviorSubject<IBoard>(DEFAULT_BOARD);
   private selectedPortSubject = new BehaviorSubject<ISerialPortInfo | null>(null);
   private availablePortsSubject = new BehaviorSubject<ISerialPortInfo[]>([]);
 
   /**
    * Observable selected board
    */
-  public selectedBoard$: Observable<IBoard | null> = this.selectedBoardSubject.asObservable();
+  public selectedBoard$: Observable<IBoard> = this.selectedBoardSubject.asObservable();
 
   /**
    * Observable selected port
@@ -46,17 +52,22 @@ export class DeviceManagerService {
     return Object.values(BOARDS);
   }
 
+  getBoardById(id: string): IBoard | undefined { 
+    return BOARDS[id];
+  }
+
   /**
    * Set selected board
    */
   selectBoard(board: IBoard): void {
+    if (!board) return;
     this.selectedBoardSubject.next(board);
     this.saveBoardToStorage(board);
     
     // Update current board for Blockly blocks
     try {
       // Lazy load BlocksLoaderService to avoid circular dependency
-      const blocksLoader = this.injector.get('BlocksLoaderService' as any, null);
+      const blocksLoader = this.injector.get(BlocksLoaderService);
       if (blocksLoader && typeof blocksLoader.updateCurrentBoard === 'function') {
         blocksLoader.updateCurrentBoard(board.id);
       }
@@ -74,8 +85,8 @@ export class DeviceManagerService {
   /**
    * Get current selected board
    */
-  getSelectedBoard(): IBoard | null {
-    return this.selectedBoardSubject.value;
+  getSelectedBoard(): IBoard {
+    return this.selectedBoardSubject.value || DEFAULT_BOARD;
   }
 
   /**
@@ -163,6 +174,7 @@ export class DeviceManagerService {
    * Save board to localStorage
    */
   private saveBoardToStorage(board: IBoard): void {
+    if (!board) return;
     try {
       localStorage.setItem('selectedBoard', board.id);
       localStorage.setItem('card', board.id); // For backward compatibility with old code
@@ -175,6 +187,7 @@ export class DeviceManagerService {
    * Save port to localStorage
    */
   private savePortToStorage(port: ISerialPortInfo): void {
+    if (!port) return;
     try {
       localStorage.setItem('selectedPort', port.path);
       localStorage.setItem('com', port.path); // For backward compatibility with old code
@@ -193,13 +206,13 @@ export class DeviceManagerService {
         const board = Object.values(BOARDS).find(b => b.id === savedBoardId);
         if (board) {
           this.selectedBoardSubject.next(board);
+          return; // Board loaded successfully
         }
       }
 
-      // If board is not found, select Arduino Uno by default
-      if (!this.selectedBoardSubject.value) {
-        this.selectBoard(BOARDS.UNO);
-      }
+      // Always select Arduino Uno by default if no saved board or saved board not found
+      this.selectedBoardSubject.next(DEFAULT_BOARD);
+      this.saveBoardToStorage(DEFAULT_BOARD);
 
       const savedPort = localStorage.getItem('selectedPort') || localStorage.getItem('com');
       if (savedPort && savedPort !== 'com') {
@@ -207,7 +220,9 @@ export class DeviceManagerService {
       }
     } catch (err) {
       console.error('Error loading saved board:', err);
-      this.selectBoard(BOARDS.UNO);
+      // Ensure board is always set
+      this.selectedBoardSubject.next(DEFAULT_BOARD);
+      this.saveBoardToStorage(DEFAULT_BOARD);
     }
   }
 }

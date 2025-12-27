@@ -42,16 +42,16 @@ const SWITCH_MUTATOR_MIXIN = {
     for (let i = 1; i <= casebreakCount; i++) {
       (this as any).appendValueInput('CASE' + i)
         .setAlign(BlocklyGlobal.ALIGN_RIGHT)
-        .appendField('case');
+        .appendField(Blockly.Msg["CONTROLS_SWITCH_MSG_CASE"] || 'case');
       (this as any).appendStatementInput('DO' + i)
         .setAlign(BlocklyGlobal.ALIGN_RIGHT)
-        .appendField('do');
+        .appendField(Blockly.Msg["CONTROLS_SWITCH_MSG_DO"] || 'do');
     }
     
     if (defaultCount) {
       (this as any).appendStatementInput('DEFAULT')
         .setAlign(BlocklyGlobal.ALIGN_RIGHT)
-        .appendField('default');
+        .appendField(Blockly.Msg["CONTROLS_SWITCH_MSG_DEFAULT"] || 'default');
     }
   },
   
@@ -104,10 +104,10 @@ const SWITCH_MUTATOR_MIXIN = {
           const ifInput = (this as any).appendValueInput('CASE' + caseNum)
             .setAlign(BlocklyGlobal.ALIGN_RIGHT)
             .setCheck('Number')
-            .appendField('case');
+            .appendField(Blockly.Msg["CONTROLS_SWITCH_MSG_CASE"] || 'case');
           const doInput = (this as any).appendStatementInput('DO' + caseNum)
             .setAlign(BlocklyGlobal.ALIGN_RIGHT)
-            .appendField('do');
+            .appendField(Blockly.Msg["CONTROLS_SWITCH_MSG_DO"] || 'do');
           
           if ((clauseBlock as any).valueConnection_) {
             ifInput.connection!.connect((clauseBlock as any).valueConnection_);
@@ -121,7 +121,7 @@ const SWITCH_MUTATOR_MIXIN = {
           (this as any).defaultCount_++;
           const defaultInput = (this as any).appendStatementInput('DEFAULT')
             .setAlign(BlocklyGlobal.ALIGN_RIGHT)
-            .appendField('default');
+            .appendField(Blockly.Msg["CONTROLS_SWITCH_MSG_DEFAULT"] || 'default');
           
           if ((clauseBlock as any).statementConnection_) {
             defaultInput.connection!.connect((clauseBlock as any).statementConnection_);
@@ -176,21 +176,21 @@ export const switchBlock = new BlockBuilder("controls_switch")
   .setPlatforms(CATEGORY_PLATFORMS)
   .setLevel(TOOLBOX_LEVEL)
   .setTags(["logic", "switch", "case"])
-  .addDummyInput("SWITCH_DUMMY", "switch")
+  .addDummyInput("SWITCH_DUMMY", "%{BKY_CONTROLS_SWITCH_MSG_SWITCH}")
   .addVariableField("SWVAR", "item", "SWITCH_DUMMY")
-  .addValueInput("CASE0", "case", "Number")
-  .addStatementInput("DO0", "do")
+  .addValueInput("CASE0", "%{BKY_CONTROLS_SWITCH_MSG_CASE}", "Number")
+  .addStatementInput("DO0", "%{BKY_CONTROLS_SWITCH_MSG_DO}")
   .setPreviousStatement(true)
   .setNextStatement(true)
   .setMutator("controls_switch_mutator")
-  .setTooltip("Switch statement")
+  .setTooltip("%{BKY_CONTROLS_SWITCH_TOOLTIP}")
   .setHelpUrl("https://docs.arduino.cc/learn/programming/reference/#control-structure")
   
   .setArduinoGenerator((block, generator) => {
     const win = window as any;
     let n = 0;
-    const switchvar = generator.variableDB_?.getName
-      ? generator.variableDB_.getName(block.getFieldValue('SWVAR'), win.Blockly?.Variables?.NAME_TYPE)
+    const switchvar = generator.nameDB_?.getName
+      ? generator.nameDB_.getName(block.getFieldValue('SWVAR'), win.Blockly?.Variables?.NAME_TYPE)
       : block.getFieldValue('SWVAR') || 'item';
     
     let argument = generator.valueToCode(block, 'CASE' + n, generator.ORDER_NONE) || '0';
@@ -241,9 +241,9 @@ export const switchVarBlock: BlockDefinition = {
   init: function(this: Blockly.Block) {
     this.setColour(CATEGORY_COLOR);
     this.appendDummyInput()
-      .appendField("switch");
+      .appendField(Blockly.Msg["CONTROLS_SWITCH_MSG_SWITCH"] || "switch");
     this.appendStatementInput("STACK");
-    this.setTooltip("Container for switch cases");
+    this.setTooltip(Blockly.Msg["CONTROLS_SWITCH_VAR_TOOLTIP"] || "Container for switch cases");
     (this as any).contextMenu = false;
   },
   generator: () => "",
@@ -273,10 +273,10 @@ export const caseBreakBlock: BlockDefinition = {
   init: function(this: Blockly.Block) {
     this.setColour(CATEGORY_COLOR);
     this.appendDummyInput()
-      .appendField("case");
+      .appendField(Blockly.Msg["CONTROLS_SWITCH_CASE_TITLE"] || "case");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip("Add case to switch");
+    this.setTooltip(Blockly.Msg["CONTROLS_SWITCH_CASE_TOOLTIP"] || "Add case to switch");
     (this as any).contextMenu = false;
   },
   generator: () => "",
@@ -306,9 +306,9 @@ export const caseDefaultBlock: BlockDefinition = {
   init: function(this: Blockly.Block) {
     this.setColour(CATEGORY_COLOR);
     this.appendDummyInput()
-      .appendField("default");
+      .appendField(Blockly.Msg["CONTROLS_SWITCH_DEFAULT_TITLE"] || "default");
     this.setPreviousStatement(true);
-    this.setTooltip("Add default case to the switch");
+    this.setTooltip(Blockly.Msg["CONTROLS_SWITCH_DEFAULT_TOOLTIP"] || "Add default case to the switch");
     (this as any).contextMenu = false;
   },
   generator: () => "",

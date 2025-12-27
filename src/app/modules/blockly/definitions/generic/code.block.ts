@@ -24,7 +24,7 @@ export const codeBlock = new BlockBuilder("base_code")
   .setPreviousStatement(null)
   .setNextStatement(null)
 
-  .setTooltip("Enter custom Arduino code")
+  .setTooltip("%{BKY_GENERIC_CODE_TOOLTIP}")
   .setHelpUrl("https://docs.arduino.cc/learn/programming/sketches")
 
   .setArduinoGenerator((block, generator) => {
@@ -43,9 +43,10 @@ const originalInit = codeBlock.init;
 codeBlock.init = function (this: Blockly.Block) {
   originalInit.call(this);
 
-  // Add text field for code
+  // Add text field for code - use Blockly.Msg directly for translation
+  const defaultValue = Blockly.Msg['GENERIC_CODE_DEFAULT_VALUE'] || '// Your code here';
   this.appendDummyInput().appendField(
-    new Blockly.FieldTextInput("// Your code here"),
+    new Blockly.FieldTextInput(defaultValue),
     "CODE"
   );
 };

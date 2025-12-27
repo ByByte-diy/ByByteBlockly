@@ -4,10 +4,9 @@
     <label for="board-select">Плата:</label>
     <select 
       id="board-select" 
-      [value]="selectedBoard?.id || ''" 
-      (change)="onBoardChange($any($event.target).value)"
+      [ngModel]="selectedBoard?.id" 
+      (ngModelChange)="onBoardChange($event)"
       class="selector">
-      <option value="" disabled>Оберіть плату</option>
       <option *ngFor="let board of boards" [value]="board.id">
         {{ board.name }}
       </option>

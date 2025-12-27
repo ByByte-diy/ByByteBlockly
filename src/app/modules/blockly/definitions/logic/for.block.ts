@@ -8,19 +8,19 @@ export const forBlock = new BlockBuilder("controls_for")
   .setPlatforms(CATEGORY_PLATFORMS)
   .setLevel(CATEGORY_LEVEL)
   .setTags(["logic", "for"])
-  .addDummyInput("FOR_DUMMY", "For")
+  .addDummyInput("FOR_DUMMY", "%{BKY_CONTROLS_FOR_MSG_FOR}")
   .addVariableField("VAR", "i", "FOR_DUMMY")
-  .addValueInput("FROM", 'ranging from', "Number")
+  .addValueInput("FROM", "%{BKY_CONTROLS_FOR_MSG_FROM}", "Number")
   .setShadowBlock("math_number", { NUM: 0 })
-  .addValueInput("TO", "to", "Number")
+  .addValueInput("TO", "%{BKY_CONTROLS_FOR_MSG_TO}", "Number")
   .setShadowBlock("math_number", { NUM: 5 })
-  .addValueInput("BY", "by", "Number")
+  .addValueInput("BY", "%{BKY_CONTROLS_FOR_MSG_BY}", "Number")
   .setShadowBlock("math_number", { NUM: 1 })
   .addDummyInput("")
   .addStatementInput("DO")
   .setPreviousStatement(true)
   .setNextStatement(true)
-  .setTooltip("For loop")
+  .setTooltip("%{BKY_CONTROLS_FOR_TOOLTIP}")
   .setHelpUrl("https://docs.arduino.cc/learn/programming/sketches") 
   .setArduinoGenerator((block, generator) => {
     // Get variable name from field using variableDB
@@ -28,9 +28,10 @@ export const forBlock = new BlockBuilder("controls_for")
     const variableId = block.getFieldValue("VAR");
     let variableName = "i"; // default fallback
     
-    if (generator.variableDB_ && variableId) {
+    if (generator.nameDB_ && variableId) {
       const variableType = win.Blockly?.Variables?.NAME_TYPE || null;
-      variableName = generator.variableDB_.getName(variableId, variableType);
+      console.log("variableType", variableType);
+      variableName = generator.nameDB_.getName(variableId, variableType);
     } else if (variableId) {
       variableName = variableId;
     }

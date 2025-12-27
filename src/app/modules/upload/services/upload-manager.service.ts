@@ -148,11 +148,8 @@ export class UploadManagerService {
    * Executes the compilation
    */
   private async executeCompile(): Promise<CompileResult> {
-    // Check if the board is selected
+    // Get the selected board (always available, defaults to Arduino Uno)
     const board = this.deviceManager.getSelectedBoard();
-    if (!board) {
-      throw new Error('Плата не обрана');
-    }
 
     this.updateProgress(UploadStatus.COMPILING, 'Генерація Arduino коду...');
     
@@ -197,13 +194,9 @@ export class UploadManagerService {
    * Executes the upload
    */
   private async executeUpload(compileResult: CompileResult): Promise<UploadResult> {
-    // Check if the board and port are selected
+    // Get the selected board (always available, defaults to Arduino Uno)
     const board = this.deviceManager.getSelectedBoard();
     const port = this.deviceManager.getSelectedPort();
-
-    if (!board) {
-      throw new Error('Board not selected');
-    }
 
     if (!port) {
       throw new Error('Port not selected');

@@ -21,7 +21,7 @@ export const defineBlock = new BlockBuilder("base_define")
   .setLevel(CATEGORY_LEVEL)
   .setTags(["preprocessor", "define"])
 
-  .setTooltip("Define preprocessor constant or macro")
+  .setTooltip("%{BKY_GENERIC_DEFINE_TOOLTIP}")
   .setHelpUrl(
     "https://docs.arduino.cc/learn/programming/reference/#further-syntax"
   )

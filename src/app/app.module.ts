@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core';
 import { SharedModule } from './shared/shared.module';
 import { WebPlatformModule } from './platform/web/web-platform.module';
+import { I18nModule } from './modules/language';
 
 /**
  * App Module
@@ -17,6 +18,7 @@ import { WebPlatformModule } from './platform/web/web-platform.module';
   imports: [
     BrowserModule,
     CoreModule,
+    I18nModule,
     WebPlatformModule,
     SharedModule
   ],

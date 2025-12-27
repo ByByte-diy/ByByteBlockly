@@ -109,31 +109,26 @@ export function initializeArduinoGenerator() {
     // Create a dictionary of setups to be printed in the setup() function
     arduinoGenerator.setups_ = {} as Record<string, string>;
 
-    if (!arduinoGenerator.variableDB_) {
-      arduinoGenerator.variableDB_ = new Blockly.Names(
+    if (!arduinoGenerator.nameDB_) {
+      arduinoGenerator.nameDB_ = new Blockly.Names(
         arduinoGenerator.RESERVED_WORDS_
       );
     } else {
-      arduinoGenerator.variableDB_.reset();
+      arduinoGenerator.nameDB_.reset();
     }
-
-    arduinoGenerator.variableDB_.setVariableMap(workspace.getVariableMap());
-    arduinoGenerator.definitions_["variables"] = "";
 
     // get all types from all variable in workspace
     const variableMap = workspace.getVariableMap();
-    const allTypes = variableMap.getTypes();
-    for (let i = 0; i < allTypes.length; i++) {
-      const defVars: string[] = [];
-      // get all variable for one of this type
-      const allVarOfType = variableMap.getVariablesOfType(allTypes[i]);
-      for (let j = 0; j < allVarOfType.length; j++) {
-        defVars.push(allVarOfType[j].getName());
-      }
-      if (defVars.length > 0) {
-        arduinoGenerator.definitions_["variables"] +=
-          allTypes[i] + " " + defVars.join(", ") + ";\n";
-      }
+    const variables = variableMap.getAllVariables();
+
+    arduinoGenerator.nameDB_.setVariableMap(variableMap);
+    arduinoGenerator.definitions_["variables"] = "";
+
+    for (const v of variables) {
+      const type = v.getType();
+      const name = v.getName();
+      if(!(type && name)) continue;
+      arduinoGenerator.definitions_["variables"] += type + " " + name + ";\n";
     }
   };
 
@@ -185,14 +180,14 @@ export function initializeArduinoGenerator() {
     delete arduinoGenerator.functionNames_;
     delete arduinoGenerator.setups_;
     delete arduinoGenerator.pins_;
-    arduinoGenerator.variableDB_.reset();
+    arduinoGenerator.nameDB_.reset();
     const allDefs =
       includes.join("\n") +
       definitions.join("\n") +
       variables.join("\n") +
       functions.join("\n");
-    const setup = "void setup() {" + setups.join("\n  ") + "\n}\n\n";
-    const loop = "void loop() {\n  " + code.replace(/\n/g, "\n  ") + "\n}";
+    const setup = "void setup() {" + setups.join("\n") + "\n}\n\n";
+    const loop = "void loop() {\n" + code.replace(/\n/g, "\n") + "\n}";
     return allDefs + setup + loop;
   };
 
@@ -251,7 +246,7 @@ export function initializeArduinoGenerator() {
       // Don't collect comments for nested statements.
       for (let x = 0; x < block.inputList.length; x++) {
         const input = block.inputList[x];
-        if (input.type === Blockly.INPUT_VALUE as number) {
+        if (input.type === (Blockly.INPUT_VALUE as number)) {
           const childBlock = input.connection?.targetBlock();
           if (childBlock) {
             const comment = arduinoGenerator.allNestedComments(childBlock);
@@ -267,208 +262,24 @@ export function initializeArduinoGenerator() {
     return commentCode + code + nextCode;
   };
 
-  //  if (!arduinoGenerator.forBlock) {
-  //    arduinoGenerator.forBlock = {} as Record<
-  //      string,
-  //      (block: Blockly.Block, generator: any) => string | [string, number]
-  //    >;
-  //  }
-  // arduinoGenerator.forBlock["logic_boolean"] = function (
-  //   block: Blockly.Block
-  // ): [string, number] {
-  //   const value = block.getFieldValue("BOOL") === "TRUE" ? "true" : "false";
-  //   return [value, arduinoGenerator.ORDER_ATOMIC];
-  // };
-  
-
-  // Save the generated code
-  // if (!win.Blockly.Arduino.definitions_) {
-  //   win.Blockly.Arduino.definitions_ = {} as Record<string, string>;
-  // }
-  // if (!win.Blockly.Arduino.includes_) {
-  //   win.Blockly.Arduino.includes_ = {} as Record<string, string>;
-  // }
-  // if (!win.Blockly.Arduino.setups_) {
-  //   win.Blockly.Arduino.setups_ = {} as Record<string, string>;
-  // }
-  // if (!win.Blockly.Arduino.variables_) {
-  //   win.Blockly.Arduino.variables_ = {} as Record<string, string>;
-  // }
-  // if (!win.Blockly.Arduino.functions_) {
-  //   win.Blockly.Arduino.functions_ = {} as Record<string, string>;
-  // }
-
-  // // forBlock - object to register generators for individual blocks
-  // if (!win.Blockly.Arduino.forBlock) {
-  //   win.Blockly.Arduino.forBlock = {} as Record<
-  //     string,
-  //     (block: Blockly.Block, generator: any) => string | [string, number]
-  //   >;
-  // }
-
-  // // Generator name
-  // win.Blockly.Arduino.name_ = "Arduino";
-
-  // /**
-  //  * Generates code for a single block
-  //  */
-  // win.Blockly.Arduino.blockToCode = function (
-  //   block: Blockly.Block
-  // ): string | null {
-  //   if (!block || !block.isEnabled()) {
-  //     return null;
-  //   }
-
-  //   const func = this.forBlock[block.type];
-  //   if (!func) {
-  //     return null;
-  //   }
-
-  //   const code = func.call(this, block, this);
-
-  //   if (Array.isArray(code)) {
-  //     // [code, order] - return only the code
-  //     return code[0];
-  //   }
-
-  //   return code as string;
-  // };
-
-  // /**
-  //  * Generates code for statement input
-  //  */
-  // win.Blockly.Arduino.statementToCode = function (
-  //   block: Blockly.Block,
-  //   name: string
-  // ): string {
-  //   const targetBlock = block.getInputTargetBlock(name);
-  //   let code = "";
-
-  //   let currentBlock = targetBlock;
-  //   while (currentBlock) {
-  //     const blockCode = this.blockToCode(currentBlock);
-  //     if (blockCode) {
-  //       code += blockCode;
-  //       if (!blockCode.endsWith("\n")) {
-  //         code += "\n";
-  //       }
-  //     }
-  //     currentBlock = currentBlock.getNextBlock();
-  //   }
-
-  //   return code;
-  // };
-
-  // /**
-  //  * Generates code for value input
-  //  */
-  // win.Blockly.Arduino.valueToCode = function (
-  //   block: Blockly.Block,
-  //   name: string,
-  //   outerOrder: number
-  // ): string {
-  //   if (outerOrder === undefined) {
-  //     outerOrder = this.ORDER_NONE;
-  //   }
-
-  //   const targetBlock = block.getInputTargetBlock(name);
-  //   if (!targetBlock) {
-  //     return "";
-  //   }
-
-  //   const blockCode = this.blockToCode(targetBlock);
-  //   if (!blockCode) {
-  //     return "";
-  //   }
-
-  //   // If an array [code, order] is returned
-  //   if (Array.isArray(blockCode)) {
-  //     const [code, order] = blockCode;
-  //     if (order !== undefined && order < outerOrder) {
-  //       return `(${code})`;
-  //     }
-  //     return code;
-  //   }
-
-  //   return blockCode;
-  // };
-
-  // /**
-  //  * Generates the final Arduino code
-  //  */
-  // win.Blockly.Arduino.workspaceToCode = function (
-  //   workspace: Blockly.Workspace
-  // ): string {
-  //   // Clear previous data
-  //   this.definitions_ = {};
-  //   this.includes_ = {};
-  //   this.setups_ = {};
-  //   this.variables_ = {};
-  //   this.functions_ = {};
-
-  //   // Generates code for all top-level blocks
-  //   const blocks = workspace.getTopBlocks(true);
-  //   let loopCode = "";
-
-  //   for (const block of blocks) {
-  //     const code = this.blockToCode(block);
-  //     if (code) {
-  //       loopCode += code;
-  //       if (!code.endsWith("\n")) {
-  //         loopCode += "\n";
-  //       }
-  //     }
-  //   }
-
-  //   // Collect the final code
-  //   let finalCode = "";
-
-  //   // 1. Includes
-  //   const includesList = Object.values(this.includes_);
-  //   if (includesList.length > 0) {
-  //     finalCode += includesList.join("\n") + "\n\n";
-  //   }
-
-  //   // 2. Definitions (variables, constants)
-  //   const definitionsList = Object.values(this.definitions_);
-  //   if (definitionsList.length > 0) {
-  //     finalCode += definitionsList.join("\n") + "\n\n";
-  //   }
-
-  //   // 3. Functions
-  //   const functionsList = Object.values(this.functions_);
-  //   if (functionsList.length > 0) {
-  //     finalCode += functionsList.join("\n\n") + "\n\n";
-  //   }
-
-  //   // 4. setup() function
-  //   const setupsList = Object.values(this.setups_);
-  //   if (setupsList.length > 0) {
-  //     finalCode += "void setup() {\n";
-  //     for (const setup of setupsList) {
-  //       const setupCode = setup as string;
-  //       const lines = setupCode.split("\n").filter((line) => line.trim());
-  //       for (const line of lines) {
-  //         finalCode += "  " + line + "\n";
-  //       }
-  //     }
-  //     finalCode += "}\n\n";
-  //   } else {
-  //     finalCode += "void setup() {\n}\n\n";
-  //   }
-
-  //   // 5. loop() function
-  //   finalCode += "void loop() {\n";
-  //   if (loopCode && loopCode.trim()) {
-  //     const lines = loopCode.split("\n").filter((line: string) => line.trim());
-  //     for (const line of lines) {
-  //       finalCode += "  " + line + "\n";
-  //     }
-  //   }
-  //   finalCode += "}\n";
-
-  //   return finalCode;
-  // };
+  arduinoGenerator.getArduinoType_ = function (type: string): string {
+    return (
+      {
+        BYTE: "byte",
+        INTEGER: "int",
+        UNUMBER: "unsigned int",
+        LARGE_NUMBER: "long",
+        DECIMAL: "float",
+        TEXT: "String",
+        CHARACTER: "char",
+        BOOL: "boolean",
+        NULL: "void",
+        // ARRAY: arduinoGenerator.getArduinoType_(type),
+        UNDEF: "undefined",
+        CHILD_BLOCK_MISSING: "int",
+      }[type] || "Invalid Blockly Type"
+    );
+  };
 
   return win.Blockly.Arduino;
 }

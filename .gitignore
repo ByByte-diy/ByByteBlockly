@@ -15,5 +15,7 @@
 /compilation/arduino/package_ustepper_index.json
 /compilation/arduino/inventory.yaml
 /dist
+/build
 /node_modules/
 .angular/
+*.log

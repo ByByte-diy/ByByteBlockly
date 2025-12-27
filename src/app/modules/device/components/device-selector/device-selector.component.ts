@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { DeviceManagerService } from '../../services/device-manager.service';
-import { IBoard } from '@app/modules/device/types/device-board.type';
-import { ISerialPortInfo } from '@app/core/models/serial-port.model';
+import { Component, OnInit, inject } from "@angular/core";
+import { DeviceManagerService } from "../../services/device-manager.service";
+import { IBoard } from "@app/modules/device/types/device-board.type";
+import { ISerialPortInfo } from "@app/core/models/serial-port.model";
 
 /**
  * Component for selecting a board and a serial port
  */
 @Component({
-  selector: 'app-device-selector',
-  templateUrl: './device-selector.component.html',
-  styleUrls: ['./device-selector.component.scss']
+  selector: "app-device-selector",
+  templateUrl: "./device-selector.component.html",
+  styleUrls: ["./device-selector.component.scss"],
 })
 export class DeviceSelectorComponent implements OnInit {
   boards: IBoard[] = [];
@@ -18,22 +18,25 @@ export class DeviceSelectorComponent implements OnInit {
   selectedPort: ISerialPortInfo | null = null;
   isRefreshing: boolean = false;
 
-  constructor(public deviceManager: DeviceManagerService) {}
+  constructor(private deviceManager: DeviceManagerService) {
+    this.selectedBoard = this.deviceManager.getSelectedBoard();
+  }
 
   ngOnInit(): void {
     // Load the list of boards
     this.boards = this.deviceManager.getAvailableBoards();
+    this.selectedBoard ||= this.deviceManager.getSelectedBoard();
 
     // Subscribe to changes
-    this.deviceManager.selectedBoard$.subscribe(board => {
+    this.deviceManager.selectedBoard$.subscribe((board) => {
       this.selectedBoard = board;
     });
 
-    this.deviceManager.selectedPort$.subscribe(port => {
+    this.deviceManager.selectedPort$.subscribe((port) => {
       this.selectedPort = port;
     });
 
-    this.deviceManager.availablePorts$.subscribe(ports => {
+    this.deviceManager.availablePorts$.subscribe((ports) => {
       this.ports = ports;
     });
 
@@ -45,17 +48,16 @@ export class DeviceSelectorComponent implements OnInit {
    * Handler for board change
    */
   onBoardChange(boardId: string): void {
-    const board = this.boards.find(b => b.id === boardId);
-    if (board) {
-      this.deviceManager.selectBoard(board);
-    }
+    const board = this.deviceManager.getBoardById(boardId);
+    if (!board) return;
+    this.deviceManager.selectBoard(board);
   }
 
   /**
    * Handler for port change
    */
   onPortChange(portPath: string): void {
-    const port = this.ports.find(p => p.path === portPath);
+    const port = this.ports.find((p) => p.path === portPath);
     if (port) {
       this.deviceManager.selectPort(port);
     }
@@ -69,7 +71,7 @@ export class DeviceSelectorComponent implements OnInit {
     try {
       await this.deviceManager.refreshPorts();
     } catch (err) {
-      console.error('Error refreshing ports:', err);
+      console.error("Error refreshing ports:", err);
     } finally {
       this.isRefreshing = false;
     }
@@ -83,10 +85,10 @@ export class DeviceSelectorComponent implements OnInit {
     this.isRefreshing = true;
     try {
       await this.deviceManager.requestPort();
-      alert('Device selected successfully!');
+      alert("Device selected successfully!");
     } catch (err: any) {
-      console.error('Error requesting port:', err);
-      alert(err.message || 'Failed to select device. Please try again.');
+      console.error("Error requesting port:", err);
+      alert(err.message || "Failed to select device. Please try again.");
     } finally {
       this.isRefreshing = false;
     }
@@ -96,6 +98,8 @@ export class DeviceSelectorComponent implements OnInit {
    * Check if the "Connect Device" button is needed
    */
   needsPortRequest(): boolean {
-    return this.ports.length === 1 && this.ports[0]?.path === 'request-new-port';
+    return (
+      this.ports.length === 1 && this.ports[0]?.path === "request-new-port"
+    );
   }
 }

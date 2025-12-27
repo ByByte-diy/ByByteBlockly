@@ -99,8 +99,9 @@ export interface IBlockConfig {
   nextStatement?: string | string[] | null | false;
   output?: string | string[] | null | false;
 
-  tooltip?: string;
+  tooltip?: string | (() => string);
   helpUrl?: string;
+  inputsInline?: boolean;
   deletable?: boolean;
   movable?: boolean;
   editable?: boolean;

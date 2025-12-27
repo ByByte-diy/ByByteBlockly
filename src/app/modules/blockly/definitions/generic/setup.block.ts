@@ -20,9 +20,9 @@ export const setupBlock = new BlockBuilder("base_setup")
   .setLevel(CATEGORY_LEVEL)
   .setTags(["structure"])
 
-  .addStatementInput("DO", "Setup")
+  .addStatementInput("DO", "%{BKY_GENERIC_SETUP}")
 
-  .setTooltip("Setup section - runs once at startup")
+  .setTooltip("%{BKY_GENERIC_SETUP_TOOLTIP}")
   .setHelpUrl(
     "https://docs.arduino.cc/learn/programming/sketches/#setup-and-loop"
   )

@@ -1,21 +1,16 @@
-import {
-  BlockDefinition,
-  PlatformT,
-  BlockLevelE,
-} from "../../types/block.types";
+import { BlockDefinition, BlockLevelE } from "../../types/block.types";
 import {
   IToolboxDefinition,
   IToolboxCategory,
   IToolboxBlock,
   BoardType,
   ToolboxOptions,
-  IToolboxCategoryMetadata,
   ToolboxKindE,
   BlockKindE,
   CategoryKindE,
+  IToolboxCategoryConfig,
 } from "../../types/toolbox.types";
 import { BlockRegistry } from "../registry/block-registry";
-import { BLOCK_COLORS } from "../../constants/blockly.constants";
 
 /**
  * Builder for creating Blockly toolbox configurations
@@ -140,30 +135,28 @@ export class ToolboxBuilder {
    */
   private buildCategories(): IToolboxCategory[] {
     const categories: IToolboxCategory[] = [];
-    const catRegistered = BlockRegistry.getCategories();
-
-    // Add standard Blockly categories
-    if (this.options.includeStandardBlocks) {
-      categories.push(...this.buildStandardCategories());
-    }
 
     // Group blocks by category
     const groupedBlocks = this.groupBlocksByCategory();
-    for (const catName of catRegistered) {
+
+
+    for (const catName of BlockRegistry.getCategories()) {
       // Skip special categories like "Mutator" that shouldn't appear in toolbox
       if (catName === "Mutator") continue;
-      
+
       const blocks = groupedBlocks[catName];
-      const meta = BlockRegistry.getCategoryMetadata(catName);
+      const config = BlockRegistry.getCategoryConfig(
+        catName
+      ) as IToolboxCategoryConfig;
       categories.push({
         kind: CategoryKindE.Category,
         name: catName,
-        colour: meta?.colour ?? "0",
-        contents: blocks.map((block) =>
-          ToolboxBuilder.blockToToolboxBlock(block)
-        ),
+        colour: config?.colour ?? "0",
+        contents: blocks?.map((block) => ToolboxBuilder.blockToToolboxBlock(block)) ?? [],
       } as IToolboxCategory);
     }
+
+    console.log(categories);
 
     // Sort categories by order
     return this.sortCategories(categories);
@@ -338,7 +331,7 @@ export class ToolboxBuilder {
   /**
    * Extract default field values from block
    */
-  private static  _extractDefaultFields(
+  private static _extractDefaultFields(
     toolbox: IToolboxBlock,
     block: BlockDefinition
   ): void {
@@ -358,7 +351,10 @@ export class ToolboxBuilder {
   /**
    * Extract shadow blocks from inputs
    */
-  private static _extractShadowBlocks(toolbox: IToolboxBlock, block: BlockDefinition): void {
+  private static _extractShadowBlocks(
+    toolbox: IToolboxBlock,
+    block: BlockDefinition
+  ): void {
     if (block.config.inputs && block.config.inputs.length > 0) {
       const inputs: Record<string, any> = {};
       for (const input of block.config.inputs) {
@@ -393,8 +389,8 @@ export class ToolboxBuilder {
    */
   private sortCategories(categories: IToolboxCategory[]): IToolboxCategory[] {
     return categories.sort((a, b) => {
-      const metaA = BlockRegistry.getCategoryMetadata(a.name);
-      const metaB = BlockRegistry.getCategoryMetadata(b.name);
+      const metaA = BlockRegistry.getCategoryConfig(a.name);
+      const metaB = BlockRegistry.getCategoryConfig(b.name);
       return (metaA?.order ?? 50) - (metaB?.order ?? 50);
     });
   }

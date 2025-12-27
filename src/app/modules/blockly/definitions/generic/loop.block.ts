@@ -20,9 +20,9 @@ export const loopBlock = new BlockBuilder("base_loop")
   .setLevel(CATEGORY_LEVEL)
   .setTags(["structure"])
 
-  .addStatementInput("DO", "Loop")
+  .addStatementInput("DO", "%{BKY_GENERIC_LOOP}")
 
-  .setTooltip("Loop section - runs repeatedly")
+  .setTooltip("%{BKY_GENERIC_LOOP_TOOLTIP}")
   .setHelpUrl(
     "https://docs.arduino.cc/learn/programming/sketches/#setup-and-loop"
   )

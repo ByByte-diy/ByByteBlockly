@@ -21,10 +21,10 @@ export const setupLoopBlock = new BlockBuilder("base_setup_loop")
   .setLevel(CATEGORY_LEVEL)
   .setTags(["essential", "structure"])
 
-  .addStatementInput("DO", "Setup")
-  .addStatementInput("LOOP", "Loop")
+  .addStatementInput("DO", "%{BKY_GENERIC_SETUP}")
+  .addStatementInput("LOOP", "%{BKY_GENERIC_LOOP}")
 
-  .setTooltip("Main Arduino program structure with setup and loop")
+  .setTooltip("%{BKY_GENERIC_SETUP_LOOP_TOOLTIP}")
   .setHelpUrl(
     "https://docs.arduino.cc/learn/programming/sketches/#setup-and-loop"
   )

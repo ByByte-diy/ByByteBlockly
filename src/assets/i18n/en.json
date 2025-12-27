@@ -1,0 +1,25 @@
+{
+  "language": {
+    "name": "Українська",
+    "flag": "🇺🇦",
+    "rtl": false
+  },
+  "ui": {
+    "btn_ok": "👌 OK",
+    "btn_close": "Close",
+    "btn_accept": "Accept",
+    "btn_config": "⚙️ Settings",
+    "btn_about": "⏱️ About",
+    "btn_new": "📄 New",
+    "btn_open": "📂 Open",
+    "btn_example": "🎓 Examples",
+    "btn_term": "🔍 Serial monitor",
+    "btn_save": "💾 Save",
+    "btn_print": "📷 Screenshot",
+    "btn_export": "📤 Export",
+    "btn_import": "📥 Import",
+    "aboutcardLabel": "Board ...",
+    "usbLabel": "USB",
+    "aboutusbLabel": "🔌 Communication between the board and the computer"
+  }
+}

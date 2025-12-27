@@ -18,6 +18,7 @@ export enum ToolboxKindE {
 export enum CategoryKindE {
   Category = 'category',
   FlyoutCategory = 'flyoutCategory',
+  DynamicCategory = 'dynamicCategory',
 }
 
 /**
@@ -39,6 +40,7 @@ export interface IToolboxCategory {
   contents: (IToolboxBlock | IToolboxCategory | IToolboxSeparator | IToolboxButton)[];
   expanded?: string;
   hidden?: string;
+  custom?: string;
 }
 
 /**
@@ -96,7 +98,7 @@ export interface ToolboxOptions {
 /**
  * Category metadata for toolbox
  */
-export interface IToolboxCategoryMetadata {
+export interface IToolboxCategoryConfig {
   name: string;
   colour: string;
   order: number;

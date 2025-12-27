@@ -11,11 +11,10 @@ import { defineBlock } from "./define.block";
 import {
   CATEGORY_COLOR,
   CATEGORY_NAME,
+  CATEGORY_ORDER,
 } from "./config";
 import { BlockLevelE } from "../../types/block.types";
-import { IToolboxCategoryMetadata } from "../../types";
-
-export const CATEGORY_ORDER = 0;
+import { IToolboxCategoryConfig } from "../../types";
 
 /**
  * All generic blocks
@@ -39,7 +38,7 @@ export function initialize(): void {
     requiredPlatform: "both",
     order: CATEGORY_ORDER,
     minLevel: BlockLevelE.BEGINNER,
-  } as IToolboxCategoryMetadata);
+  } as IToolboxCategoryConfig);
 }
 
 // Export individual blocks

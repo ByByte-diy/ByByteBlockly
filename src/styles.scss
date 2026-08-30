@@ -1,4 +1,7 @@
 /* Global styles */
+@import 'styles/themes';
+@import 'styles/toolbox-icons';
+
 * {
   box-sizing: border-box;
 }
@@ -10,7 +13,6 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-/* Angular компоненти повинні займати всю висоту */
 app-root {
   display: block;
   height: 100%;
@@ -23,18 +25,4 @@ app-blockly-editor {
   flex: 1;
 }
 
-/* Blockly SVG стилі */
-.blocklyToolboxDiv {
-  background-color: #ddd;
-}
-
-.blocklyFlyoutBackground {
-  fill: #ddd;
-  fill-opacity: 0.8;
-}
-
-.blocklyMainBackground {
-  stroke-width: 1;
-  stroke: #c6c6c6;
-}
-
+/* Blockly colours are driven by Blockly.Theme + workspace.setTheme() */

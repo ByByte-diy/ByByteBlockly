@@ -2,15 +2,19 @@
  * Blockly configuration constants
  */
 
+import * as Blockly from 'blockly';
+import type { BlocklyOptions } from 'blockly/core/blockly_options';
+import { BYBYTE_BLOCKLY_LIGHT_THEME } from './blockly-themes';
+
 /**
- * Default workspace options
+ * Default workspace options for Blockly 13.x
  */
-export const DEFAULT_WORKSPACE_OPTIONS = {
+export const DEFAULT_WORKSPACE_OPTIONS: BlocklyOptions = {
   grid: {
     spacing: 20,
     length: 3,
     colour: '#ccc',
-    snap: true
+    snap: true,
   },
   zoom: {
     controls: true,
@@ -30,11 +34,14 @@ export const DEFAULT_WORKSPACE_OPTIONS = {
     scrollbars: true,
     drag: true,
     wheel: true
-  }
+  },
+  media: 'assets/blockly/media/',
+  renderer: 'zelos',
+  theme: BYBYTE_BLOCKLY_LIGHT_THEME,
 };
 
 /**
- * Block colors (HSV format for Blockly 12.x)
+ * Block colors (HSV format for Blockly 13.x)
  */
 export const BLOCK_COLORS = {
   GENERIC: 160,      // Base/Generic blocks

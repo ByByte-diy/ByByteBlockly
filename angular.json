@@ -29,6 +29,11 @@
               "src/assets",
               {
                 "glob": "**/*",
+                "input": "node_modules/blockly/media",
+                "output": "/assets/blockly/media"
+              },
+              {
+                "glob": "**/*",
                 "input": "www",
                 "output": "/www"
               }
@@ -93,6 +98,11 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/blockly/media",
+                "output": "/assets/blockly/media"
+              },
               {
                 "glob": "**/*",
                 "input": "www",

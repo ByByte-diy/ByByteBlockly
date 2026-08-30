@@ -11,8 +11,19 @@ import { BlocksLoaderService } from "../../services/blocks-loader.service";
 import { BlocklyService } from "../../services/blockly.service";
 import { DeviceManagerService } from "../../../device/services/device-manager.service";
 import { DEFAULT_WORKSPACE_OPTIONS } from "../../constants";
+import {
+  getBlocklyTheme,
+  BLOCKLY_GRID_COLOURS,
+  ResolvedAppTheme,
+} from "../../constants/blockly-themes";
+import {
+  observeToolboxIcons,
+  enhanceToolboxIcons,
+} from "../../lib/toolbox/toolbox-icons.helper";
 import { ToolboxDefinition } from "blockly/core/utils/toolbox";
 import { WorkspaceStorageService } from "@app/modules/storage/workspace-storage.service";
+import { ThemeService } from "@app/core/services/theme.service";
+import { Subscription } from "rxjs";
 
 /**
  * Blockly Editor Component
@@ -29,16 +40,18 @@ export class BlocklyEditorComponent
 
   private workspace: Blockly.WorkspaceSvg | null = null;
   private toolboxConfig: ToolboxDefinition | null = null;
+  private disposeToolboxIconObserver: (() => void) | null = null;
+  private themeSubscription: Subscription | null = null;
 
   constructor(
     private blocksLoader: BlocksLoaderService,
     private blocklyService: BlocklyService,
     private deviceManager: DeviceManagerService,
-    private storage: WorkspaceStorageService
+    private storage: WorkspaceStorageService,
+    private themeService: ThemeService,
   ) {}
 
   ngOnInit(): void {
-    // Initialization is performed in AfterViewInit
     Blockly.utils.colour.setHsvSaturation(0.5);
     Blockly.utils.colour.setHsvValue(0.7);
   }
@@ -48,6 +61,10 @@ export class BlocklyEditorComponent
   }
 
   ngOnDestroy(): void {
+    this.themeSubscription?.unsubscribe();
+    this.themeSubscription = null;
+    this.disposeToolboxIconObserver?.();
+    this.disposeToolboxIconObserver = null;
     if (this.workspace) {
       this.workspace.dispose();
       this.workspace = null;
@@ -91,6 +108,7 @@ export class BlocklyEditorComponent
           const newToolbox = await this.blocksLoader.loadToolbox(board.id);
           this.toolboxConfig = newToolbox;
           this.workspace.updateToolbox(newToolbox);
+          this.setupToolboxIcons();
 
           // Save board selection
           await this.saveCurrentSettings();
@@ -124,6 +142,7 @@ export class BlocklyEditorComponent
 
           // Update toolbox
           this.workspace.updateToolbox(newToolbox);
+          this.setupToolboxIcons();
 
           // Clear workspace
           this.workspace.clear();
@@ -150,10 +169,23 @@ export class BlocklyEditorComponent
       return;
     }
 
+    const resolvedTheme = this.themeService.currentResolvedTheme;
+
     this.workspace = Blockly.inject(this.blocklyDiv.nativeElement, {
       toolbox: this.toolboxConfig,
       ...DEFAULT_WORKSPACE_OPTIONS,
+      theme: getBlocklyTheme(resolvedTheme),
+      grid: {
+        ...DEFAULT_WORKSPACE_OPTIONS.grid!,
+        colour: BLOCKLY_GRID_COLOURS[resolvedTheme],
+      },
     });
+
+    this.themeSubscription = this.themeService.onResolvedThemeChange.subscribe(
+      (theme) => this.applyBlocklyTheme(theme)
+    );
+
+    this.setupToolboxIcons();
 
     // Force re-calculate the size of the workspace
     Blockly.svgResize(this.workspace);
@@ -179,6 +211,53 @@ export class BlocklyEditorComponent
 
     // Generate initial code after delay (to let generators load)
     setTimeout(() => this.generateCode(), 2000);
+  }
+
+  /** Attach SVG icons to toolbox categories and watch for re-renders. */
+  private setupToolboxIcons(): void {
+    this.disposeToolboxIconObserver?.();
+    this.disposeToolboxIconObserver = null;
+
+    const findToolbox = (): HTMLElement | null =>
+      (this.blocklyDiv?.nativeElement?.querySelector('.blocklyToolboxDiv') ??
+        this.blocklyDiv?.nativeElement?.querySelector('.blocklyToolbox') ??
+        document.querySelector('.blocklyToolboxDiv') ??
+        document.querySelector('.blocklyToolbox')) as HTMLElement | null;
+
+    const attach = () => {
+      const toolboxDiv = findToolbox();
+      if (!toolboxDiv) {
+        return;
+      }
+      if (!this.disposeToolboxIconObserver) {
+        this.disposeToolboxIconObserver = observeToolboxIcons(toolboxDiv);
+      } else {
+        enhanceToolboxIcons(toolboxDiv);
+      }
+    };
+
+    attach();
+    setTimeout(attach, 0);
+    setTimeout(attach, 150);
+  }
+
+  /** Switch Blockly workspace theme (background, toolbox, flyout, scrollbars). */
+  private applyBlocklyTheme(resolved: ResolvedAppTheme): void {
+    if (!this.workspace) {
+      return;
+    }
+
+    this.workspace.setTheme(getBlocklyTheme(resolved));
+    this.updateGridColour(resolved);
+  }
+
+  private updateGridColour(resolved: ResolvedAppTheme): void {
+    const colour = BLOCKLY_GRID_COLOURS[resolved];
+
+    const root = this.blocklyDiv?.nativeElement;
+    root?.querySelectorAll("line.blocklyGridLine").forEach((line) => {
+      line.setAttribute("stroke", colour);
+    });
   }
 
   /**

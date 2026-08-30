@@ -154,8 +154,6 @@
     "@angular/compiler-cli": "^17.3.12",
     "electron": "^39.2.3",
     "electron-builder": "^26.0.12",
-    "electron-installer-debian": "^3.2.0",
-    "electron-installer-dmg": "^5.0.1",
     "electron-rebuild": "^3.2.9",
     "typescript": "5.2"
   },
@@ -172,7 +170,7 @@
     "@serialport/bindings-cpp": "^13.0.1",
     "@serialport/stream": "^13.0.0",
     "ajv": "^6.12.6",
-    "blockly": "^12.3.1",
+    "blockly": "^13.2.1",
     "decompress-zip": "^0.2.2",
     "electron-updater": "^6.6.2",
     "extract-zip": "^2.0.1",
@@ -185,5 +183,9 @@
     "tslib": "^2.8.1",
     "virtual-serialport": "^4.0.1",
     "zone.js": "^0.14.10"
+  },
+  "optionalDependencies": {
+    "electron-installer-debian": "^3.2.0",
+    "electron-installer-dmg": "^5.0.1"
   }
 }

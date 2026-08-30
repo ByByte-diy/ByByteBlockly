@@ -1,5 +1,5 @@
 /**
- * Arduino Code Generator для Blockly 12.x
+ * Arduino Code Generator for Blockly 13.x
  *
  * This file defines our own code generator for Arduino/C++
  */

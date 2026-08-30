@@ -35,8 +35,14 @@ export enum BlockKindE {
 export interface IToolboxCategory {
   kind: CategoryKindE;
   name: string;
+  id?: string;
   colour?: string;
   categorystyle?: string;
+  cssconfig?: {
+    icon?: string;
+    rowcontentcontainer?: string;
+    label?: string;
+  };
   contents: (IToolboxBlock | IToolboxCategory | IToolboxSeparator | IToolboxButton)[];
   expanded?: string;
   hidden?: string;

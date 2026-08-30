@@ -4,12 +4,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LangSwitcherComponent } from './components/lang-switcher/lang-switcher.component';
+import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 import { BlocklyI18nService } from './blockly-i18n.service';
 import { I18nService } from './i18n.service';
 
 @NgModule({
   declarations: [
-    LangSwitcherComponent
+    LangSwitcherComponent,
+    ThemeToggleComponent,
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import { I18nService } from './i18n.service';
   ],
   exports: [
     TranslateModule,
-    LangSwitcherComponent
+    LangSwitcherComponent,
+    ThemeToggleComponent,
   ]
 })
 export class I18nModule { }

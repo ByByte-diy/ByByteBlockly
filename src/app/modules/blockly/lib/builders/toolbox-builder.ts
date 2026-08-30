@@ -11,6 +11,7 @@ import {
   IToolboxCategoryConfig,
 } from "../../types/toolbox.types";
 import { BlockRegistry } from "../registry/block-registry";
+import { getCategoryIconCssClass, getCategoryIconFile } from "../../constants/category-icons.const";
 
 /**
  * Builder for creating Blockly toolbox configurations
@@ -148,15 +149,27 @@ export class ToolboxBuilder {
       const config = BlockRegistry.getCategoryConfig(
         catName
       ) as IToolboxCategoryConfig;
+      const iconClass = getCategoryIconCssClass(catName);
+      const iconFile = getCategoryIconFile(catName);
       categories.push({
         kind: CategoryKindE.Category,
         name: catName,
         colour: config?.colour ?? "0",
-        contents: blocks?.map((block) => ToolboxBuilder.blockToToolboxBlock(block)) ?? [],
+        ...(iconClass && iconFile
+          ? {
+              id: `cat-icon-${iconFile}`,
+              cssconfig: {
+                icon: iconClass,
+                rowcontentcontainer:
+                  "blocklyTreeRowContentContainer toolbox-cat-row",
+              },
+            }
+          : {}),
+        contents:
+          blocks?.map((block) => ToolboxBuilder.blockToToolboxBlock(block)) ??
+          [],
       } as IToolboxCategory);
     }
-
-    console.log(categories);
 
     // Sort categories by order
     return this.sortCategories(categories);

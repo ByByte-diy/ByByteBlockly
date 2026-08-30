@@ -6,9 +6,10 @@
   
   .app-header {
     padding: 10px 20px;
-    background-color: #1976d2;
-    color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--app-header-bg);
+    color: var(--app-text);
+    border-bottom: 1px solid var(--app-border);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     display: flex;
     align-items: center;
     gap: 20px;

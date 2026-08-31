@@ -3,6 +3,7 @@
  */
 
 import * as Blockly from "blockly";
+import { createVariableField } from "../variables/variable-type.helper";
 import {
   IBlockConfig,
   BlockDefinition,
@@ -104,7 +105,7 @@ export class BlockBuilder {
    * Add value input
    */
   // prettier-ignore
-  addValueInput(name: string, label?: string, check?: string | string[] | null ): this {
+  addValueInput(name: string, label?: string, check?: string | string[] | null): this {
     this.config.inputs!.push({
       type: "value",
       name,
@@ -240,15 +241,19 @@ export class BlockBuilder {
   /**
    * Add variable field (dropdown for variable selection)
    * @param name Field name
-   * @param variableType Variable type (e.g., Blockly.Variables.NAME_TYPE)
+   * @param defaultVarName Default variable name for new blocks (empty = no auto-name)
    * @param inputName Optional: name of the input to attach this field to
    */
-  addVariableField(name: string, variableType?: string, inputName?: string): this {
+  addVariableField(
+    name: string,
+    defaultVarName = "",
+    inputName?: string
+  ): this {
     this.config.fields!.push({
       type: "variable",
       name,
-      value: variableType, // Variable type (e.g., Blockly.Variables.NAME_TYPE)
-      inputName, // Optional: specify which input to attach to
+      value: defaultVarName,
+      inputName,
     });
     return this;
   }
@@ -419,6 +424,42 @@ export class BlockBuilder {
         // Set color
         this.setColour(config.color);
 
+        if (shouldUseJsonInit(config)) {
+          const jsonInit: Record<string, unknown> = {
+            message0: config.message,
+            args0: buildJsonInitArgs(config),
+            colour: config.color,
+          };
+
+          if (
+            config.previousStatement !== undefined &&
+            config.previousStatement !== false
+          ) {
+            jsonInit.previousStatement =
+              config.previousStatement === null
+                ? null
+                : config.previousStatement;
+          }
+          if (
+            config.nextStatement !== undefined &&
+            config.nextStatement !== false
+          ) {
+            jsonInit.nextStatement =
+              config.nextStatement === null ? null : config.nextStatement;
+          }
+          if (config.output !== undefined && config.output !== false) {
+            jsonInit.output =
+              config.output === null ? null : config.output;
+          }
+          if (config.inputsInline !== undefined) {
+            jsonInit.inputsInline = config.inputsInline;
+          }
+
+          this.jsonInit(jsonInit);
+          applyBlockMeta(this, config);
+          return;
+        }
+
         // Manual input building
         for (const input of config.inputs || []) {
           let blockInput: Blockly.Input;
@@ -435,15 +476,21 @@ export class BlockBuilder {
               if (input.check !== undefined) {
                 blockInput.setCheck(input.check);
               }
-              // Add shadow block if configured
-              if (input.shadow && this.workspace) {
-                const shadowBlock = this.workspace.newBlock(input.shadow.type);
+              // Add shadow block if configured (skip flyout — toolbox supplies shadows)
+              if (input.shadow && this.workspace && !this.isInFlyout) {
+                const shadowBlock = this.workspace.newBlock(
+                  input.shadow.type
+                ) as Blockly.BlockSvg;
                 shadowBlock.setShadow(true);
                 if (input.shadow.fields) {
-                  for (const [fieldName, fieldValue] of Object.entries(input.shadow.fields)) {
+                  for (const [fieldName, fieldValue] of Object.entries(
+                    input.shadow.fields
+                  )) {
                     shadowBlock.setFieldValue(fieldValue, fieldName);
                   }
                 }
+                shadowBlock.initSvg();
+                shadowBlock.render();
                 if (blockInput!.connection && shadowBlock.outputConnection) {
                   blockInput.connection.connect(shadowBlock.outputConnection);
                 }
@@ -455,7 +502,7 @@ export class BlockBuilder {
           }
 
           if (input.label) {
-            blockInput!.appendField(input.label);
+            blockInput!.appendField(resolveLabel(input.label));
           }
 
           // Add fields that are specifically attached to this input
@@ -471,7 +518,7 @@ export class BlockBuilder {
         for (const field of config.fields || []) {
           // Skip fields that are already attached to specific inputs
           if (field.inputName) continue;
-          
+
           const lastInput = this.inputList[this.inputList.length - 1];
           if (lastInput) {
             lastInput.appendField(createField(field), field.name);
@@ -513,44 +560,164 @@ export class BlockBuilder {
           this.setInputsInline(config.inputsInline);
         }
 
-        // Set properties
-        if (config.tooltip) {
-          // Check if tooltip is a function
-          if (typeof config.tooltip === 'function') {
-            this.setTooltip(config.tooltip);
-          } else if (config.tooltip.includes('%{BKY_')) {
-            // Use function to resolve %{BKY_...} tokens dynamically
-            this.setTooltip(() => {
-              return Blockly.utils.parsing.replaceMessageReferences(config.tooltip as string);
-            });
-          } else {
-            this.setTooltip(config.tooltip);
-          }
-        }
-        if (config.helpUrl) {
-          this.setHelpUrl(config.helpUrl);
-        }
-        if (config.deletable !== undefined) {
-          this.setDeletable(config.deletable);
-        }
-        if (config.movable !== undefined) {
-          this.setMovable(config.movable);
-        }
-        if (config.editable !== undefined) {
-          this.setEditable(config.editable);
-        }
-
-        // Set mutator extension
-        if (config.mutator) {
-          Blockly.Extensions.apply(config.mutator, this, true);
-        }
-
-        // Set onchange handler
-        if (config.onchange) {
-          this.setOnChange(config.onchange);
-        }
+        applyBlockMeta(this, config);
       },
     };
+  }
+}
+
+function resolveLabel(label: string): string {
+  return label.includes("%{BKY_")
+    ? Blockly.utils.parsing.replaceMessageReferences(label)
+    : label;
+}
+
+function shouldUseJsonInit(config: IBlockConfig): boolean {
+  if (!config.message) {
+    return false;
+  }
+
+  let message = config.message;
+  if (message.includes("%{BKY_")) {
+    message = Blockly.utils.parsing.replaceMessageReferences(message);
+    if (message.includes("%{BKY_")) {
+      return false;
+    }
+  }
+
+  const args = buildJsonInitArgs(config);
+  if (args.length > 0) {
+    for (let i = 1; i <= args.length; i++) {
+      if (!message.includes(`%${i}`)) {
+        return false;
+      }
+    }
+  }
+
+  if (/\%\d/.test(message)) {
+    return true;
+  }
+  if (!config.inputs?.length) {
+    return true;
+  }
+  const inputs = config.inputs || [];
+  return (
+    inputs.length > 0 &&
+    inputs.every((input) => input.type === "value" && !input.label)
+  );
+}
+
+function buildJsonInitArgs(config: IBlockConfig): Record<string, unknown>[] {
+  if (config.args?.length) {
+    return config.args;
+  }
+
+  const args: Record<string, unknown>[] = [];
+  const fields = config.fields || [];
+  const usedFieldNames = new Set<string>();
+
+  for (const input of config.inputs || []) {
+    if (input.type === "value") {
+      const arg: Record<string, unknown> = {
+        type: "input_value",
+        name: input.name,
+        check: input.check ?? null,
+      };
+      if (input.shadow) {
+        arg.shadow = {
+          type: input.shadow.type,
+          fields: input.shadow.fields,
+        };
+      }
+      args.push(arg);
+    } else if (input.type === "statement") {
+      args.push({ type: "input_statement", name: input.name });
+    } else if (input.type === "dummy") {
+      for (const field of fields) {
+        if (field.inputName === input.name) {
+          args.push(fieldToJsonArg(field));
+          usedFieldNames.add(field.name);
+        }
+      }
+    }
+  }
+
+  for (const field of fields) {
+    if (!field.inputName && !usedFieldNames.has(field.name)) {
+      args.push(fieldToJsonArg(field));
+    }
+  }
+
+  return args;
+}
+
+function fieldToJsonArg(field: FieldConfig): Record<string, unknown> {
+  switch (field.type) {
+    case "dropdown":
+      return {
+        type: "field_dropdown",
+        name: field.name,
+        options: field.options || [],
+      };
+    case "text":
+      return {
+        type: "field_input",
+        name: field.name,
+        text: field.value || "",
+      };
+    case "number":
+      return {
+        type: "field_number",
+        name: field.name,
+        value: field.value ?? 0,
+        min: field.min,
+        max: field.max,
+        precision: field.precision,
+      };
+    case "checkbox":
+      return {
+        type: "field_checkbox",
+        name: field.name,
+        checked: field.value === "TRUE",
+      };
+    default:
+      return {
+        type: "field_input",
+        name: field.name,
+        text: String(field.value ?? ""),
+      };
+  }
+}
+
+function applyBlockMeta(block: Blockly.Block, config: IBlockConfig): void {
+  if (config.tooltip) {
+    if (typeof config.tooltip === "function") {
+      block.setTooltip(config.tooltip);
+    } else if (config.tooltip.includes("%{BKY_")) {
+      block.setTooltip(() =>
+        Blockly.utils.parsing.replaceMessageReferences(config.tooltip as string)
+      );
+    } else {
+      block.setTooltip(config.tooltip);
+    }
+  }
+  if (config.helpUrl) {
+    block.setHelpUrl(config.helpUrl);
+  }
+  if (config.deletable !== undefined) {
+    block.setDeletable(config.deletable);
+  }
+  if (config.movable !== undefined) {
+    block.setMovable(config.movable);
+  }
+  if (config.editable !== undefined) {
+    block.setEditable(config.editable);
+  }
+  if (config.mutator) {
+    Blockly.Extensions.apply(config.mutator, block, true);
+  }
+  if (config.onchange) {
+    block.setOnChange(config.onchange);
   }
 }
 
@@ -568,8 +735,11 @@ function createField(fieldConfig: FieldConfig): Blockly.Field {
         fieldConfig.max,
         fieldConfig.precision
       );
-    case "dropdown":
-      return new Blockly.FieldDropdown(fieldConfig.options || []);
+    case "dropdown": {
+      const dropdown = new Blockly.FieldDropdown(fieldConfig.options || []);
+      if (fieldConfig.value) dropdown.setValue(fieldConfig.value);
+      return dropdown;
+    }
     case "checkbox":
       return new Blockly.FieldCheckbox(fieldConfig.value || "FALSE");
     case "angle": {
@@ -577,7 +747,7 @@ function createField(fieldConfig: FieldConfig): Blockly.Field {
       const angleField = new Blockly.FieldNumber(fieldConfig.value || 90, 0, 360);
       // Override getText to show degree symbol
       const originalGetText = angleField.getText.bind(angleField);
-      angleField.getText = function() {
+      angleField.getText = function () {
         return originalGetText() + "°";
       };
       return angleField;
@@ -592,12 +762,11 @@ function createField(fieldConfig: FieldConfig): Blockly.Field {
         fieldConfig.height,
         fieldConfig.alt
       );
-    case "variable":
-      // FieldVariable for variable selection dropdown
-      // Use default variable name if no value specified
-      const defaultVarName = fieldConfig.value || "item";
-      const fieldVar = new Blockly.FieldVariable(defaultVarName);
-      return fieldVar;
+    case "variable": {
+      const defaultVarName =
+        typeof fieldConfig.value === "string" ? fieldConfig.value : "";
+      return createVariableField(defaultVarName);
+    }
     default:
       return new Blockly.FieldTextInput("");
   }

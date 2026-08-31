@@ -18,6 +18,9 @@ import { repeatBlock } from "./repeat.block";
 import { forBlock } from "./for.block";
 import { flowStatementsBlock } from "./flow.block";
 import { logicOperationBlock } from "./operation.block";
+import { whileUntilBlock } from "./while-until.block";
+import { negateBlock } from "./negate.block";
+import { nullBlock } from "./null.block";
 
 /**
  * All base blocks (only blocks that appear in toolbox)
@@ -26,9 +29,12 @@ export const LOGIC_BLOCKS = [
   ifBlock,
   switchBlock,
   repeatBlock,
+  whileUntilBlock,
   forBlock,
   flowStatementsBlock,
   logicOperationBlock,
+  negateBlock,
+  nullBlock,
   boolBlock,
 ];
 
@@ -62,7 +68,7 @@ export function initialize(): void {
     colour: CATEGORY_COLOR.toString(),
     requiredPlatform: "both",
     order: CATEGORY_ORDER,
-    minLevel: BlockLevelE.INTERMEDIATE,
+    minLevel: BlockLevelE.BEGINNER,
   } as IToolboxCategoryConfig);
 }
 

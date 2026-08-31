@@ -1,0 +1,54 @@
+<div
+  *ngIf="state.visible"
+  class="variable-prompt-backdrop"
+  (click)="onBackdropClick($event)"
+>
+  <div
+    class="variable-prompt-dialog"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'variable-prompt-title'"
+  >
+    <h2 id="variable-prompt-title" class="variable-prompt-title">
+      {{ state.title }}
+    </h2>
+
+    <form
+      *ngIf="state.mode === 'prompt'"
+      class="variable-prompt-form"
+      (submit)="onSubmit($event)"
+    >
+      <input
+        #nameInput
+        type="text"
+        class="variable-prompt-input"
+        [(ngModel)]="inputValue"
+        name="variableName"
+        autocomplete="off"
+        (keydown)="onInputKeydown($event)"
+      />
+
+      <p *ngIf="state.errorMessage" class="variable-prompt-error" role="alert">
+        {{ state.errorMessage }}
+      </p>
+
+      <div class="variable-prompt-actions">
+        <button type="button" class="btn-secondary" (click)="onCancel()">
+          {{ promptCancelLabel }}
+        </button>
+        <button type="submit" class="btn-primary">
+          {{ promptOkLabel }}
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="state.mode === 'confirm'" class="variable-prompt-actions">
+      <button type="button" class="btn-secondary" (click)="onCancel()">
+        {{ confirmNoLabel }}
+      </button>
+      <button type="button" class="btn-primary" (click)="onConfirmYes()">
+        {{ confirmYesLabel }}
+      </button>
+    </div>
+  </div>
+</div>

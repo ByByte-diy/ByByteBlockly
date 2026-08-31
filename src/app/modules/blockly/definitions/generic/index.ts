@@ -7,6 +7,7 @@ import { setupLoopBlock } from "./setup-loop.block";
 import { setupBlock } from "./setup.block";
 import { loopBlock } from "./loop.block";
 import { codeBlock } from "./code.block";
+import { codeInputBlock } from "./code-input.block";
 import { defineBlock } from "./define.block";
 import {
   CATEGORY_COLOR,
@@ -24,6 +25,7 @@ export const GENERIC_BLOCKS = [
   setupBlock,
   loopBlock,
   codeBlock,
+  codeInputBlock,
   defineBlock,
 ];
 
@@ -47,5 +49,6 @@ export {
   setupBlock,
   loopBlock,
   codeBlock,
+  codeInputBlock,
   defineBlock,
 };

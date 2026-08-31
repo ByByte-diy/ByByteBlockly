@@ -52,6 +52,13 @@ export function initializeArduinoGenerator() {
   arduinoGenerator.ORDER_MEMBER = 17;
   arduinoGenerator.ORDER_NONE = 99; // (...)
 
+  // Legacy BlocklyDuino aliases used by migrated blocks
+  arduinoGenerator.ORDER_FUNCTION_CALL = arduinoGenerator.ORDER_UNARY_POSTFIX;
+  arduinoGenerator.ORDER_MODULUS = arduinoGenerator.ORDER_MULTIPLICATIVE;
+  arduinoGenerator.ORDER_MULTIPLICATION = arduinoGenerator.ORDER_MULTIPLICATIVE;
+  arduinoGenerator.ORDER_ADDITION = arduinoGenerator.ORDER_ADDITIVE;
+  arduinoGenerator.ORDER_LOGICAL_NOT = arduinoGenerator.ORDER_UNARY_PREFIX;
+
   /**
    * List of outer-inner pairings that do NOT require parentheses.
    * @type {!Array.<!Array.<number>>}
@@ -119,17 +126,7 @@ export function initializeArduinoGenerator() {
 
     // get all types from all variable in workspace
     const variableMap = workspace.getVariableMap();
-    const variables = variableMap.getAllVariables();
-
     arduinoGenerator.nameDB_.setVariableMap(variableMap);
-    arduinoGenerator.definitions_["variables"] = "";
-
-    for (const v of variables) {
-      const type = v.getType();
-      const name = v.getName();
-      if(!(type && name)) continue;
-      arduinoGenerator.definitions_["variables"] += type + " " + name + ";\n";
-    }
   };
 
   /**
@@ -260,6 +257,57 @@ export function initializeArduinoGenerator() {
     var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
     var nextCode = arduinoGenerator.blockToCode(nextBlock);
     return commentCode + code + nextCode;
+  };
+
+  arduinoGenerator.DEF_FUNC_NAME = "FUNCTION_NAME_PLACEHOLDER_";
+  arduinoGenerator.FUNCTION_NAME_PLACEHOLDER_ = "%1";
+
+  /**
+   * Add a helper function to codeFunctions_ (legacy BlocklyDuino API).
+   */
+  arduinoGenerator.addFunction = function (
+    preferredName: string,
+    code: string
+  ): string {
+    if (!arduinoGenerator.codeFunctions_[preferredName]) {
+      const uniqueName = arduinoGenerator.nameDB_.getDistinctName(
+        preferredName,
+        Blockly.Names.NameType.DEVELOPER_VARIABLE
+      );
+      arduinoGenerator.codeFunctions_[preferredName] = code.replace(
+        arduinoGenerator.DEF_FUNC_NAME,
+        uniqueName
+      );
+      arduinoGenerator.functionNames_[preferredName] = uniqueName;
+    }
+    return arduinoGenerator.functionNames_[preferredName];
+  };
+
+  /**
+   * Provide a helper function in definitions_ (legacy Blockly API).
+   */
+  arduinoGenerator.provideFunction_ = function (
+    desiredName: string,
+    codeLines: string[]
+  ): string {
+    if (!arduinoGenerator.definitions_[desiredName]) {
+      const fnName = arduinoGenerator.nameDB_.getDistinctName(
+        desiredName,
+        "PROCEDURE"
+      );
+      arduinoGenerator.functionNames_[desiredName] = fnName;
+      let code = codeLines
+        .join("\n")
+        .replace(/%1/g, fnName);
+      let normalized = "";
+      do {
+        normalized = code;
+        code = code.replace(/^((  )*)  /gm, "$1\u0000");
+      } while (code !== normalized);
+      code = code.replace(/\0/g, "  ");
+      arduinoGenerator.definitions_[desiredName] = code;
+    }
+    return arduinoGenerator.functionNames_[desiredName];
   };
 
   arduinoGenerator.getArduinoType_ = function (type: string): string {

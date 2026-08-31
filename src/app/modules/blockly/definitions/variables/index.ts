@@ -9,6 +9,8 @@ import {
   TOOLBOX_LEVEL,
 } from "./config";
 import { variablesSetBlock } from "./set.block";
+import { variablesConstBlock } from "./const.block";
+import { baseDefineConstBlock } from "./define-const.block";
 import { IToolboxCategoryConfig } from "../../types/toolbox.types";
 
 /**
@@ -16,6 +18,8 @@ import { IToolboxCategoryConfig } from "../../types/toolbox.types";
  */
 export const VARIABLES_BLOCKS = [
   variablesSetInitBlock,
+  variablesConstBlock,
+  baseDefineConstBlock,
   variablesChangeBlock,
   variablesSetBlock,
   variablesGetBlock,
@@ -35,7 +39,7 @@ export function initialize(): void {
     name: CATEGORY_NAME,
     colour: CATEGORY_COLOR.toString(),
     order: CATEGORY_ORDER,
-    // custom: "VARIABLE", // Blockly's built-in variable category type
+    custom: "VARIABLE",
     requiredPlatform: "both",
     minLevel: TOOLBOX_LEVEL,
   } as IToolboxCategoryConfig);
@@ -46,6 +50,8 @@ export {
   variablesGetBlock,
   variablesChangeBlock,
   variablesSetInitBlock,
+  variablesConstBlock,
+  baseDefineConstBlock,
   variablesSetBlock,
 };
 

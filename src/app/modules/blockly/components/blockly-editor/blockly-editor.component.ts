@@ -5,6 +5,7 @@ import {
   ElementRef,
   ViewChild,
   AfterViewInit,
+  NgZone,
 } from "@angular/core";
 import * as Blockly from "blockly";
 import { BlocksLoaderService } from "../../services/blocks-loader.service";
@@ -16,10 +17,9 @@ import {
   BLOCKLY_GRID_COLOURS,
   ResolvedAppTheme,
 } from "../../constants/blockly-themes";
-import {
-  observeToolboxIcons,
-  enhanceToolboxIcons,
-} from "../../lib/toolbox/toolbox-icons.helper";
+import { scheduleToolboxIcons } from "../../lib/toolbox/toolbox-icons.helper";
+import { registerVariablesFlyoutOnWorkspace } from "../../lib/toolbox/variables-flyout.helper";
+import { normalizeVariableTypes } from "../../lib/variables/variable-type.helper";
 import { ToolboxDefinition } from "blockly/core/utils/toolbox";
 import { WorkspaceStorageService } from "@app/modules/storage/workspace-storage.service";
 import { ThemeService } from "@app/core/services/theme.service";
@@ -40,8 +40,8 @@ export class BlocklyEditorComponent
 
   private workspace: Blockly.WorkspaceSvg | null = null;
   private toolboxConfig: ToolboxDefinition | null = null;
-  private disposeToolboxIconObserver: (() => void) | null = null;
   private themeSubscription: Subscription | null = null;
+  private codeGenTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     private blocksLoader: BlocksLoaderService,
@@ -49,6 +49,7 @@ export class BlocklyEditorComponent
     private deviceManager: DeviceManagerService,
     private storage: WorkspaceStorageService,
     private themeService: ThemeService,
+    private ngZone: NgZone,
   ) {}
 
   ngOnInit(): void {
@@ -63,8 +64,10 @@ export class BlocklyEditorComponent
   ngOnDestroy(): void {
     this.themeSubscription?.unsubscribe();
     this.themeSubscription = null;
-    this.disposeToolboxIconObserver?.();
-    this.disposeToolboxIconObserver = null;
+    if (this.codeGenTimer) {
+      clearTimeout(this.codeGenTimer);
+      this.codeGenTimer = null;
+    }
     if (this.workspace) {
       this.workspace.dispose();
       this.workspace = null;
@@ -99,7 +102,10 @@ export class BlocklyEditorComponent
       // Load saved workspace if exists
       if (this.workspace && (await this.storage.hasSavedData())) {
         const loaded = await this.storage.loadWorkspace(this.workspace);
-        if (loaded) console.log("✅ Workspace loaded from auto-save");
+        if (loaded) {
+          normalizeVariableTypes(this.workspace);
+          console.log("✅ Workspace loaded from auto-save");
+        }
       }
 
       // Subscribe to board change and save to settings
@@ -109,6 +115,7 @@ export class BlocklyEditorComponent
           this.toolboxConfig = newToolbox;
           this.workspace.updateToolbox(newToolbox);
           this.setupToolboxIcons();
+          this.workspace.refreshToolboxSelection();
 
           // Save board selection
           await this.saveCurrentSettings();
@@ -144,11 +151,9 @@ export class BlocklyEditorComponent
           this.workspace.updateToolbox(newToolbox);
           this.setupToolboxIcons();
 
-          // Clear workspace
-          this.workspace.clear();
-
-          // Reload workspace with new language
-          Blockly.serialization.workspaces.load(workspaceState, this.workspace);
+          // Reload workspace with new translations (avoid workspace.clear() —
+          // Blockly 13 throws "Non-empty variable map" when variables exist)
+          this.reloadWorkspaceFromState(workspaceState);
 
           console.log("✅ Toolbox and workspace refreshed successfully");
         }
@@ -171,14 +176,26 @@ export class BlocklyEditorComponent
 
     const resolvedTheme = this.themeService.currentResolvedTheme;
 
-    this.workspace = Blockly.inject(this.blocklyDiv.nativeElement, {
-      toolbox: this.toolboxConfig,
-      ...DEFAULT_WORKSPACE_OPTIONS,
-      theme: getBlocklyTheme(resolvedTheme),
-      grid: {
-        ...DEFAULT_WORKSPACE_OPTIONS.grid!,
-        colour: BLOCKLY_GRID_COLOURS[resolvedTheme],
-      },
+    this.ngZone.runOutsideAngular(() => {
+      this.workspace = Blockly.inject(this.blocklyDiv.nativeElement, {
+        toolbox: this.toolboxConfig,
+        ...DEFAULT_WORKSPACE_OPTIONS,
+        theme: getBlocklyTheme(resolvedTheme),
+        grid: {
+          ...DEFAULT_WORKSPACE_OPTIONS.grid!,
+          colour: BLOCKLY_GRID_COLOURS[resolvedTheme],
+        },
+      });
+
+      this.workspace.addChangeListener((event: Blockly.Events.Abstract) => {
+        this.ngZone.run(() => this.onWorkspaceChange(event));
+        this.scheduleCodeGeneration(event);
+        this.onToolboxChange(event);
+      });
+
+      registerVariablesFlyoutOnWorkspace(this.workspace);
+
+      Blockly.svgResize(this.workspace);
     });
 
     this.themeSubscription = this.themeService.onResolvedThemeChange.subscribe(
@@ -186,59 +203,73 @@ export class BlocklyEditorComponent
     );
 
     this.setupToolboxIcons();
-
-    // Force re-calculate the size of the workspace
-    Blockly.svgResize(this.workspace);
-
-    // Listen to changes in the workspace
-    this.workspace.addChangeListener((event: Blockly.Events.Abstract) => {
-      this.onWorkspaceChange(event);
-
-      // Generate code on each change (except UI events)
-      if (
-        ![
-          Blockly.Events.UI,
-          Blockly.Events.CLICK,
-          Blockly.Events.VIEWPORT_CHANGE,
-          Blockly.Events.BUBBLE_OPEN,
-          Blockly.Events.BLOCK_MOVE,
-          Blockly.Events.SELECTED,
-        ].includes(event.type as any)
-      ) {
-        setTimeout(() => console.log(this.generateCode()), 200);
-      }
-    });
-
-    // Generate initial code after delay (to let generators load)
-    setTimeout(() => this.generateCode(), 2000);
+    this.scheduleCodeGeneration();
   }
 
-  /** Attach SVG icons to toolbox categories and watch for re-renders. */
+  /** Debounced code generation — skips UI/drag events. */
+  private scheduleCodeGeneration(event?: Blockly.Events.Abstract): void {
+    if (
+      event &&
+      [
+        Blockly.Events.UI,
+        Blockly.Events.CLICK,
+        Blockly.Events.VIEWPORT_CHANGE,
+        Blockly.Events.BUBBLE_OPEN,
+        Blockly.Events.BLOCK_MOVE,
+        Blockly.Events.SELECTED,
+      ].includes(event.type as any)
+    ) {
+      return;
+    }
+
+    if (this.codeGenTimer) {
+      clearTimeout(this.codeGenTimer);
+    }
+
+    this.codeGenTimer = setTimeout(() => {
+      this.ngZone.run(() => {
+        const code = this.generateCode();
+        console.log(code);
+      });
+    }, 200);
+  }
+
+  /** Attach SVG icons to toolbox categories after toolbox/flyout updates. */
   private setupToolboxIcons(): void {
-    this.disposeToolboxIconObserver?.();
-    this.disposeToolboxIconObserver = null;
+    this.ngZone.runOutsideAngular(() => {
+      const findToolbox = (): HTMLElement | null =>
+        (this.blocklyDiv?.nativeElement?.querySelector('.blocklyToolboxDiv') ??
+          this.blocklyDiv?.nativeElement?.querySelector('.blocklyToolbox') ??
+          document.querySelector('.blocklyToolboxDiv') ??
+          document.querySelector('.blocklyToolbox')) as HTMLElement | null;
 
-    const findToolbox = (): HTMLElement | null =>
-      (this.blocklyDiv?.nativeElement?.querySelector('.blocklyToolboxDiv') ??
-        this.blocklyDiv?.nativeElement?.querySelector('.blocklyToolbox') ??
-        document.querySelector('.blocklyToolboxDiv') ??
-        document.querySelector('.blocklyToolbox')) as HTMLElement | null;
+      const attach = () => {
+        const toolboxDiv = findToolbox();
+        if (!toolboxDiv) {
+          return;
+        }
+        scheduleToolboxIcons(toolboxDiv);
+      };
 
-    const attach = () => {
-      const toolboxDiv = findToolbox();
-      if (!toolboxDiv) {
-        return;
-      }
-      if (!this.disposeToolboxIconObserver) {
-        this.disposeToolboxIconObserver = observeToolboxIcons(toolboxDiv);
-      } else {
-        enhanceToolboxIcons(toolboxDiv);
-      }
-    };
+      attach();
+      setTimeout(attach, 150);
+    });
+  }
 
-    attach();
-    setTimeout(attach, 0);
-    setTimeout(attach, 150);
+  /** Re-layout flyout after category selection; refresh toolbox icons safely. */
+  private onToolboxChange(event: Blockly.Events.Abstract): void {
+    if (event.type !== Blockly.Events.TOOLBOX_ITEM_SELECT || !this.workspace) {
+      return;
+    }
+
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        if (this.workspace) {
+          Blockly.svgResize(this.workspace);
+        }
+        this.setupToolboxIcons();
+      }, 0);
+    });
   }
 
   /** Switch Blockly workspace theme (background, toolbox, flyout, scrollbars). */
@@ -258,6 +289,34 @@ export class BlocklyEditorComponent
     root?.querySelectorAll("line.blocklyGridLine").forEach((line) => {
       line.setAttribute("stroke", colour);
     });
+  }
+
+  /**
+   * Replace workspace contents from saved state without workspace.clear().
+   * Blockly 13 VariableMap.clear() throws when variables still exist.
+   */
+  private reloadWorkspaceFromState(state: object): void {
+    if (!this.workspace) {
+      return;
+    }
+
+    Blockly.Events.disable();
+    try {
+      this.workspace.getTopBlocks(false).forEach((block) => block.dispose(false));
+
+      const variableMap = this.workspace.getVariableMap();
+      [...variableMap.getAllVariables()].forEach((variable) => {
+        variableMap.deleteVariable(variable);
+      });
+
+      Blockly.serialization.workspaces.load(state, this.workspace, {
+        recordUndo: false,
+      });
+
+      this.workspace.refreshToolboxSelection();
+    } finally {
+      Blockly.Events.enable();
+    }
   }
 
   /**

@@ -52,6 +52,11 @@ export class MutatorRegistry {
           definition.helperBlocks
         );
       } catch (error) {
+        const message =
+          error instanceof Error ? error.message : String(error);
+        if (message.includes("already registered"))
+          continue;
+
         console.error(`Failed to register mutator "${name}":`, error);
       }
     }

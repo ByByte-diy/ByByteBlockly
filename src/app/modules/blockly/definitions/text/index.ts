@@ -8,10 +8,45 @@ import {
 } from "./config";
 import { textBlock } from "./text.block";
 import { charBlock } from "./char.block";
-export const TEXT_BLOCKS = [textBlock, charBlock];
+import { toCharBlock, toStringBlock, toString2Block } from "./conversion.block";
+import {
+  lengthBlock,
+  isEmptyBlock,
+  appendBlock,
+  trimBlock,
+  changeCaseBlock,
+} from "./string-ops.block";
+import { indexOfBlock } from "./index-of.block";
+import {
+  joinBlock,
+  joinContainerBlock,
+  joinItemBlock,
+} from "./join.block";
+import { charAtBlock } from "./char-at.block";
+import { getSubstringBlock } from "./get-substring.block";
+
+export const TEXT_BLOCKS = [
+  textBlock,
+  charBlock,
+  toCharBlock,
+  toStringBlock,
+  toString2Block,
+  lengthBlock,
+  isEmptyBlock,
+  appendBlock,
+  indexOfBlock,
+  charAtBlock,
+  getSubstringBlock,
+  changeCaseBlock,
+  trimBlock,
+  joinBlock,
+];
+
+export const TEXT_MUTATOR_BLOCKS = [joinContainerBlock, joinItemBlock];
 
 export function initialize(): void {
   BlockRegistry.registerMany(TEXT_BLOCKS);
+  BlockRegistry.registerMany(TEXT_MUTATOR_BLOCKS);
 
   BlockRegistry.registerCategory(CATEGORY_NAME, {
     name: CATEGORY_NAME,
@@ -24,5 +59,17 @@ export function initialize(): void {
 
 export {
   textBlock,
-  charBlock
+  charBlock,
+  toCharBlock,
+  toStringBlock,
+  toString2Block,
+  lengthBlock,
+  isEmptyBlock,
+  appendBlock,
+  indexOfBlock,
+  charAtBlock,
+  getSubstringBlock,
+  changeCaseBlock,
+  trimBlock,
+  joinBlock,
 };

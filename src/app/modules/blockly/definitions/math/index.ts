@@ -23,6 +23,8 @@ import { castByteBlock } from "./cast-byte.block";
 import { castUintBlock } from "./cast-uint.block";
 import { castIntBlock } from "./cast-int.block";
 import { castFloatBlock } from "./cast-float.block";
+import { moduloBlock } from "./modulo.block";
+import { numberPropertyBlock } from "./number-property.block";
 
 export const MATH_BLOCKS = [
   numberBlock,
@@ -42,6 +44,8 @@ export const MATH_BLOCKS = [
   castUintBlock,
   castIntBlock,
   castFloatBlock,
+  moduloBlock,
+  numberPropertyBlock,
 ];
 
 export function initialize(): void {

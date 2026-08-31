@@ -168,6 +168,62 @@ export const translations = {
   LOGIC_COMPARE_TOOLTIP_GT: "Return true if the first input is greater than the second input",
   LOGIC_COMPARE_TOOLTIP_GTE: "Return true if the first input is greater than or equal to the second input",
 
+  // Logic blocks - NEGATE / NULL / WHILE
+  LOGIC_NEGATE_TITLE: "not %1",
+  LOGIC_NEGATE_TOOLTIP: "Returns true if the input is false. Returns false if the input is true.",
+  LOGIC_NULL: "null",
+  LOGIC_NULL_TOOLTIP: "Returns null value.",
+  CONTROLS_WHILEUNTIL_OPERATOR_WHILE: "while",
+  CONTROLS_WHILEUNTIL_OPERATOR_UNTIL: "until",
+  CONTROLS_WHILEUNTIL_TOOLTIP_WHILE: "Repeat while the condition is true.",
+  CONTROLS_WHILEUNTIL_TOOLTIP_UNTIL: "Repeat until the condition is true.",
+
+  // Time blocks
+  _AT: "to",
+  PIN: "PIN",
+  ARDUINO_BASE_DELAY: "⏲ wait",
+  ARDUINO_BASE_DELAY_TOOLTIP:
+    "Specify the wait time in seconds, milliseconds or microseconds. The program does nothing else during this time.",
+  MILLIS1: "duration in",
+  MILLIS2: "from the beginning",
+  MILLIS_START: "start a timekeeping in",
+  MILLIS_START_TOOLTIP: "Record the current time as a reference point.",
+  ARDUINO_SINCE_PROGRAM_STARTED_TOOLTIP:
+    "Returns the duration in milliseconds, seconds or microseconds since the program started.",
+  ARDUINO_PULSEIN: "state duration",
+  ARDUINO_INOUT_PULSEIN:
+    "Returns the duration in microseconds of a UP or DOWN pulse on a pin.",
+  TEMPO1: "every",
+  TEMPO_TOOLTIP:
+    "Execute the blocks inside when the interval has elapsed. Unlike 'wait', this block is non-blocking.",
+  TEMPO_HELPURL: "https://www.arduino.cc/en/tutorial/blink",
+
+  // Ports (I/O) blocks
+  ARDUINO_INOUT_DIGITAL_WRITE_INPUT1: "digital write PIN",
+  ARDUINO_INOUT_DIGITAL_WRITE_TOOLTIP:
+    "Write a 0 or 1 logical state to a specific output.",
+  ARDUINO_INOUT_DIGITAL_READ_INPUT: "digital state PIN",
+  IN_PULLUP: "pull-up",
+  IN_PULLUP_TOOLTIP:
+    "Returns the logical state (0 or 1) of the pin. Returns 1 by default if pull-up is enabled.",
+  ARDUINO_INOUT_ANALOG_WRITE_INPUT1: "analog write PIN",
+  ARDUINO_INOUT_ANALOG_WRITE_TOOLTIP:
+    "Send a PWM value between 0 and 255 on a specific output.",
+  ARDUINO_INOUT_ANALOG_READ_INPUT: "analog read PIN",
+  ARDUINO_INOUT_ANALOG_READ_TOOLTIP: "Returns a value between 0 and 1023.",
+  TOGGLE: "toggle state of PIN",
+  TOGGLE_TOOLTIP:
+    "Toggle: write logical 0 if the previous state was 1 (and vice versa) on the specified output.",
+  LKL_ATTACHINTERRUPT_PIN: "interrupt: when a",
+  LKL_DETACHINTERRUPT_PIN: "disable interrupt on PIN",
+  LKL_MODE: "detected on PIN",
+  LKL_TOOLTIP_INOUT_ATTACHINTERRUPT:
+    "Specifies an action when an external interrupt occurs on the pin.",
+  LKL_TOOLTIP_INOUT_DETACHINTERRUPT:
+    "Disable the previously specified external interrupt.",
+  MRTDUINO_PIN_TOOLTIP:
+    "MRTduino port to Arduino pin conversion. Select a port and get the corresponding pin number.",
+
   // Math blocks - ANGLE
   MATH_ANGLE_TOOLTIP: "Angle value (0-360 degrees)",
 
@@ -244,7 +300,21 @@ export const translations = {
   MATH_TRIG_TOOLTIP_COS: "Return the cosine of a number (in radians)",
   MATH_TRIG_TOOLTIP_TAN: "Return the tangent of a number (in radians)",
 
-  // Variables blocks - GET
+  // Variables blocks
+  NEW_VARIABLE: "Create variable",
+  NEW_VARIABLE_TITLE: "New variable name:",
+  RENAME_VARIABLE: "Rename variable %1",
+  RENAME_VARIABLE_TITLE: "New name for %1:",
+  DELETE_VARIABLE: "Delete variable %1",
+  DELETE_VARIABLE_CONFIRMATION:
+    "Delete %1 uses of the variable \"%2\"?",
+  VARIABLE_ALREADY_EXISTS: 'A variable named "%1" already exists.',
+  VARIABLE_NAME_EMPTY: "Variable name cannot be empty.",
+  VARIABLE_NAME_INVALID:
+    "Use letters, numbers, and underscores. Must start with a letter or underscore.",
+  VARIABLE_NAME_RESERVED: "This name is a reserved Arduino keyword.",
+  VARIABLE_PROMPT_OK: "OK",
+  VARIABLE_PROMPT_CANCEL: "Cancel",
   VARIABLES_GET_NAME: "get",
   VARIABLES_GET_TOOLTIP: "Returns the value of this variable.",
 
@@ -262,7 +332,33 @@ export const translations = {
   VARIABLES_SET_INIT_NAME: "declare",
   VARIABLES_TYPE: "type",
   VARIABLES_SET_INIT_TOOLTIP: "Declare and initialize a variable with a type and value.",
+  VARIABLE_TYPE_CHARACTER: "character",
+  VARIABLE_TYPE_TEXT: "text",
+  VARIABLE_TYPE_BOOL: "boolean",
+  VARIABLE_TYPE_BYTE: "byte",
+  VARIABLE_TYPE_INTEGER: "integer",
+  VARIABLE_TYPE_UNUMBER: "unsigned integer",
+  VARIABLE_TYPE_LARGE_NUMBER: "long integer",
+  VARIABLE_TYPE_DECIMAL: "floating point number",
 
+  // Variables blocks - CONST
+  ARDUINO_VAR_CONST: "declare constant",
+  ARDUINO_VAR_CONST_TOOLTIP:
+    "Declares a constant of the specified type and value.",
+  VARIABLES_AS: "as",
+  VARIABLES_AT: "to",
+  BASE_DEF_CONST: "set constant",
+  BASE_DEFINE_CONST: "which is equivalent to",
+  BASE_DEFINE_CONST_TOOLTIP:
+    "Allows the programmer to give a name to any value.",
+
+  // Text blocks
+  TEXT_TRIM: "trim",
+  TEXT_INDEXOF_INPUT_INTEXT: "in text",
+  TEXT_INDEXOF_OPERATOR_FIRST: "find first occurrence of text",
+  TEXT_INDEXOF_OPERATOR_LAST: "find last occurrence of text",
+  TEXT_INDEXOF_TOOLTIP:
+    "Returns the index of the first/last occurrence of the first text in the second text. Returns %1 if text is not found.",
 
   // Other Blockly messages
   COM1: "⚠️ select USB",

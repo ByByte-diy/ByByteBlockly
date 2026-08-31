@@ -108,6 +108,7 @@ export interface IToolboxCategoryConfig {
   name: string;
   colour: string;
   order: number;
+  custom?: string;
   requiredPlatform?: 'web' | 'electron' | 'both';
   requiredBoardTypes?: BoardType[];
   minLevel?: BlockLevelE;

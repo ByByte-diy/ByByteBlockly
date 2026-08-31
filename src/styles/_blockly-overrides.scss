@@ -1,0 +1,25 @@
+/**
+ * Overrides for legacy www/css/blocklino.css inside the Angular Blockly editor.
+ * blocklino targets Blockly 9-era DOM; unscoped rules break flyout layout in v13.
+ */
+app-blockly-editor {
+  .blocklySvg {
+    background-color: transparent !important;
+    border-top: none !important;
+  }
+
+  .blocklyToolboxDiv {
+    background-color: var(--toolbox-bg) !important;
+    width: auto !important;
+    min-width: var(--toolbox-div-min-width, 148px);
+    opacity: 1 !important;
+  }
+
+  .blocklyFlyoutBackground {
+    fill: var(--toolbox-flyout-bg) !important;
+  }
+
+  .blocklyFlyout {
+    z-index: 10;
+  }
+}

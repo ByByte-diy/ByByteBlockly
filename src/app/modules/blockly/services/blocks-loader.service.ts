@@ -8,6 +8,8 @@ import {
   exportLegacyProfileGlobal,
 } from "../../device/helpers/device-board-globals.helper";
 import { initializeAllBlocks } from "../definitions";
+import { registerVariablesFlyout, syncProgramLanguageFromBoard } from "../lib/toolbox/variables-flyout.helper";
+import { VariablePromptService } from "./variable-prompt.service";
 
 let currentBoardId: string = "uno";
 
@@ -19,8 +21,12 @@ let currentBoardId: string = "uno";
 })
 export class BlocksLoaderService {
   private _loaded = false;
+  private _loadingPromise: Promise<void> | null = null;
 
-  constructor(private _boardProfileService: BoardProfileService) {}
+  constructor(
+    private _boardProfileService: BoardProfileService,
+    private _variablePromptService: VariablePromptService,
+  ) {}
 
   /**
    * Checks if the blocks are loaded
@@ -34,6 +40,20 @@ export class BlocksLoaderService {
    */
   async loadAllBlocks(): Promise<void> {
     if (this._loaded) return;
+    if (this._loadingPromise) {
+      return this._loadingPromise;
+    }
+
+    this._loadingPromise = this.doLoadAllBlocks();
+    try {
+      await this._loadingPromise;
+    } finally {
+      this._loadingPromise = null;
+    }
+  }
+
+  private async doLoadAllBlocks(): Promise<void> {
+    if (this._loaded) return;
 
     const win = window as any;
 
@@ -46,6 +66,7 @@ export class BlocksLoaderService {
     // Initialize Blockly globals with BoardProfileService
     const currentBoardId = localStorage.getItem("card") || "uno";
     initializeBlocklyGlobals(this._boardProfileService, currentBoardId);
+    syncProgramLanguageFromBoard(currentBoardId);
 
     // Export legacy profile object for backward compatibility with old blocks
     exportLegacyProfileGlobal();
@@ -53,6 +74,11 @@ export class BlocksLoaderService {
     // Initialize all blocks (Generic + Logic + Math)
     initializeAllBlocks();
 
+    // Dynamic Variables flyout (must run before Blockly.inject)
+    registerVariablesFlyout();
+
+    // Angular modals for Blockly variable prompt / confirm
+    this._variablePromptService.installBlocklyDialogs();
 
     // Set default localStorage values
     if (!localStorage.getItem("prog")) {
@@ -74,6 +100,7 @@ export class BlocksLoaderService {
       win.BlocklyHelpers.setCurrentBoardId(boardId);
     }
     localStorage.setItem("card", boardId);
+    syncProgramLanguageFromBoard(boardId);
   }
 
   /**

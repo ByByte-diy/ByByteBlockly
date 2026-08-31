@@ -168,6 +168,62 @@ export const translations = {
   LOGIC_COMPARE_TOOLTIP_GT: "Повертає істину, якщо перший вхід більший за другий",
   LOGIC_COMPARE_TOOLTIP_GTE: "Повертає істину, якщо перший вхід більший або рівний другому",
 
+  // Logic blocks - NEGATE / NULL / WHILE
+  LOGIC_NEGATE_TITLE: "не %1",
+  LOGIC_NEGATE_TOOLTIP: "Повертає істину, якщо вхід хибний. Повертає хибу, якщо вхід істинний.",
+  LOGIC_NULL: "null",
+  LOGIC_NULL_TOOLTIP: "Повертає значення null.",
+  CONTROLS_WHILEUNTIL_OPERATOR_WHILE: "поки",
+  CONTROLS_WHILEUNTIL_OPERATOR_UNTIL: "доки",
+  CONTROLS_WHILEUNTIL_TOOLTIP_WHILE: "Повторювати, поки умова істинна.",
+  CONTROLS_WHILEUNTIL_TOOLTIP_UNTIL: "Повторювати, доки умова не стане істинною.",
+
+  // Time blocks
+  _AT: "на",
+  PIN: "PIN",
+  ARDUINO_BASE_DELAY: "⏲ чекати",
+  ARDUINO_BASE_DELAY_TOOLTIP:
+    "Вказати час очікування в секундах, мілісекундах або мікросекундах. Програма нічого не робить протягом цього часу.",
+  MILLIS1: "тривалість у",
+  MILLIS2: "від початку",
+  MILLIS_START: "почати хронометраж у",
+  MILLIS_START_TOOLTIP: "Зафіксувати поточний час як точку відліку.",
+  ARDUINO_SINCE_PROGRAM_STARTED_TOOLTIP:
+    "Повертає тривалість у мілісекундах, секундах або мікросекундах від запуску програми.",
+  ARDUINO_PULSEIN: "тривалість стану",
+  ARDUINO_INOUT_PULSEIN:
+    "Повертає тривалість імпульсу HIGH або LOW на піні в мікросекундах.",
+  TEMPO1: "кожні",
+  TEMPO_TOOLTIP:
+    "Виконати блоки всередині, коли минув інтервал. На відміну від «чекати», цей блок не блокує програму.",
+  TEMPO_HELPURL: "https://www.arduino.cc/en/tutorial/blink",
+
+  // Ports (I/O) blocks
+  ARDUINO_INOUT_DIGITAL_WRITE_INPUT1: "цифровий запис PIN",
+  ARDUINO_INOUT_DIGITAL_WRITE_TOOLTIP:
+    "Записати логічний стан 0 або 1 на вказаний вихід.",
+  ARDUINO_INOUT_DIGITAL_READ_INPUT: "цифровий стан PIN",
+  IN_PULLUP: "pull-up",
+  IN_PULLUP_TOOLTIP:
+    "Повертає логічний стан (0 або 1) піна. За замовчуванням повертає 1, якщо увімкнено pull-up.",
+  ARDUINO_INOUT_ANALOG_WRITE_INPUT1: "аналоговий запис PIN",
+  ARDUINO_INOUT_ANALOG_WRITE_TOOLTIP:
+    "Надіслати PWM-значення від 0 до 255 на вказаний вихід.",
+  ARDUINO_INOUT_ANALOG_READ_INPUT: "аналогове читання PIN",
+  ARDUINO_INOUT_ANALOG_READ_TOOLTIP: "Повертає значення від 0 до 1023.",
+  TOGGLE: "перемкнути стан PIN",
+  TOGGLE_TOOLTIP:
+    "Перемкнути: записати 0, якщо раніше був 1 (і навпаки) на вказаний вихід.",
+  LKL_ATTACHINTERRUPT_PIN: "переривання: коли",
+  LKL_DETACHINTERRUPT_PIN: "вимкнути переривання на PIN",
+  LKL_MODE: "виявлено на PIN",
+  LKL_TOOLTIP_INOUT_ATTACHINTERRUPT:
+    "Вказати дію при зовнішньому перериванні на піні.",
+  LKL_TOOLTIP_INOUT_DETACHINTERRUPT:
+    "Вимкнути раніше вказане зовнішнє переривання.",
+  MRTDUINO_PIN_TOOLTIP:
+    "Конвертація порту MRTduino в номер піна Arduino.",
+
   // Math blocks - ANGLE
   MATH_ANGLE_TOOLTIP: "Кут значення (0-360 градусів)",
 
@@ -243,6 +299,20 @@ export const translations = {
   MATH_TRIG_TOOLTIP_TAN: "Повернути тангенс числа (в радіанах)",
 
   // Variables blocks 
+  NEW_VARIABLE: "Створити змінну",
+  NEW_VARIABLE_TITLE: "Нова змінна:",
+  RENAME_VARIABLE: "Перейменувати змінну %1",
+  RENAME_VARIABLE_TITLE: "Нова назва для %1:",
+  DELETE_VARIABLE: "Видалити змінну %1",
+  DELETE_VARIABLE_CONFIRMATION:
+    "Видалити %1 використань змінної «%2»?",
+  VARIABLE_ALREADY_EXISTS: "Змінна «%1» уже існує.",
+  VARIABLE_NAME_EMPTY: "Ім'я змінної не може бути порожнім.",
+  VARIABLE_NAME_INVALID:
+    "Допустимі лише літери, цифри та _. Починатися має з літери або _.",
+  VARIABLE_NAME_RESERVED: "Це зарезервоване слово Arduino.",
+  VARIABLE_PROMPT_OK: "Готово",
+  VARIABLE_PROMPT_CANCEL: "Скасувати",
   VARIABLES_GET_NAME: "отримати",
   VARIABLES_GET_TOOLTIP: "Повертає значення цієї змінної.",
 
@@ -258,8 +328,35 @@ export const translations = {
 
   // Variables blocks - SET INIT
   VARIABLES_SET_INIT_NAME: "оголосити",
-  VARIABLES_TYPE: "типу",
+  VARIABLES_TYPE: "тип",
   VARIABLES_SET_INIT_TOOLTIP: "Оголосити і ініціалізувати змінну з типом та значенням.",
+  VARIABLE_TYPE_CHARACTER: "символ",
+  VARIABLE_TYPE_TEXT: "текст",
+  VARIABLE_TYPE_BOOL: "логічний",
+  VARIABLE_TYPE_BYTE: "байт",
+  VARIABLE_TYPE_INTEGER: "ціле",
+  VARIABLE_TYPE_UNUMBER: "ціле без знаку",
+  VARIABLE_TYPE_LARGE_NUMBER: "довге ціле",
+  VARIABLE_TYPE_DECIMAL: "дробове",
+
+  // Variables blocks - CONST
+  ARDUINO_VAR_CONST: "оголосити константу",
+  ARDUINO_VAR_CONST_TOOLTIP:
+    "Оголошує константу з указаним типом та значенням.",
+  VARIABLES_AS: "як",
+  VARIABLES_AT: "у",
+  BASE_DEF_CONST: "встановити константу",
+  BASE_DEFINE_CONST: "що дорівнює",
+  BASE_DEFINE_CONST_TOOLTIP:
+    "Дозволяє програмісту дати ім'я будь-якому значенню.",
+
+  // Text blocks
+  TEXT_TRIM: "обрізати",
+  TEXT_INDEXOF_INPUT_INTEXT: "у тексті",
+  TEXT_INDEXOF_OPERATOR_FIRST: "знайти перше входження тексту",
+  TEXT_INDEXOF_OPERATOR_LAST: "знайти останнє входження тексту",
+  TEXT_INDEXOF_TOOLTIP:
+    "Повертає індекс першого/останнього входження першого тексту в другому. Повертає %1, якщо текст не знайдено.",
 
   // Other Blockly messages
   COM1: "⚠️ оберіть USB",

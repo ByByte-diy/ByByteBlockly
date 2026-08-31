@@ -99,6 +99,14 @@ export class ToolboxBuilder {
       );
     }
 
+    // Exclude mutator/shadow helper blocks from toolbox flyouts
+    this.blocks = this.blocks.filter(
+      (b) =>
+        b.category !== "Mutator" &&
+        b.category !== "Shadow" &&
+        !b.config.tags?.includes("hidden")
+    );
+
     // Build categories
     const categories = this.buildCategories();
 
@@ -151,12 +159,16 @@ export class ToolboxBuilder {
       ) as IToolboxCategoryConfig;
       const iconClass = getCategoryIconCssClass(catName);
       const iconFile = getCategoryIconFile(catName);
-      categories.push({
-        kind: CategoryKindE.Category,
-        name: catName,
-        colour: config?.colour ?? "0",
-        ...(iconClass && iconFile
-          ? {
+
+      if (config?.custom) {
+        categories.push({
+          kind: CategoryKindE.Category,
+          name: catName,
+          colour: config.colour ?? "0",
+          custom: config.custom,
+          contents: [],
+          ...(iconClass && iconFile
+            ? {
               id: `cat-icon-${iconFile}`,
               cssconfig: {
                 icon: iconClass,
@@ -164,6 +176,24 @@ export class ToolboxBuilder {
                   "blocklyTreeRowContentContainer toolbox-cat-row",
               },
             }
+            : {}),
+        } as IToolboxCategory);
+        continue;
+      }
+
+      categories.push({
+        kind: CategoryKindE.Category,
+        name: catName,
+        colour: config?.colour ?? "0",
+        ...(iconClass && iconFile
+          ? {
+            id: `cat-icon-${iconFile}`,
+            cssconfig: {
+              icon: iconClass,
+              rowcontentcontainer:
+                "blocklyTreeRowContentContainer toolbox-cat-row",
+            },
+          }
           : {}),
         contents:
           blocks?.map((block) => ToolboxBuilder.blockToToolboxBlock(block)) ??
@@ -317,7 +347,14 @@ export class ToolboxBuilder {
     const map: Record<string, BlockDefinition[]> = {};
 
     for (const block of this.blocks) {
-      const category = block.category || "Other";
+      const category = block.config.category || block.category || "Other";
+      const config = BlockRegistry.getCategoryConfig(
+        category
+      ) as IToolboxCategoryConfig | undefined;
+
+      // Dynamic categories (e.g. Variables) populate flyout via custom callback
+      if (config?.custom) continue;
+
       if (!map[category]) {
         map[category] = [];
       }

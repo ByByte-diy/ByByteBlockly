@@ -178,6 +178,11 @@ export class DeviceManagerService {
     try {
       localStorage.setItem('selectedBoard', board.id);
       localStorage.setItem('card', board.id); // For backward compatibility with old code
+      const profileProg = (window as { profile?: Record<string, { prog?: string }> })
+        .profile?.[board.id]?.prog;
+      if (profileProg) {
+        localStorage.setItem('prog', profileProg);
+      }
     } catch (err) {
       console.error('Error saving board to storage:', err);
     }

@@ -4,6 +4,8 @@
 
 import { BlockRegistry } from "../lib/registry/block-registry";
 import * as generic from "./generic/index";
+import * as time from "./time/index";
+import * as ports from "./ports/index";
 import * as logic from "./logic/index";
 import * as math from "./math/index";
 import * as variables from "./variables/index";
@@ -17,7 +19,7 @@ export function initializeAllBlocks(): void {
   BlockRegistry.initializeMutators();
 
   // Register all blocks in the registry
-  [generic, logic, math, variables, text].forEach((module) => {
+  [generic, time, ports, logic, math, variables, text].forEach((module) => {
     module.initialize();
   });
 

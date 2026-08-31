@@ -86,6 +86,14 @@ function applyCategoryHoverStyle(container: Element): void {
   row.classList.add(isLightColour(colour) ? HOVER_FG_LIGHT : HOVER_FG_DARK);
 }
 
+function hasCorrectIcon(imgHost: HTMLElement, iconPath: string): boolean {
+  if (imgHost.dataset.iconSrc !== iconPath) {
+    return false;
+  }
+  const img = imgHost.querySelector('img.toolbox-cat-img') as HTMLImageElement | null;
+  return img?.getAttribute('src') === iconPath;
+}
+
 /** Insert <img> icons into toolbox category rows. */
 export function enhanceToolboxIcons(root: ParentNode = document): void {
   root.querySelectorAll('.blocklyToolboxCategoryContainer').forEach((container) => {
@@ -105,13 +113,21 @@ export function enhanceToolboxIcons(root: ParentNode = document): void {
     }
 
     const iconPath = iconPathForFile(iconFile);
-    if (iconHost.dataset.iconSrc === iconPath) {
+    if (hasCorrectIcon(iconHost, iconPath)) {
       return;
     }
 
     iconHost.dataset.iconSrc = iconPath;
     iconHost.classList.add('toolbox-cat-icon');
-    iconHost.innerHTML = '';
+
+    const existingImg = iconHost.querySelector('img.toolbox-cat-img') as HTMLImageElement | null;
+    if (existingImg) {
+      existingImg.src = iconPath;
+      existingImg.alt = label.textContent?.trim() ?? '';
+      return;
+    }
+
+    iconHost.textContent = '';
 
     const img = document.createElement('img');
     img.src = iconPath;
@@ -121,25 +137,12 @@ export function enhanceToolboxIcons(root: ParentNode = document): void {
   });
 }
 
-/** Observe toolbox DOM and re-apply icons when categories re-render. */
-export function observeToolboxIcons(toolboxRoot: HTMLElement): () => void {
-  let scheduled = false;
-  const apply = () => {
-    scheduled = false;
-    enhanceToolboxIcons(toolboxRoot);
-  };
-  const schedule = () => {
-    if (!scheduled) {
-      scheduled = true;
-      requestAnimationFrame(apply);
-    }
-  };
-
-  schedule();
-  const observer = new MutationObserver(schedule);
-  observer.observe(toolboxRoot, { childList: true, subtree: true });
-
-  return () => observer.disconnect();
+/**
+ * Schedule icon enhancement outside Blockly focus/flyout callbacks.
+ * Intentionally avoids MutationObserver — DOM writes during flyout updates break dispose().
+ */
+export function scheduleToolboxIcons(toolboxRoot: HTMLElement): void {
+  setTimeout(() => enhanceToolboxIcons(toolboxRoot), 0);
 }
 
 /** Resolve icon asset path from category BKY name. */

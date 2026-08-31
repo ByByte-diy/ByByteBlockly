@@ -17,7 +17,7 @@ export const variablesChangeBlock = new BlockBuilder("math_change")
   .setTags(["variables"])
   .setInputsInline(true)
   .addDummyInput("DUMMY", "%{BKY_MATH_CHANGE_NAME}")
-  .addVariableField("VAR", "i", "DUMMY")
+  .addVariableField("VAR", "", "DUMMY")
   .addValueInput("DELTA", "%{BKY_MATH_CHANGE_TO}", "Number")
   .setPreviousStatement(true)
   .setNextStatement(true)
@@ -32,7 +32,8 @@ export const variablesChangeBlock = new BlockBuilder("math_change")
     if (!(generator.nameDB_ && variableId)) return;
     variableName = generator.getVariableName(variableId);
 
-    const delta = generator.valueToCode(block, "DELTA", generator.ORDER_NONE);
+    const delta =
+      generator.valueToCode(block, "DELTA", generator.ORDER_NONE) || "1";
     return `${variableName} += ${delta};\n`;
   })
   .build();

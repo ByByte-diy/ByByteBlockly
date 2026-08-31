@@ -14,7 +14,7 @@ export const variablesSetBlock = new BlockBuilder("variables_set")
   .setTags(["variables"])
   .setInputsInline(true)
   .addDummyInput("DUMMY", "%{BKY_VARIABLES_SET_NAME}")
-  .addVariableField("VAR", "i", "DUMMY")
+  .addVariableField("VAR", "", "DUMMY")
   .addValueInput("VAL", "%{BKY_VARIABLES_SET_TO}")
   .setPreviousStatement(true)
   .setNextStatement(true)
@@ -30,7 +30,7 @@ export const variablesSetBlock = new BlockBuilder("variables_set")
     variableName = generator.getVariableName(variableId);
 
     const value =
-      generator.valueToCode(block, "VAL", generator.ORDER_NONE);
+      generator.valueToCode(block, "VAL", generator.ORDER_NONE) || "0";
     return `${variableName} = ${value};\n`;
   })
   .build();

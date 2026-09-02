@@ -31,6 +31,8 @@ export const setupBlock = new BlockBuilder("base_setup")
   .setArduinoGenerator((block, generator) => {
     const setupCode = generator.statementToCode(block, "DO");
 
+    generator.sketchFlags_.emitSetup = true;
+
     if (setupCode) {
       generator.setups_["setup"] = setupCode;
     }

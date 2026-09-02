@@ -1,4 +1,5 @@
 import { BlockBuilder } from "../../lib/builders/block-builder";
+import { registerGlobalVariable } from "../../lib/generators/codegen-sections.helper";
 import {
   defaultValueForVariableType,
   syncVariableTypeOnChange,
@@ -41,7 +42,12 @@ export const variablesSetInitBlock = new BlockBuilder("variables_set_init")
     const varName = generator.getVariableName(varId);
     const type = generator.getArduinoType_(typeValue);
     // Legacy: declare + initialize at global scope, not in setup()
-    generator.variables_[varName] = `${type} ${varName} = ${value};`;
+    registerGlobalVariable(
+      generator,
+      varName,
+      `${type} ${varName} = ${value};`,
+      `Variable ${varName} — initial value from create-variable block.`
+    );
     return "";
   })
   .build();

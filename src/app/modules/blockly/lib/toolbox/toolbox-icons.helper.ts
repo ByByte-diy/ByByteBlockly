@@ -100,12 +100,19 @@ export function enhanceToolboxIcons(root: ParentNode = document): void {
     applyCategoryHoverStyle(container);
 
     const rowContents = container.querySelector('.blocklyTreeRowContentContainer');
-    if (!rowContents || rowContents.children.length < 2) {
+    if (!rowContents) {
       return;
     }
 
-    const iconHost = rowContents.children[0] as HTMLElement;
-    const label = rowContents.children[1] as HTMLElement;
+    const iconHost = rowContents.querySelector(
+      '.blocklyToolboxCategoryIcon, .toolbox-cat-icon'
+    ) as HTMLElement | null;
+    const label = rowContents.querySelector(
+      '.blocklyToolboxCategoryLabel'
+    ) as HTMLElement | null;
+    if (!iconHost || !label) {
+      return;
+    }
 
     const iconFile = resolveIconFile(iconHost, container);
     if (!iconFile) {

@@ -13,6 +13,7 @@ app-blockly-editor {
     width: auto !important;
     min-width: var(--toolbox-div-min-width, 148px);
     opacity: 1 !important;
+    overflow-x: hidden !important;
   }
 
   .blocklyFlyoutBackground {
@@ -21,5 +22,19 @@ app-blockly-editor {
 
   .blocklyFlyout {
     z-index: 10;
+  }
+
+  /* MAX7219 8×8 draw grid — SVG LED dots */
+  .blocklyMatrixLedField {
+    cursor: pointer;
+
+    .blocklyFieldRect {
+      fill: transparent !important;
+      stroke: none !important;
+    }
+
+    .blocklyMatrixLedDot {
+      pointer-events: none;
+    }
   }
 }

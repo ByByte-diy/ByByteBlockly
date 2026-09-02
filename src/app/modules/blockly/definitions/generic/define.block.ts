@@ -4,6 +4,7 @@
 
 import * as Blockly from "blockly";
 import { BlockBuilder } from "../../lib/builders/block-builder";
+import { registerDefinition } from "../../lib/generators/codegen-sections.helper";
 import {
   CATEGORY_NAME,
   CATEGORY_COLOR,
@@ -31,7 +32,12 @@ export const defineBlock = new BlockBuilder("base_define")
 
     if (text) {
       const defineKey = "define_" + text.replace(/[^a-zA-Z0-9_]/g, "_");
-      generator.definitions_[defineKey] = text;
+      registerDefinition(
+        generator,
+        defineKey,
+        text,
+        "User-defined define/macro line (check syntax)."
+      );
     }
 
     return "";

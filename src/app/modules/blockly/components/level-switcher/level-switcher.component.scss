@@ -1,0 +1,44 @@
+.level-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.level-switcher__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+.level-switcher__buttons {
+  display: flex;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.level-switcher__btn {
+  padding: 0.35rem 0.65rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+
+  &:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &--active {
+    background: rgba(255, 255, 255, 0.35);
+    font-weight: 600;
+  }
+}

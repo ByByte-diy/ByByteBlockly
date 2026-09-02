@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as Blockly from "blockly";
+import { registerFieldColour } from "@blockly/field-colour";
 import { initializeArduinoGenerator } from "../lib/generators/arduino-generator";
 import { getDefaultToolbox } from "../constants";
 import { BoardProfileService } from "../../device/services/device-board-profile.service";
@@ -8,8 +9,12 @@ import {
   exportLegacyProfileGlobal,
 } from "../../device/helpers/device-board-globals.helper";
 import { initializeAllBlocks } from "../definitions";
+import { registerProcedureBlocks } from "../lib/blocks/procedure-blocks.loader";
+import { registerProcedureGenerators } from "../lib/generators/procedure-generators";
 import { registerVariablesFlyout, syncProgramLanguageFromBoard } from "../lib/toolbox/variables-flyout.helper";
 import { VariablePromptService } from "./variable-prompt.service";
+import { ToolboxLevelService } from "./toolbox-level.service";
+import { BlockLevelE } from "../types/block.types";
 
 let currentBoardId: string = "uno";
 
@@ -26,6 +31,7 @@ export class BlocksLoaderService {
   constructor(
     private _boardProfileService: BoardProfileService,
     private _variablePromptService: VariablePromptService,
+    private _toolboxLevelService: ToolboxLevelService,
   ) {}
 
   /**
@@ -61,7 +67,14 @@ export class BlocksLoaderService {
     if (!win.Blockly) win.Blockly = Blockly;
 
     // Initialize Arduino generator
-    initializeArduinoGenerator();
+    const arduinoGenerator = initializeArduinoGenerator();
+    registerProcedureGenerators(arduinoGenerator);
+
+    // Standard Blockly procedure blocks (def/call/mutator)
+    registerProcedureBlocks();
+
+    // Required for jsonInit blocks using type: "field_colour" (e.g. IoT HTML style blocks)
+    registerFieldColour();
 
     // Initialize Blockly globals with BoardProfileService
     const currentBoardId = localStorage.getItem("card") || "uno";
@@ -107,15 +120,17 @@ export class BlocksLoaderService {
    * Load the toolbox configuration for the specified board
    * Dynamically generates toolbox from BlockRegistry using ToolboxBuilder
    */
-  async loadToolbox(boardId: string): Promise<any> {
+  async loadToolbox(
+    boardId: string,
+    userLevel?: BlockLevelE
+  ): Promise<any> {
     try {
-      // Import ToolboxBuilder dynamically to avoid circular dependencies
       const { ToolboxBuilder } = await import("../lib/builders/toolbox-builder");
+      const level = userLevel ?? this._toolboxLevelService.getLevel();
 
-      // Generate toolbox dynamically based on board type
       const toolbox = ToolboxBuilder.forBoard(boardId, {
         includeStandardBlocks: true,
-        includeAdvancedBlocks: false,
+        userLevel: level,
       });
 
       return toolbox;

@@ -7,6 +7,7 @@
 
 import { BoardProfileService } from "@app/modules/device/services/device-board-profile.service";
 import { IBoardProfile, DropdownBoardOptionT } from "@app/modules/device/types/device-board-profile.type";
+import * as Blockly from "blockly";
 
 let boardProfileService: BoardProfileService | null = null;
 let currentBoardId: string = 'uno';
@@ -30,7 +31,9 @@ export function initializeBlocklyGlobals(service: BoardProfileService, boardId: 
     getSerialBaudRates: getSerialBaudRates,
     getBuiltinLED: getBuiltinLED,
     getCurrentBoardId: getCurrentBoardId,
-    setCurrentBoardId: setCurrentBoardId
+    setCurrentBoardId: setCurrentBoardId,
+    resolveDropdownPinValue: resolveDropdownPinValue,
+    applyDefaultDropdownFields: applyDefaultDropdownFields,
   };
 }
 
@@ -89,6 +92,63 @@ export function getPWMPins(boardId?: string): DropdownBoardOptionT[] {
 }
 
 /**
+ * Resolve a logical pin reference (e.g. "D5", "5", "A0") to a dropdown value
+ * for the current board profile options.
+ */
+export function resolveDropdownPinValue(
+  options: DropdownBoardOptionT[],
+  pinRef: string
+): string | null {
+  if (!options.length || !pinRef) {
+    return null;
+  }
+
+  if (options.some(([, value]) => value === pinRef)) {
+    return pinRef;
+  }
+
+  const exactLabel = options.find(([label]) => label === pinRef);
+  if (exactLabel) {
+    return exactLabel[1];
+  }
+
+  const dLabel = pinRef.startsWith("D") ? pinRef : `D${pinRef}`;
+  const byDLabel = options.find(([label]) => label === dLabel);
+  if (byDLabel) {
+    return byDLabel[1];
+  }
+
+  const numeric = pinRef.replace(/^D/i, "");
+  const byNumericLabel = options.find(([label]) => label === numeric);
+  if (byNumericLabel) {
+    return byNumericLabel[1];
+  }
+
+  return null;
+}
+
+/**
+ * Apply default dropdown values after fields are attached to a block.
+ * Uses board profile labels (D5) so defaults work on AVR and ESP boards.
+ */
+export function applyDefaultDropdownFields(
+  block: Blockly.Block,
+  defaults: Record<string, string>,
+  getOptions: (boardId?: string) => DropdownBoardOptionT[] = getAllPins
+): void {
+  const options = getOptions();
+  for (const [fieldName, pinRef] of Object.entries(defaults)) {
+    if (!block.getField(fieldName)) {
+      continue;
+    }
+    const resolved = resolveDropdownPinValue(options, pinRef);
+    if (resolved !== null) {
+      block.setFieldValue(resolved, fieldName);
+    }
+  }
+}
+
+/**
  * Get the list of analog pins
  */
 export function getAnalogPins(boardId?: string): DropdownBoardOptionT[] {
@@ -134,6 +194,10 @@ export function getBuiltinLED(boardId?: string): number {
  */
 export function getLegacyProfile(): any {
   const profile = getProfile();
+  return profileToLegacyShape(profile);
+}
+
+function profileToLegacyShape(profile: IBoardProfile): any {
   return {
     description: profile.description,
     BUILTIN_LED: profile.BUILTIN_LED,
@@ -141,7 +205,9 @@ export function getLegacyProfile(): any {
     dropdownDigital: profile.dropdownDigital,
     dropdownPWM: profile.dropdownPWM,
     dropdownAnalog: profile.dropdownAnalog,
+    dropdownMCPPins: profile.dropdownMCPPins,
     interrupt: profile.interrupt,
+    touch: profile.touch,
     serial: profile.serial,
     serialPin: profile.serialPin,
     build: profile.build,
@@ -151,7 +217,7 @@ export function getLegacyProfile(): any {
     prog: profile.prog,
     usb: profile.usb,
     voltage: profile.voltage,
-    inout: profile.inout
+    inout: profile.inout,
   };
 }
 
@@ -166,25 +232,7 @@ export function exportLegacyProfileGlobal(): void {
     get: (_target, boardId: string): IBoardProfile => {
       if (!boardProfileService) return {} as IBoardProfile;
       const profile = boardProfileService.getProfile(boardId);
-      return {
-        description: profile.description,
-        BUILTIN_LED: profile.BUILTIN_LED,
-        dropdownAllPins: profile.dropdownAllPins,
-        dropdownDigital: profile.dropdownDigital,
-        dropdownPWM: profile.dropdownPWM,
-        dropdownAnalog: profile.dropdownAnalog,
-        interrupt: profile.interrupt,
-        serial: profile.serial,
-        serialPin: profile.serialPin,
-        build: profile.build,
-        upload_arg: profile.upload_arg,
-        cpu: profile.cpu,
-        speed: profile.speed,
-        prog: profile.prog,
-        usb: profile.usb,
-        voltage: profile.voltage,
-        inout: profile.inout
-      } as IBoardProfile;
+      return profileToLegacyShape(profile) as IBoardProfile;
     }
   });
 }

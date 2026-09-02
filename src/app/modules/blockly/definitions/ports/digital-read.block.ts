@@ -34,8 +34,7 @@ digitalReadBlock.init = function (this: Blockly.Block) {
     .appendField(
       Blockly.Msg["ARDUINO_INOUT_DIGITAL_READ_INPUT"] || "digital state PIN"
     )
-    .appendField(new Blockly.FieldDropdown(getDigitalPins()), "PIN");
-  this.appendDummyInput()
+    .appendField(new Blockly.FieldDropdown(getDigitalPins()), "PIN")
     .appendField(Blockly.Msg["IN_PULLUP"] || "pull-up")
     .appendField(new Blockly.FieldCheckbox("FALSE"), "pullup");
   this.setInputsInline(true);

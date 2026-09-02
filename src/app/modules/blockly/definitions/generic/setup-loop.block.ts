@@ -28,7 +28,7 @@ export const setupLoopBlock = new BlockBuilder("base_setup_loop")
   .setHelpUrl(
     "https://docs.arduino.cc/learn/programming/sketches/#setup-and-loop"
   )
-  .setDeletable(false)
+  .setDeletable(true)
 
   .setOnChange(function (event: any) {
     if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
@@ -69,6 +69,9 @@ export const setupLoopBlock = new BlockBuilder("base_setup_loop")
   .setArduinoGenerator((block, generator) => {
     const setupCode = generator.statementToCode(block, "DO");
     const loopCode = generator.statementToCode(block, "LOOP");
+
+    generator.sketchFlags_.emitSetup = true;
+    generator.sketchFlags_.emitLoop = true;
 
     if (setupCode) {
       generator.setups_["setup"] = setupCode;

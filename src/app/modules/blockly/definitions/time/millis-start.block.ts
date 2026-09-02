@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import { BlockBuilder } from "../../lib/builders/block-builder";
+import { registerGlobalVariable } from "../../lib/generators/codegen-sections.helper";
 import {
   CATEGORY_COLOR,
   CATEGORY_NAME,
@@ -21,7 +22,12 @@ export const millisStartBlock = new BlockBuilder("millis_start")
   .setArduinoGenerator((block, generator) => {
     const unit = block.getFieldValue("unite");
 
-    generator.definitions_["chrono_start"] = "unsigned long chronoStart = 0;\n";
+    registerGlobalVariable(
+      generator,
+      "chrono_start",
+      "unsigned long chronoStart = 0;",
+      "Timestamp for stopwatch (millis)."
+    );
 
     switch (unit) {
       case "u":

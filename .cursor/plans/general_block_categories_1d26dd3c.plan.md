@@ -1,6 +1,6 @@
 ---
 name: General Block Categories
-overview: "План міграції 11 загальних категорій блоків з legacy `www` на Angular-архітектуру (`definitions/<category>/` + BlockRegistry + ToolboxBuilder). Поточний прогрес: ~5/11 категорій, ~38/91 блоків."
+overview: "План міграції 11 загальних категорій блоків з legacy `www` на Angular-архітектуру (`definitions/<category>/` + BlockRegistry + ToolboxBuilder). Поточний прогрес: 11/11 категорій, ~79/91 блоків."
 todos:
   - id: phase0-generic
     content: "Generic: додати base_code_entree (code-input.block.ts)"
@@ -22,22 +22,22 @@ todos:
     status: completed
   - id: phase2-functions
     content: "Functions: підключити PROCEDURE custom flyout у ToolboxBuilder"
-    status: pending
+    status: completed
   - id: phase2-arrays
     content: "Створити definitions/arrays/ (10 блоків: C-array + list)"
-    status: pending
+    status: completed
   - id: phase3-storage
     content: Створити definitions/storage/ (eeprom_read, eeprom_write)
-    status: pending
+    status: completed
   - id: phase3-communication
     content: Створити definitions/communication/ з 4 підкатегоріями (~28 блоків)
-    status: pending
+    status: completed
   - id: infra-nested-categories
     content: "ToolboxBuilder: підтримка вкладених категорій для Communication"
-    status: pending
+    status: completed
   - id: infra-custom-flyout
     content: "ToolboxBuilder: custom flyout для VARIABLE та PROCEDURE"
-    status: pending
+    status: completed
 isProject: false
 ---
 

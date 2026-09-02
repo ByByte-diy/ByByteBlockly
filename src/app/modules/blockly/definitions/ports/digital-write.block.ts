@@ -1,6 +1,7 @@
 import * as Blockly from "blockly";
 import { getDigitalPins } from "@app/modules/device/helpers/device-board-globals.helper";
 import { BlockBuilder } from "../../lib/builders/block-builder";
+import { formatPinMode } from "../../lib/generators/pin-definitions.helper";
 import { attachShadowBlock } from "../../lib/helpers/shadow-block.helper";
 import {
   CATEGORY_COLOR,
@@ -26,8 +27,9 @@ export const digitalWriteBlock = new BlockBuilder("inout_digital_write")
     const pin = block.getFieldValue("PIN");
     const stat =
       generator.valueToCode(block, "STAT", generator.ORDER_ATOMIC) || "LOW";
-    generator.setups_[`setup_output_${pin}`] = `pinMode(${pin}, OUTPUT);`;
-    return `digitalWrite(${pin}, ${stat});\n`;
+    return (
+      formatPinMode(pin, "OUTPUT") + `digitalWrite(${pin}, ${stat});\n`
+    );
   })
   .build();
 

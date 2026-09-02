@@ -4,6 +4,6 @@ import { BlockLevelE, PlatformT } from "../../types/block.types";
 export const CATEGORY_NAME = "%{BKY_CAT_TEXT}";
 export const CATEGORY_COLOR = 160;  // HUE
 export const CATEGORY_PLATFORMS = Array.from(PLATFORMS_ALL) as PlatformT[];
-export const TOOLBOX_LEVEL = BlockLevelE.BEGINNER;
+export const TOOLBOX_LEVEL = BlockLevelE.ADVANCED;
 export const CATEGORY_ORDER = 6;
 

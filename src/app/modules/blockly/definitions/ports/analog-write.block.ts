@@ -1,6 +1,7 @@
 import * as Blockly from "blockly";
 import { getPWMPins } from "@app/modules/device/helpers/device-board-globals.helper";
 import { BlockBuilder } from "../../lib/builders/block-builder";
+import { formatPinMode } from "../../lib/generators/pin-definitions.helper";
 import { attachShadowBlock } from "../../lib/helpers/shadow-block.helper";
 import {
   CATEGORY_COLOR,
@@ -26,8 +27,9 @@ export const analogWriteBlock = new BlockBuilder("inout_analog_write")
     const pin = block.getFieldValue("broche");
     const value =
       generator.valueToCode(block, "NUM", generator.ORDER_ATOMIC) || "0";
-    generator.setups_[`setup_output_${pin}`] = `pinMode(${pin}, OUTPUT);`;
-    return `analogWrite(${pin}, ${value});\n`;
+    return (
+      formatPinMode(pin, "OUTPUT") + `analogWrite(${pin}, ${value});\n`
+    );
   })
   .build();
 

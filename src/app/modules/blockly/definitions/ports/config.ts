@@ -4,7 +4,7 @@ import { PLATFORMS_ALL } from "@app/modules/device/constants/device-boards.const
 export const CATEGORY_NAME = "%{BKY_CAT_PORTS}";
 export const CATEGORY_COLOR = 180;
 export const CATEGORY_PLATFORMS = Array.from(PLATFORMS_ALL) as PlatformT[];
-export const TOOLBOX_LEVEL = BlockLevelE.BEGINNER;
+export const TOOLBOX_LEVEL = BlockLevelE.ADVANCED;
 export const CATEGORY_ORDER = 2;
 
 /** HIGH/LOW dropdown for inout_onoff shadow block */

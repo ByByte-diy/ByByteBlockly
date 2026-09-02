@@ -5,6 +5,8 @@
  */
 
 import * as Blockly from "blockly";
+import { joinSketchSection } from "./codegen-sections.helper";
+import { IncludeRegistry } from "./include-registry.helper";
 
 /**
  * Initializes the Arduino code generator
@@ -101,7 +103,7 @@ export function initializeArduinoGenerator() {
    */
   arduinoGenerator.init = function (workspace: Blockly.Workspace) {
     // Create a dictionary of definitions to be printed at the top of the sketch
-    arduinoGenerator.includes_ = {} as Record<string, string>;
+    arduinoGenerator.includeRegistry_ = new IncludeRegistry();
     // Create a dictionary of global definitions to be printed after variables
     arduinoGenerator.definitions_ = {} as Record<string, string>;
     // Create a dictionary of variables
@@ -115,6 +117,11 @@ export function initializeArduinoGenerator() {
     arduinoGenerator.functionNames_ = {} as Record<string, string>;
     // Create a dictionary of setups to be printed in the setup() function
     arduinoGenerator.setups_ = {} as Record<string, string>;
+    // Which sketch sections to emit (even when empty)
+    arduinoGenerator.sketchFlags_ = {
+      emitSetup: false,
+      emitLoop: false,
+    };
 
     if (!arduinoGenerator.nameDB_) {
       arduinoGenerator.nameDB_ = new Blockly.Names(
@@ -135,57 +142,70 @@ export function initializeArduinoGenerator() {
    * @return {string} Completed code.
    */
   arduinoGenerator.finish = function (code: string): string {
-    const includes: string[] = [],
-      definitions: string[] = [],
+    const definitions: string[] = [],
       variables: string[] = [],
       functions: string[] = [],
       BLOCK_GLOBALS_ARRAY_SIZE: string[] = [];
-    for (const name in arduinoGenerator.includes_) {
-      includes.push(arduinoGenerator.includes_[name]);
-    }
-    if (includes.length) includes.push("\n");
+    const includeLines =
+      arduinoGenerator.includeRegistry_?.renderLines() ?? [];
+    const includes = includeLines.length ? [includeLines.join("\n")] : [];
     for (const name in arduinoGenerator.definitions_) {
       definitions.push(arduinoGenerator.definitions_[name]);
     }
-    if (definitions.length) definitions.push("\n");
     for (const name in arduinoGenerator.variables_) {
       variables.push(arduinoGenerator.variables_[name]);
     }
-    if (variables.length) variables.push("\n");
     for (const name in arduinoGenerator.codeFunctions_) {
       functions.push(arduinoGenerator.codeFunctions_[name]);
     }
     for (const name in arduinoGenerator.userFunctions_) {
       functions.push(arduinoGenerator.userFunctions_[name]);
     }
-    if (functions.length) functions.push("\n");
-    const setups: string[] = [""];
+    const setups: string[] = [];
     let userSetupCode = "";
     if (arduinoGenerator.setups_["userSetupCode"] !== undefined) {
-      userSetupCode = "\n" + arduinoGenerator.setups_["userSetupCode"];
+      userSetupCode = arduinoGenerator.setups_["userSetupCode"];
       delete arduinoGenerator.setups_["userSetupCode"];
     }
-    for (var name in arduinoGenerator.setups_) {
+    for (const name in arduinoGenerator.setups_) {
       setups.push(arduinoGenerator.setups_[name]);
     }
-    if (userSetupCode) setups.push(userSetupCode);
 
-    delete arduinoGenerator.includes_;
+    const sketchFlags = arduinoGenerator.sketchFlags_ || {
+      emitSetup: false,
+      emitLoop: false,
+    };
+
+    delete arduinoGenerator.includeRegistry_;
     delete arduinoGenerator.definitions_;
     delete arduinoGenerator.codeFunctions_;
     delete arduinoGenerator.userFunctions_;
     delete arduinoGenerator.functionNames_;
     delete arduinoGenerator.setups_;
     delete arduinoGenerator.pins_;
+    delete arduinoGenerator.sketchFlags_;
     arduinoGenerator.nameDB_.reset();
+
     const allDefs =
-      includes.join("\n") +
-      definitions.join("\n") +
-      variables.join("\n") +
-      functions.join("\n");
-    const setup = "void setup() {" + setups.join("\n") + "\n}\n\n";
-    const loop = "void loop() {\n" + code.replace(/\n/g, "\n") + "\n}";
-    return allDefs + setup + loop;
+      joinSketchSection("Libraries (#include)", includes) +
+      joinSketchSection("Constants and helper functions", definitions) +
+      joinSketchSection("Global variables", variables) +
+      joinSketchSection("Functions", functions);
+
+    const setupBody = [...setups, userSetupCode]
+      .join("\n")
+      .replace(/^\s+|\s+$/g, "");
+    const loopBody = code.replace(/^\s+|\s+$/g, "");
+
+    let sketch = allDefs;
+    if (setupBody || sketchFlags.emitSetup) {
+      sketch += `void setup() {\n${setupBody}\n}\n\n`;
+    }
+    if (loopBody || sketchFlags.emitLoop) {
+      sketch += `void loop() {\n${loopBody}\n}\n`;
+    }
+
+    return sketch.replace(/^\s+\n/, "").replace(/\n\s+$/, "\n");
   };
 
   /**

@@ -1,4 +1,5 @@
 import { BlockBuilder } from "../../lib/builders/block-builder";
+import { registerGlobalVariable } from "../../lib/generators/codegen-sections.helper";
 import {
   defaultValueForVariableType,
   syncVariableTypeOnChange,
@@ -36,7 +37,12 @@ export const variablesConstBlock = new BlockBuilder("variables_const")
     const varId = block.getFieldValue("VAR");
     const varName = generator.getVariableName(varId);
     const type = generator.getArduinoType_(typeValue);
-    generator.variables_[varName] = `const ${type} ${varName} = ${value};`;
+    registerGlobalVariable(
+      generator,
+      varName,
+      `const ${type} ${varName} = ${value};`,
+      `Constant ${varName} — value does not change at runtime.`
+    );
     return "";
   })
   .build();

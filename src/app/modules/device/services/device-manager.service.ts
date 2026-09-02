@@ -3,8 +3,17 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ISerial } from '@core/interfaces';
 import { IBoard } from '@app/modules/device/types/device-board.type';
 import { BOARDS } from '@app/modules/device/constants/device-boards.const';
+import { BOARD_PROFILES } from '@app/modules/device/constants/device-profiles.const';
 import { ISerialPortInfo } from '@app/core/models/serial-port.model';
 import { BlocksLoaderService } from '@app/modules/blockly/services/blocks-loader.service';
+
+/** Legacy alias IDs kept for block/XML compatibility but hidden from the board picker. */
+const HIDDEN_BOARD_SELECTOR_IDS = new Set<string>(['mrtx']);
+
+/** Map hidden alias IDs to the canonical board shown in the picker. */
+const BOARD_SELECTOR_ALIASES: Record<string, string> = {
+  mrtx: 'uno_mrtx',
+};
 
 /**
  * Default board
@@ -46,14 +55,30 @@ export class DeviceManagerService {
   }
 
   /**
-   * Get list of all available boards
+   * Get list of all available boards for the selector (deduplicated labels).
    */
   getAvailableBoards(): IBoard[] {
-    return Object.values(BOARDS);
+    return Object.values(BOARDS)
+      .filter((board) => !HIDDEN_BOARD_SELECTOR_IDS.has(board.id))
+      .map((board) => this.withBoardDisplayName(board));
+  }
+
+  /** Prefer pin-profile description — matches legacy Blocklino board labels. */
+  private withBoardDisplayName(board: IBoard): IBoard {
+    const description = BOARD_PROFILES[board.id]?.description;
+    if (!description || description === board.name) {
+      return board;
+    }
+    return { ...board, name: description };
+  }
+
+  private resolveBoardSelectorId(boardId: string): string {
+    return BOARD_SELECTOR_ALIASES[boardId] ?? boardId;
   }
 
   getBoardById(id: string): IBoard | undefined { 
-    return BOARDS[id];
+    const board = BOARDS[id];
+    return board ? this.withBoardDisplayName(board) : undefined;
   }
 
   /**
@@ -61,8 +86,11 @@ export class DeviceManagerService {
    */
   selectBoard(board: IBoard): void {
     if (!board) return;
-    this.selectedBoardSubject.next(board);
-    this.saveBoardToStorage(board);
+    const canonicalBoard = BOARDS[board.id];
+    if (!canonicalBoard) return;
+    const displayBoard = this.withBoardDisplayName(canonicalBoard);
+    this.selectedBoardSubject.next(displayBoard);
+    this.saveBoardToStorage(canonicalBoard);
     
     // Update current board for Blockly blocks
     try {
@@ -86,7 +114,8 @@ export class DeviceManagerService {
    * Get current selected board
    */
   getSelectedBoard(): IBoard {
-    return this.selectedBoardSubject.value || DEFAULT_BOARD;
+    const board = this.selectedBoardSubject.value || DEFAULT_BOARD;
+    return this.withBoardDisplayName(board);
   }
 
   /**
@@ -208,10 +237,14 @@ export class DeviceManagerService {
     try {
       const savedBoardId = localStorage.getItem('selectedBoard') || localStorage.getItem('card');
       if (savedBoardId) {
-        const board = Object.values(BOARDS).find(b => b.id === savedBoardId);
+        const canonicalId = this.resolveBoardSelectorId(savedBoardId);
+        const board = BOARDS[canonicalId];
         if (board) {
-          this.selectedBoardSubject.next(board);
-          return; // Board loaded successfully
+          this.selectedBoardSubject.next(this.withBoardDisplayName(board));
+          if (canonicalId !== savedBoardId) {
+            this.saveBoardToStorage(board);
+          }
+          return;
         }
       }
 

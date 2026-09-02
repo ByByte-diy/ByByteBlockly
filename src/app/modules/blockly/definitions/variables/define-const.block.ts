@@ -1,4 +1,5 @@
 import { BlockBuilder } from "../../lib/builders/block-builder";
+import { registerGlobalVariable } from "../../lib/generators/codegen-sections.helper";
 import {
   CATEGORY_COLOR,
   CATEGORY_NAME,
@@ -27,7 +28,12 @@ export const baseDefineConstBlock = new BlockBuilder("base_define_const")
     const varName = generator.getVariableName(varId);
     const value =
       generator.valueToCode(block, "TEXT2", generator.ORDER_ATOMIC) || "0";
-    generator.variables_[varName] = `#define ${varName} ${value}`;
+    registerGlobalVariable(
+      generator,
+      varName,
+      `#define ${varName} ${value}`,
+      `#define constant ${varName} — replaced at compile time.`
+    );
     return "";
   })
   .build();

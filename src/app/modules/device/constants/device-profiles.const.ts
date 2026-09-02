@@ -1,4 +1,5 @@
 import { IBoardProfile } from '../types/device-board-profile.type';
+import { PLATFORM_PROFILES } from '@app/modules/blockly/platforms/device-catalog';
 
 /**
  * Standard Serial port baud rates
@@ -17,9 +18,9 @@ const STANDARD_SERIAL_SPEEDS: [string, string][] = [
 const STANDARD_SERIAL_PIN: [string, string][] = [["Rx/Tx", "0"]];
 
 /**
- * Configurations of all supported boards
+ * Core pin profiles (platform pack profiles merged below)
  */
-export const BOARD_PROFILES: Record<string, IBoardProfile> = {
+const CORE_BOARD_PROFILES: Record<string, IBoardProfile> = {
   uno: {
     id: 'uno',
     description: "Arduino Uno",
@@ -196,6 +197,12 @@ export const BOARD_PROFILES: Record<string, IBoardProfile> = {
     voltage: "3,3V",
     inout: "11"
   }
+};
+
+/** Full catalog: core profiles + platform pack extensions */
+export const BOARD_PROFILES: Record<string, IBoardProfile> = {
+  ...CORE_BOARD_PROFILES,
+  ...PLATFORM_PROFILES,
 };
 
 /**

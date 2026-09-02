@@ -30,6 +30,7 @@ export const loopBlock = new BlockBuilder("base_loop")
 
   .setArduinoGenerator((block, generator) => {
     const loopCode = generator.statementToCode(block, "DO");
+    generator.sketchFlags_.emitLoop = true;
     return loopCode || "";
   })
 

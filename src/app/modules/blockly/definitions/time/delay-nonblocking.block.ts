@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import { BlockBuilder } from "../../lib/builders/block-builder";
+import { registerGlobalVariable } from "../../lib/generators/codegen-sections.helper";
 import { attachShadowBlock } from "../../lib/helpers/shadow-block.helper";
 import {
   CATEGORY_COLOR,
@@ -31,8 +32,12 @@ export const delayNonBlockingBlock = new BlockBuilder("tempo_sans_delay")
     const branch = generator.statementToCode(block, "branche");
     const timerVar = `temps${delayTime.replace(/\W/g, "_")}`;
 
-    generator.definitions_[`temporisation${delayTime}`] =
-      `long ${timerVar} = 0;\n`;
+    registerGlobalVariable(
+      generator,
+      `temporisation${delayTime}`,
+      `long ${timerVar} = 0;`,
+      `Non-blocking timer for interval ${delayTime} (does not use delay()).`
+    );
 
     switch (unit) {
       case "u":

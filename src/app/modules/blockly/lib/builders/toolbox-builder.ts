@@ -12,6 +12,7 @@ import {
 } from "../../types/toolbox.types";
 import { BlockRegistry } from "../registry/block-registry";
 import { getCategoryIconCssClass, getCategoryIconFile } from "../../constants/category-icons.const";
+import { isElectron } from "@app/platform/platform";
 
 /**
  * Builder for creating Blockly toolbox configurations
@@ -25,7 +26,7 @@ export class ToolboxBuilder {
     this.options = {
       boardType: "arduino",
       includeStandardBlocks: true,
-      includeAdvancedBlocks: false,
+      userLevel: BlockLevelE.ADVANCED,
       customCategories: [],
       excludeCategories: [],
       ...options,
@@ -50,7 +51,7 @@ export class ToolboxBuilder {
     options: Partial<ToolboxOptions> = {}
   ): IToolboxDefinition {
     const boardType = ToolboxBuilder.detectBoardType(boardId);
-    return ToolboxBuilder.fromRegistry({ ...options, boardType });
+    return ToolboxBuilder.fromRegistry({ ...options, boardType, boardId });
   }
 
   /**
@@ -77,6 +78,9 @@ export class ToolboxBuilder {
     if (boardId.includes("pyboard")) {
       return "python";
     }
+    if (boardId.includes("mrtx") || boardId.includes("uno_mrtx")) {
+      return "arduino";
+    }
     return "arduino";
   }
 
@@ -84,36 +88,50 @@ export class ToolboxBuilder {
    * Build the toolbox
    */
   build(): IToolboxDefinition {
-    // Get all registered blocks
-    this.blocks = BlockRegistry.getAll();
-
-    // Filter blocks by board type
-    this.blocks = this.filterBlocksByBoardType(this.blocks);
-
-    // Filter by level if needed
-    if (!this.options.includeAdvancedBlocks) {
-      this.blocks = this.blocks.filter(
-        (b: BlockDefinition) =>
-          b.level === BlockLevelE.BEGINNER ||
-          b.level === BlockLevelE.INTERMEDIATE
-      );
-    }
-
-    // Exclude mutator/shadow helper blocks from toolbox flyouts
-    this.blocks = this.blocks.filter(
-      (b) =>
-        b.category !== "Mutator" &&
-        b.category !== "Shadow" &&
-        !b.config.tags?.includes("hidden")
-    );
-
-    // Build categories
-    const categories = this.buildCategories();
+    this.blocks = this.collectFilteredBlocks();
+    const categories = this._pruneEmptyCategories(this.buildCategories());
 
     return {
       kind: ToolboxKindE.CategoryToolbox,
       contents: categories,
     };
+  }
+
+  /**
+   * Collect blocks visible for the current board / level / exclusions
+   */
+  private collectFilteredBlocks(): BlockDefinition[] {
+    let blocks = BlockRegistry.getAll();
+
+    if (this.options.boardId) {
+      blocks = BlockRegistry.getFiltered({ board: this.options.boardId });
+    }
+
+    blocks = this.filterBlocksByBoardType(blocks);
+
+    if (this.options.excludeCategories?.length) {
+      const excluded = new Set(this.options.excludeCategories);
+      blocks = blocks.filter(
+        (block) => !excluded.has(block.config.category)
+      );
+    }
+
+    const userLevel = this.resolveUserLevel();
+    blocks = blocks.filter((block) => block.level <= userLevel);
+
+    return blocks.filter(
+      (block) =>
+        block.category !== "Mutator" &&
+        block.category !== "Shadow" &&
+        !block.config.tags?.includes("hidden")
+    );
+  }
+
+  /**
+   * Resolve the maximum visible difficulty level from options.
+   */
+  private resolveUserLevel(): BlockLevelE {
+    return this.options.userLevel ?? BlockLevelE.ADVANCED;
   }
 
   /**
@@ -123,19 +141,104 @@ export class ToolboxBuilder {
     blocks: BlockDefinition[]
   ): BlockDefinition[] {
     return blocks.filter((block) => {
-      // Check if block is compatible with board type
       if (block.metadata?.requiredBoardTypes) {
         return block.metadata.requiredBoardTypes.includes(
           this.options.boardType
         );
       }
 
-      // Default: Arduino blocks work on all boards, ESP blocks only on ESP
       if (block.category.toLowerCase().includes("esp")) {
         return this.options.boardType.includes("esp");
       }
 
-      return true; // Generic blocks work everywhere
+      return true;
+    });
+  }
+
+  /**
+   * Whether a toolbox category should appear for the current board / app platform
+   */
+  private _isCategoryVisible(config: IToolboxCategoryConfig): boolean {
+    if (this.options.excludeCategories?.includes(config.name)) {
+      return false;
+    }
+
+    if (
+      config.requiredBoardTypes?.length &&
+      !config.requiredBoardTypes.includes(this.options.boardType)
+    ) {
+      return false;
+    }
+
+    if (config.requiredBoardIds?.length) {
+      if (
+        !this.options.boardId ||
+        !config.requiredBoardIds.includes(this.options.boardId)
+      ) {
+        return false;
+      }
+    }
+
+    if (config.requiredPlatform && config.requiredPlatform !== "both") {
+      const appPlatform = isElectron() ? "electron" : "web";
+      if (config.requiredPlatform !== appPlatform) {
+        return false;
+      }
+    }
+
+    const userLevel = this.resolveUserLevel();
+    if (config.minLevel !== undefined && config.minLevel > userLevel) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Remove container categories that have no blocks or visible subcategories
+   */
+  private _pruneEmptyCategories(
+    categories: IToolboxCategory[]
+  ): IToolboxCategory[] {
+    return categories
+      .map((category) => this.pruneCategory(category))
+      .filter((category) => this._categoryHasVisibleContent(category));
+  }
+
+  private pruneCategory(category: IToolboxCategory): IToolboxCategory {
+    if (category.custom) {
+      return category;
+    }
+
+    const prunedContents = category.contents
+      .map((item) =>
+        item.kind === CategoryKindE.Category && "name" in item
+          ? this.pruneCategory(item as IToolboxCategory)
+          : item
+      )
+      .filter((item) => {
+        if (item.kind === CategoryKindE.Category && "name" in item) {
+          return this._categoryHasVisibleContent(item as IToolboxCategory);
+        }
+        return true;
+      });
+
+    return { ...category, contents: prunedContents };
+  }
+
+  private _categoryHasVisibleContent(category: IToolboxCategory): boolean {
+    if (category.custom) {
+      return true;
+    }
+
+    return category.contents.some((item) => {
+      if (item.kind === BlockKindE.Block) {
+        return true;
+      }
+      if (item.kind === CategoryKindE.Category && "name" in item) {
+        return this._categoryHasVisibleContent(item as IToolboxCategory);
+      }
+      return false;
     });
   }
 
@@ -143,49 +246,21 @@ export class ToolboxBuilder {
    * Build categories from blocks
    */
   private buildCategories(): IToolboxCategory[] {
-    const categories: IToolboxCategory[] = [];
-
-    // Group blocks by category
     const groupedBlocks = this.groupBlocksByCategory();
-
+    const categoryNodes = new Map<string, IToolboxCategory>();
 
     for (const catName of BlockRegistry.getCategories()) {
       // Skip special categories like "Mutator" that shouldn't appear in toolbox
       if (catName === "Mutator") continue;
 
-      const blocks = groupedBlocks[catName];
       const config = BlockRegistry.getCategoryConfig(
         catName
-      ) as IToolboxCategoryConfig;
+      ) as IToolboxCategoryConfig | undefined;
+      if (!config || !this._isCategoryVisible(config)) continue;
       const iconClass = getCategoryIconCssClass(catName);
       const iconFile = getCategoryIconFile(catName);
-
-      if (config?.custom) {
-        categories.push({
-          kind: CategoryKindE.Category,
-          name: catName,
-          colour: config.colour ?? "0",
-          custom: config.custom,
-          contents: [],
-          ...(iconClass && iconFile
-            ? {
-              id: `cat-icon-${iconFile}`,
-              cssconfig: {
-                icon: iconClass,
-                rowcontentcontainer:
-                  "blocklyTreeRowContentContainer toolbox-cat-row",
-              },
-            }
-            : {}),
-        } as IToolboxCategory);
-        continue;
-      }
-
-      categories.push({
-        kind: CategoryKindE.Category,
-        name: catName,
-        colour: config?.colour ?? "0",
-        ...(iconClass && iconFile
+      const iconProps =
+        iconClass && iconFile
           ? {
             id: `cat-icon-${iconFile}`,
             cssconfig: {
@@ -194,15 +269,78 @@ export class ToolboxBuilder {
                 "blocklyTreeRowContentContainer toolbox-cat-row",
             },
           }
-          : {}),
-        contents:
-          blocks?.map((block) => ToolboxBuilder.blockToToolboxBlock(block)) ??
+          : {};
+
+      if (config.custom) {
+        categoryNodes.set(catName, {
+          kind: CategoryKindE.Category,
+          name: catName,
+          colour: config.colour ?? "0",
+          custom: config.custom,
+          contents: [],
+          ...iconProps,
+        } as IToolboxCategory);
+        continue;
+      }
+
+      const blocks = groupedBlocks[catName];
+      categoryNodes.set(catName, {
+        kind: CategoryKindE.Category,
+        name: catName,
+        colour: config.colour ?? "0",
+        contents: config.isContainer
+          ? []
+          : blocks?.map((block) => ToolboxBuilder.blockToToolboxBlock(block)) ??
           [],
+        ...iconProps,
       } as IToolboxCategory);
     }
 
-    // Sort categories by order
-    return this.sortCategories(categories);
+    const rootCategories: IToolboxCategory[] = [];
+
+    // Build root categories
+    for (const catName of BlockRegistry.getCategories()) {
+      const config = BlockRegistry.getCategoryConfig(catName);
+      const category = categoryNodes.get(catName);
+      if (!config || !category) {
+        continue;
+      }
+
+      if (config.parentCategory) {
+        const parent = categoryNodes.get(config.parentCategory);
+        if (parent) {
+          parent.contents.push(category);
+        }
+        continue;
+      }
+
+      rootCategories.push(category);
+    }
+
+    // Nest categories
+    for (const category of categoryNodes.values()) {
+      const nested = category.contents.filter(
+        (item): item is IToolboxCategory =>
+          item.kind === CategoryKindE.Category && "name" in item
+      );
+      if (nested.length > 1) {
+        nested.sort((a, b) => {
+          const orderA =
+            BlockRegistry.getCategoryConfig(a.name)?.subOrder ?? 50;
+          const orderB =
+            BlockRegistry.getCategoryConfig(b.name)?.subOrder ?? 50;
+          return orderA - orderB;
+        });
+        let nestedIndex = 0;
+        category.contents = category.contents.map((item) =>
+          item.kind === CategoryKindE.Category && "name" in item
+            ? nested[nestedIndex++]
+            : item
+        );
+      }
+    }
+
+    return this.sortCategories(rootCategories);
   }
 
   /**
@@ -361,6 +499,15 @@ export class ToolboxBuilder {
       map[category].push(block);
     }
 
+    // Init blocks (tag: "init") first, then usage blocks — preserve registration order within each group
+    for (const blocks of Object.values(map)) {
+      blocks.sort((a, b) => {
+        const aInit = a.config.tags?.includes("init") ? 0 : 1;
+        const bInit = b.config.tags?.includes("init") ? 0 : 1;
+        return aInit - bInit;
+      });
+    }
+
     return map;
   }
 
@@ -462,10 +609,10 @@ export class ToolboxBuilder {
   }
 
   /**
-   * Include advanced blocks
+   * Set maximum visible toolbox difficulty level
    */
-  includeAdvanced(include: boolean = true): this {
-    this.options.includeAdvancedBlocks = include;
+  setUserLevel(level: BlockLevelE): this {
+    this.options.userLevel = level;
     return this;
   }
 

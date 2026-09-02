@@ -1,9 +1,7 @@
 import { IBoard } from "../types/device-board.type";
+import { PLATFORM_BOARDS } from "@app/modules/blockly/platforms/device-catalog";
 
-/**
- * Predefined boards
- */
-export const BOARDS: Record<string, IBoard> = Object.freeze({
+const CORE_BOARDS: Record<string, IBoard> = {
   bybyte_nano: {
     id: "bybyte_nano",
     name: "ByByte Nano",
@@ -27,7 +25,7 @@ export const BOARDS: Record<string, IBoard> = Object.freeze({
   },
   nano: {
     id: "nano",
-    name: "Arduino Nano",
+    name: "Arduino Nano (Old Bootloader)",
     fqbn: "arduino:avr:nano",
     core: "arduino:avr",
     uploadSpeed: 57600,
@@ -53,6 +51,14 @@ export const BOARDS: Record<string, IBoard> = Object.freeze({
     core: "esp8266:esp8266",
     uploadSpeed: 115200,
   },
+};
+
+/**
+ * Predefined boards (core catalog + platform pack extensions)
+ */
+export const BOARDS: Record<string, IBoard> = Object.freeze({
+  ...CORE_BOARDS,
+  ...PLATFORM_BOARDS,
 });
 
 export const PLATFORMS_ALL = Object.keys(BOARDS);

@@ -71,6 +71,12 @@ export class BlockBuilder {
     return this;
   }
 
+  /** Hide this block on specific boards */
+  setExcludedBoards(boardIds: string[]): this {
+    this.config.excludedBoards = boardIds;
+    return this;
+  }
+
   /**
    * Set difficulty level
    */

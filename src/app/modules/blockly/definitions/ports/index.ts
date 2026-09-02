@@ -1,10 +1,11 @@
 import { BlockRegistry } from "../../lib/registry";
 import { IToolboxCategoryConfig } from "../../types";
-import { BlockDefinition, BlockLevelE } from "../../types/block.types";
+import { BlockDefinition } from "../../types/block.types";
 import {
   CATEGORY_COLOR,
   CATEGORY_NAME,
   CATEGORY_ORDER,
+  TOOLBOX_LEVEL,
 } from "./config";
 import { onOffShadowBlock } from "./on-off-shadow.block";
 import { digitalWriteBlock } from "./digital-write.block";
@@ -39,7 +40,7 @@ export function initialize(): void {
     colour: CATEGORY_COLOR.toString(),
     requiredPlatform: "both",
     order: CATEGORY_ORDER,
-    minLevel: BlockLevelE.BEGINNER,
+    minLevel: TOOLBOX_LEVEL,
   } as IToolboxCategoryConfig);
 }
 

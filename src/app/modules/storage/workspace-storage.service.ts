@@ -47,6 +47,8 @@ export interface IAppSettings {
   selectedPort?: string;
   language?: string;
   theme?: string;
+  /** Toolbox difficulty: 0 = Beginner, 1 = Middle, 2 = Pro */
+  toolboxLevel?: number;
   [key: string]: any;
 }
 

@@ -83,7 +83,9 @@ export class BlockRegistry {
    */
   static getByBoard(board: string): BlockDefinition[] {
     return Array.from(this.blocks.values()).filter(
-      (block) => !block.config.boards || block.config.boards.includes(board)
+      (block) =>
+        !block.config.excludedBoards?.includes(board) &&
+        (!block.config.boards || block.config.boards.includes(board))
     );
   }
 
@@ -128,9 +130,12 @@ export class BlockRegistry {
     }
 
     if (filters.board) {
-      blocks = blocks.filter(
-        (b) => !b.config.boards || b.config.boards.includes(filters.board!)
-      );
+      blocks = blocks.filter((b) => {
+        if (b.config.excludedBoards?.includes(filters.board!)) {
+          return false;
+        }
+        return !b.config.boards || b.config.boards.includes(filters.board!);
+      });
     }
 
     if (filters.level) {

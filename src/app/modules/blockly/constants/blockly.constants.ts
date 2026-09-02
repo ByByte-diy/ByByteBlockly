@@ -50,6 +50,8 @@ export const BLOCK_COLORS = {
   ACTUATORS: 65,     // Actuator blocks (servo, motor, etc.)
   COMMUNICATION: 20, // Serial, I2C, SPI, etc.
   DISPLAY: 120,      // LCD, LED, OLED, etc.
+  AUDIO: 320,        // Buzzer, MP3, radio (#FF63BB)
+  IOT: 195,          // WiFi, MQTT, NTP, etc.
   TIME: 180,         // Delay, millis, etc.
   MATH: 230,         // Math operations
   LOGIC: 210,        // Logic operations

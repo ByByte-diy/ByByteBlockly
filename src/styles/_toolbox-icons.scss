@@ -8,6 +8,8 @@
   --toolbox-row-min-height: 36px;
   --toolbox-category-gap: 10px;
   --toolbox-div-min-width: 148px;
+  --toolbox-nested-extra-indent: 6px;
+  --toolbox-chevron-size: 8px;
   --toolbox-icon-filter-selected: brightness(0) invert(1);
   --toolbox-cat-fg-on-light-bg: #1f1f1f;
   --toolbox-cat-fg-on-dark-bg: #ffffff;
@@ -31,11 +33,64 @@
   min-height: var(--toolbox-category-min-height) !important;
   line-height: normal !important;
   margin-bottom: 2px !important;
-  padding: 6px 8px 6px 0 !important;
+  /* Keep Blockly inline padding-left for nested depth (do not use padding shorthand). */
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+  padding-right: 10px !important;
   white-space: normal !important;
   position: relative;
   overflow: hidden;
-  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blocklyToolboxCategory.toolbox-cat--collapsible {
+  padding-right: 6px !important;
+}
+
+.blocklyToolboxCategory.toolbox-cat--nested .blocklyToolboxCategoryLabel {
+  padding-inline-start: var(--toolbox-nested-extra-indent);
+  font-weight: 500;
+}
+
+.blocklyToolboxCategoryGroup {
+  margin-inline-start: 4px;
+  border-inline-start: 1px solid color-mix(in srgb, var(--toolbox-text) 12%, transparent);
+}
+
+.toolbox-cat-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-inline-start: auto;
+  flex-shrink: 0;
+  opacity: 0.55;
+  color: var(--toolbox-text);
+  transition: opacity 0.2s ease;
+}
+
+.toolbox-cat-chevron::before {
+  content: '';
+  display: block;
+  width: var(--toolbox-chevron-size);
+  height: var(--toolbox-chevron-size);
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.2s ease;
+}
+
+.blocklyToolboxCategory.toolbox-cat--expanded .toolbox-cat-chevron::before {
+  transform: rotate(45deg);
+}
+
+.blocklyToolboxCategory:not(.blocklyToolboxSelected):hover .toolbox-cat-chevron {
+  opacity: 0.85;
+}
+
+.blocklyToolboxSelected .toolbox-cat-chevron {
+  opacity: 0.95;
+  color: var(--toolbox-icon-color-selected, #fff);
 }
 
 .blocklyToolboxCategory:not(.blocklyToolboxSelected)::before {
@@ -48,11 +103,6 @@
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 0;
   pointer-events: none;
-}
-
-.blocklyToolboxCategory:not(.blocklyToolboxSelected):hover {
-  transform: scale(1.02);
-  z-index: 1;
 }
 
 .blocklyToolboxCategory:not(.blocklyToolboxSelected):hover::before {
@@ -111,6 +161,12 @@
   flex-shrink: 0;
 }
 
+/* Custom SVG icons replace Blockly sprite chevrons on the left icon slot. */
+.blocklyToolboxCategoryIcon.blocklyToolboxCategoryIconClosed,
+.blocklyToolboxCategoryIcon.blocklyToolboxCategoryIconOpen {
+  background-image: none !important;
+}
+
 .toolbox-cat-img {
   width: var(--toolbox-icon-size) !important;
   height: var(--toolbox-icon-size) !important;
@@ -143,5 +199,5 @@
   min-width: var(--toolbox-div-min-width) !important;
   padding-top: 4px;
   padding-inline: 2px;
-  overflow-x: visible;
+  overflow-x: hidden;
 }

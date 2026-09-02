@@ -87,6 +87,8 @@ export interface IBlockConfig {
   color: number;
   platforms: PlatformT[];
   boards?: string[];
+  /** Hide block on these board IDs (e.g. on-board driver replaces external L298N) */
+  excludedBoards?: string[];
   level: BlockLevelE;
   tags?: string[];
 

@@ -18,11 +18,16 @@ import {
   ResolvedAppTheme,
 } from "../../constants/blockly-themes";
 import { scheduleToolboxIcons } from "../../lib/toolbox/toolbox-icons.helper";
+import { scheduleToolboxCategories } from "../../lib/toolbox/toolbox-categories.helper";
+import { scheduleWorkspaceRerender } from "../../lib/helpers/workspace-render.helper";
 import { registerVariablesFlyoutOnWorkspace } from "../../lib/toolbox/variables-flyout.helper";
+import { registerProceduresFlyoutOnWorkspace } from "../../lib/toolbox/procedures-flyout.helper";
 import { normalizeVariableTypes } from "../../lib/variables/variable-type.helper";
 import { ToolboxDefinition } from "blockly/core/utils/toolbox";
 import { WorkspaceStorageService } from "@app/modules/storage/workspace-storage.service";
 import { ThemeService } from "@app/core/services/theme.service";
+import { ToolboxLevelService } from "../../services/toolbox-level.service";
+import { BlockLevelE } from "../../types/block.types";
 import { Subscription } from "rxjs";
 
 /**
@@ -41,6 +46,7 @@ export class BlocklyEditorComponent
   private workspace: Blockly.WorkspaceSvg | null = null;
   private toolboxConfig: ToolboxDefinition | null = null;
   private themeSubscription: Subscription | null = null;
+  private levelSubscription: Subscription | null = null;
   private codeGenTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
@@ -49,6 +55,7 @@ export class BlocklyEditorComponent
     private deviceManager: DeviceManagerService,
     private storage: WorkspaceStorageService,
     private themeService: ThemeService,
+    private toolboxLevelService: ToolboxLevelService,
     private ngZone: NgZone,
   ) {}
 
@@ -64,6 +71,8 @@ export class BlocklyEditorComponent
   ngOnDestroy(): void {
     this.themeSubscription?.unsubscribe();
     this.themeSubscription = null;
+    this.levelSubscription?.unsubscribe();
+    this.levelSubscription = null;
     if (this.codeGenTimer) {
       clearTimeout(this.codeGenTimer);
       this.codeGenTimer = null;
@@ -104,6 +113,7 @@ export class BlocklyEditorComponent
         const loaded = await this.storage.loadWorkspace(this.workspace);
         if (loaded) {
           normalizeVariableTypes(this.workspace);
+          scheduleWorkspaceRerender(this.workspace);
           console.log("✅ Workspace loaded from auto-save");
         }
       }
@@ -111,16 +121,21 @@ export class BlocklyEditorComponent
       // Subscribe to board change and save to settings
       this.deviceManager.selectedBoard$.subscribe(async (board) => {
         if (board && this.workspace) {
-          const newToolbox = await this.blocksLoader.loadToolbox(board.id);
-          this.toolboxConfig = newToolbox;
-          this.workspace.updateToolbox(newToolbox);
-          this.setupToolboxIcons();
-          this.workspace.refreshToolboxSelection();
-
-          // Save board selection
+          await this.refreshToolbox(board.id);
           await this.saveCurrentSettings();
         }
       });
+
+      // Subscribe to toolbox level changes
+      this.levelSubscription = this.toolboxLevelService.level$.subscribe(
+        async (level) => {
+          if (!this.workspace) {
+            return;
+          }
+          const board = this.deviceManager.getSelectedBoard();
+          await this.refreshToolbox(board.id, level);
+        }
+      );
 
       // Subscribe to port change and save to settings
       this.deviceManager.selectedPort$.subscribe(async (port) => {
@@ -144,12 +159,7 @@ export class BlocklyEditorComponent
 
           // Reload toolbox with new translations
           const board = this.deviceManager.getSelectedBoard();
-          const newToolbox = await this.blocksLoader.loadToolbox(board.id);
-          this.toolboxConfig = newToolbox;
-
-          // Update toolbox
-          this.workspace.updateToolbox(newToolbox);
-          this.setupToolboxIcons();
+          await this.refreshToolbox(board.id);
 
           // Reload workspace with new translations (avoid workspace.clear() —
           // Blockly 13 throws "Non-empty variable map" when variables exist)
@@ -163,6 +173,22 @@ export class BlocklyEditorComponent
       // Initialize Blockly with default toolbox
       this.initializeBlockly();
     }
+  }
+
+  /** Reload toolbox for the current board and optional difficulty level. */
+  private async refreshToolbox(
+    boardId: string,
+    userLevel?: BlockLevelE
+  ): Promise<void> {
+    if (!this.workspace) {
+      return;
+    }
+
+    const newToolbox = await this.blocksLoader.loadToolbox(boardId, userLevel);
+    this.toolboxConfig = newToolbox;
+    this.workspace.updateToolbox(newToolbox);
+    this.setupToolboxIcons();
+    this.workspace.refreshToolboxSelection();
   }
 
   /**
@@ -194,6 +220,7 @@ export class BlocklyEditorComponent
       });
 
       registerVariablesFlyoutOnWorkspace(this.workspace);
+      registerProceduresFlyoutOnWorkspace(this.workspace);
 
       Blockly.svgResize(this.workspace);
     });
@@ -249,6 +276,7 @@ export class BlocklyEditorComponent
           return;
         }
         scheduleToolboxIcons(toolboxDiv);
+        scheduleToolboxCategories(toolboxDiv);
       };
 
       attach();
@@ -280,6 +308,7 @@ export class BlocklyEditorComponent
 
     this.workspace.setTheme(getBlocklyTheme(resolved));
     this.updateGridColour(resolved);
+    scheduleWorkspaceRerender(this.workspace);
   }
 
   private updateGridColour(resolved: ResolvedAppTheme): void {
@@ -317,6 +346,8 @@ export class BlocklyEditorComponent
     } finally {
       Blockly.Events.enable();
     }
+
+    scheduleWorkspaceRerender(this.workspace);
   }
 
   /**
@@ -374,6 +405,7 @@ export class BlocklyEditorComponent
     try {
       const state = typeof json === "string" ? JSON.parse(json) : json;
       Blockly.serialization.workspaces.load(state, this.workspace);
+      scheduleWorkspaceRerender(this.workspace);
     } catch (err) {
       console.error("Error loading JSON:", err);
     }
@@ -498,6 +530,7 @@ Saved data will be cleared after pressing OK.
             this.workspace,
             parsed.workspaceXml
           );
+          scheduleWorkspaceRerender(this.workspace);
 
           console.log("✅ Project imported from .bbb");
           alert("Проект успішно імпортовано");

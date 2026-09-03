@@ -6,6 +6,7 @@ import { OTTO_BOARDS } from "./otto/otto.boards";
 import { OTTO_PROFILES } from "./otto/otto.profiles";
 import { MRT_BOARDS } from "./mrt/mrt.boards";
 import { MRT_PROFILES } from "./mrt/mrt.profiles";
+import { BYBYTE_BOARDS } from "./bybyte/bybyte.boards";
 import { BYBYTE_PROFILES } from "./bybyte/bybyte.profiles";
 
 /** All board entries contributed by platform packs */
@@ -13,6 +14,7 @@ export const PLATFORM_BOARDS: Record<string, IBoard> = {
   ...ARDUINO_EXT_BOARDS,
   ...OTTO_BOARDS,
   ...MRT_BOARDS,
+  ...BYBYTE_BOARDS,
 };
 
 /** All pin profiles contributed by platform packs */

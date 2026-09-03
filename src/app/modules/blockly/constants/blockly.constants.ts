@@ -2,9 +2,9 @@
  * Blockly configuration constants
  */
 
-import * as Blockly from 'blockly';
 import type { BlocklyOptions } from 'blockly/core/blockly_options';
 import { BYBYTE_BLOCKLY_LIGHT_THEME } from './blockly-themes';
+import { CATEGORY_PALETTE } from './category-palette.const';
 
 /**
  * Default workspace options for Blockly 13.x
@@ -41,24 +41,26 @@ export const DEFAULT_WORKSPACE_OPTIONS: BlocklyOptions = {
 };
 
 /**
- * Block colors (HSV format for Blockly 13.x)
+ * Block colours by domain — aliases into {@link CATEGORY_PALETTE}.
+ * HSV hue 0–360; saturation/value are fixed (see category-colour.const.ts).
  */
 export const BLOCK_COLORS = {
-  GENERIC: 160,      // Base/Generic blocks
-  IO: 230,           // Input/Output blocks
-  SENSORS: 290,      // Sensor blocks
-  ACTUATORS: 65,     // Actuator blocks (servo, motor, etc.)
-  COMMUNICATION: 20, // Serial, I2C, SPI, etc.
-  DISPLAY: 120,      // LCD, LED, OLED, etc.
-  AUDIO: 320,        // Buzzer, MP3, radio (#FF63BB)
-  IOT: 195,          // WiFi, MQTT, NTP, etc.
-  TIME: 180,         // Delay, millis, etc.
-  MATH: 230,         // Math operations
-  LOGIC: 210,        // Logic operations
-  LOOPS: 120,        // Loop blocks
-  TEXT: 160,         // Text/String operations
-  VARIABLES: 330     // Variables
-};
+  GENERIC: CATEGORY_PALETTE.GENERIC,
+  IO: CATEGORY_PALETTE.PORTS,
+  SENSORS: CATEGORY_PALETTE.SENSING,
+  ACTUATORS: CATEGORY_PALETTE.MOTORS,
+  COMMUNICATION: CATEGORY_PALETTE.COMMUNICATION,
+  DISPLAY: CATEGORY_PALETTE.LED,
+  DISPLAYS: CATEGORY_PALETTE.DISPLAYS,
+  AUDIO: CATEGORY_PALETTE.AUDIO,
+  IOT: CATEGORY_PALETTE.IOT,
+  TIME: CATEGORY_PALETTE.TIME,
+  MATH: CATEGORY_PALETTE.MATH,
+  LOGIC: CATEGORY_PALETTE.LOGIC,
+  LOOPS: CATEGORY_PALETTE.LOOPS,
+  TEXT: CATEGORY_PALETTE.TEXT,
+  VARIABLES: CATEGORY_PALETTE.VARIABLES,
+} as const;
 
 /**
  * File extensions
@@ -70,4 +72,3 @@ export const FILE_EXTENSIONS = {
   JSON: '.json',
   XML: '.xml'
 };
-

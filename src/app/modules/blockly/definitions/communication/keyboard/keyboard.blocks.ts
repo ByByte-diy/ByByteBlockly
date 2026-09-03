@@ -73,7 +73,7 @@ function ensureBleMouse(generator: any): void {
 function buildKeyboardFunction(typeId: string, ble: boolean) {
   const block = new BlockBuilder(typeId)
     .setCategory(KEYBOARD_CATEGORY)
-    .setColor(180)
+    .setColor(KEYBOARD_COLOUR)
     .setBoards([...(ble ? KEYBOARD_BLE_BOARD_IDS : KEYBOARD_HID_BOARD_IDS)])
     .setLevel(KEYBOARD_LEVEL)
     .setTags(["communication", "keyboard", ble ? "esp32" : "hid"])
@@ -110,7 +110,7 @@ function buildKeyboardFunction(typeId: string, ble: boolean) {
 function buildKeyPressed(typeId: string) {
   const block = new BlockBuilder(typeId)
     .setCategory(KEYBOARD_CATEGORY)
-    .setColor(180)
+    .setColor(KEYBOARD_COLOUR)
     .setBoards([...KEYBOARD_HID_BOARD_IDS, ...KEYBOARD_BLE_BOARD_IDS])
     .setLevel(KEYBOARD_LEVEL)
     .setTags(["communication", "keyboard"])
@@ -139,7 +139,7 @@ function buildKeyPressed(typeId: string) {
 function buildKeyboardText(typeId: string, ble: boolean) {
   const block = new BlockBuilder(typeId)
     .setCategory(KEYBOARD_CATEGORY)
-    .setColor(180)
+    .setColor(KEYBOARD_COLOUR)
     .setBoards([...(ble ? KEYBOARD_BLE_BOARD_IDS : KEYBOARD_HID_BOARD_IDS)])
     .setLevel(KEYBOARD_LEVEL)
     .setTags(["communication", "keyboard", ble ? "esp32" : "hid"])
@@ -186,7 +186,7 @@ function buildKeyboardText(typeId: string, ble: boolean) {
 function buildMouseFunction(typeId: string, ble: boolean) {
   const block = new BlockBuilder(typeId)
     .setCategory(KEYBOARD_CATEGORY)
-    .setColor(180)
+    .setColor(KEYBOARD_COLOUR)
     .setBoards([...(ble ? KEYBOARD_BLE_BOARD_IDS : KEYBOARD_HID_BOARD_IDS)])
     .setLevel(KEYBOARD_LEVEL)
     .setTags(["communication", "mouse", ble ? "esp32" : "hid"])
@@ -229,7 +229,7 @@ function buildMouseFunction(typeId: string, ble: boolean) {
 function buildMouseMove(typeId: string, ble: boolean) {
   const block = new BlockBuilder(typeId)
     .setCategory(KEYBOARD_CATEGORY)
-    .setColor(180)
+    .setColor(KEYBOARD_COLOUR)
     .setBoards([...(ble ? KEYBOARD_BLE_BOARD_IDS : KEYBOARD_HID_BOARD_IDS)])
     .setLevel(KEYBOARD_LEVEL)
     .setTags(["communication", "mouse", ble ? "esp32" : "hid"])

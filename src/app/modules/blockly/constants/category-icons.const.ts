@@ -74,6 +74,8 @@ export const CATEGORY_ICON_FILES: Record<string, string> = {
   CAT_IOT_ESPNOW: 'wifi',
   CAT_IOT_ALEXA: 'speaker',
   CAT_ROBOT: 'robot',
+  CAT_ROBOT_OTTO: 'robot',
+  CAT_ROBOT_BYBYTE: 'robot',
   CAT_ROBOT_OTTO_BIPED: 'robot',
   CAT_ROBOT_OTTO_ARMS: 'robot',
   CAT_ROBOT_OTTO_QUAD: 'robot',

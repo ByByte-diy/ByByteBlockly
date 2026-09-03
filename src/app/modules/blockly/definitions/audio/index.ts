@@ -34,7 +34,7 @@ function registerSubcategory(
 ): IToolboxCategoryConfig {
   return {
     name,
-    colour: CATEGORY_COLOR.toString(),
+    colour: CATEGORY_COLOR,
     order: CATEGORY_ORDER,
     subOrder,
     parentCategory: CATEGORY_NAME,
@@ -47,7 +47,7 @@ export function initialize(): void {
 
   BlockRegistry.registerCategory(CATEGORY_NAME, {
     name: CATEGORY_NAME,
-    colour: CATEGORY_COLOR.toString(),
+    colour: CATEGORY_COLOR,
     order: CATEGORY_ORDER,
     minLevel: TOOLBOX_LEVEL,
     isContainer: true,

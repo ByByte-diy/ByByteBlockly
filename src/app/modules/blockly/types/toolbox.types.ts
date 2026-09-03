@@ -3,6 +3,7 @@
  */
 
 import { BlockLevelE } from "./block.types";
+import { CategoryHue } from "../constants/category-colour.const";
 
 /**
  * Toolbox kind
@@ -109,7 +110,8 @@ export interface ToolboxOptions {
  */
 export interface IToolboxCategoryConfig {
   name: string;
-  colour: string;
+  /** Blockly HSV hue (0–360); saturation/value are project-wide constants. */
+  colour: CategoryHue;
   order: number;
   custom?: string;
   /** Parent category message key (e.g. CAT_COMMUNICATION) for nested toolbox groups */
@@ -122,6 +124,8 @@ export interface IToolboxCategoryConfig {
   requiredBoardTypes?: BoardType[];
   /** When set, category is visible only for these board IDs */
   requiredBoardIds?: string[];
+  /** When set, category is hidden on these board IDs (general boards show both robot families) */
+  hiddenBoardIds?: string[];
   minLevel?: BlockLevelE;
 }
 

@@ -1,21 +1,24 @@
+import { CATEGORY_PALETTE } from "../../constants/category-palette.const";
 import { BlockLevelE, PlatformT } from "../../types";
 import { PLATFORMS_ALL } from "@app/modules/device/constants/device-boards.const";
 import { IToolboxCategoryConfig } from "../../types/toolbox.types";
+import { BYBYTE_EXCLUSIVE_BOARD_IDS } from "../shared/robot-boards.const";
 
-export const CATEGORY_NAME = "%{BKY_CAT_ROBOT}";
+/** Top-level Robot Otto container (replaces legacy CAT_ROBOT). */
+export const OTTO_CONTAINER_CATEGORY = "%{BKY_CAT_ROBOT_OTTO}";
+
 export const BIPED_CATEGORY = "%{BKY_CAT_ROBOT_OTTO_BIPED}";
 export const ARMS_CATEGORY = "%{BKY_CAT_ROBOT_OTTO_ARMS}";
 export const QUAD_CATEGORY = "%{BKY_CAT_ROBOT_OTTO_QUAD}";
 export const WHEELS_CATEGORY = "%{BKY_CAT_ROBOT_OTTO_WHEELS}";
 export const CAT_ROBOT_OTTO_NINJA = "%{BKY_CAT_ROBOT_OTTO_NINJA}";
 
-export const OTTO_MOVEMENT_COLOUR = "#4759F5";
-export const OTTO_SOUND_COLOUR = "#FF63BB";
-export const OTTO_EEPROM_COLOUR = "#ff6600";
-export const OTTO_SENSOR_COLOUR = "#2a93e8";
+export const OTTO_MOVEMENT_COLOUR = CATEGORY_PALETTE.ROBOT;
+export const OTTO_SOUND_COLOUR = CATEGORY_PALETTE.ROBOT_SOUND;
+export const OTTO_EEPROM_COLOUR = CATEGORY_PALETTE.ROBOT_EEPROM;
+export const OTTO_SENSOR_COLOUR = CATEGORY_PALETTE.ROBOT_SENSOR;
 
-/** Legacy Otto ninja category colour */
-export const NINJA_COLOUR = "#4759F5";
+export const NINJA_COLOUR = CATEGORY_PALETTE.ROBOT;
 
 /** Legacy: CAT_OTTO is present in toolbox_arduino_all* for AVR, ESP8266, ESP32, MRT — not Otto-kit-only. */
 export const CATEGORY_PLATFORMS = Array.from(PLATFORMS_ALL) as PlatformT[];
@@ -188,17 +191,19 @@ function createSubcategoryConfig(
     colour: OTTO_MOVEMENT_COLOUR,
     order: CATEGORY_ORDER,
     subOrder,
-    parentCategory: CATEGORY_NAME,
+    parentCategory: OTTO_CONTAINER_CATEGORY,
     minLevel: TOOLBOX_LEVEL,
   };
 }
 
 export const OTTO_CONTAINER_CATEGORY_CONFIG: IToolboxCategoryConfig = {
-  name: CATEGORY_NAME,
+  name: OTTO_CONTAINER_CATEGORY,
   colour: OTTO_MOVEMENT_COLOUR,
   order: CATEGORY_ORDER,
+  subOrder: 1,
   minLevel: TOOLBOX_LEVEL,
   isContainer: true,
+  hiddenBoardIds: [...BYBYTE_EXCLUSIVE_BOARD_IDS],
 };
 
 export const OTTO_BIPED_CATEGORY_CONFIG = createSubcategoryConfig(

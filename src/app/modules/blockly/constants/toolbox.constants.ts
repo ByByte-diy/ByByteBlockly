@@ -4,6 +4,8 @@
 
 import { ToolboxDefinition } from "blockly/core/utils/toolbox";
 import { BlockRegistry } from "../lib/registry/block-registry";
+import { CATEGORY_PALETTE } from "../constants/category-palette.const";
+import { categoryHueToToolboxColour } from "../constants/category-colour.const";
 
 /**
  * Fallback toolbox when registry is empty
@@ -15,13 +17,13 @@ const FALLBACK_TOOLBOX = {
     {
       kind: 'category' as const,
       name: "Arduino",
-      colour: '240',
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.GENERIC),
       contents: []
     },
     {
       kind: 'category' as const,
       name: "Logic",
-      colour: '210',
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.LOGIC),
       contents: [
         { kind: 'block' as const, type: "controls_if" },
         { kind: 'block' as const, type: "logic_compare" },
@@ -30,7 +32,7 @@ const FALLBACK_TOOLBOX = {
     {
       kind: 'category' as const,
       name: "Loops",
-      colour: '120',
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.LOOPS),
       contents: [
         { kind: 'block' as const, type: "controls_repeat_ext" },
         { kind: 'block' as const, type: "controls_whileUntil" },
@@ -39,7 +41,7 @@ const FALLBACK_TOOLBOX = {
     {
       kind: 'category' as const,
       name: "Math",
-      colour: '230',
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.MATH),
       contents: [
         { kind: 'block' as const, type: "math_number" },
         { kind: 'block' as const, type: "math_arithmetic" },
@@ -83,7 +85,9 @@ export function getDefaultToolbox(): ToolboxDefinition {
     return {
       kind: 'category' as const,
       name: categoryName,
-      colour: BlockRegistry.get(categoryName)?.config.color?.toString() || '240',
+      colour: categoryHueToToolboxColour(
+        BlockRegistry.get(categoryName)?.config.color ?? CATEGORY_PALETTE.GENERIC
+      ),
       contents: categoryBlocks.map((block) => ({
         kind: 'block' as const,
         type: block.config.type,
@@ -96,7 +100,7 @@ export function getDefaultToolbox(): ToolboxDefinition {
     {
       kind: 'category' as const,
       name: "Logic",
-      colour: '210',
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.LOGIC),
       contents: [
         { kind: 'block' as const, type: "controls_if" },
         { kind: 'block' as const, type: "logic_compare" },
@@ -107,7 +111,7 @@ export function getDefaultToolbox(): ToolboxDefinition {
     {
       kind: 'category' as const,
       name: "Loops",
-      colour: '120',
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.LOOPS),
       contents: [
         { kind: 'block' as const, type: "controls_repeat_ext" },
         { kind: 'block' as const, type: "controls_whileUntil" },
@@ -117,7 +121,7 @@ export function getDefaultToolbox(): ToolboxDefinition {
     {
       kind: 'category' as const,
       name: "Math",
-      colour: '230',
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.MATH),
       contents: [
         { kind: 'block' as const, type: "math_number" },
         { kind: 'block' as const, type: "math_arithmetic" },
@@ -127,7 +131,7 @@ export function getDefaultToolbox(): ToolboxDefinition {
     {
       kind: 'category' as const,
       name: "Variables",
-      colour: '330',
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.VARIABLES),
       contents: [],
       custom: "VARIABLE"
     } as any
@@ -154,7 +158,7 @@ export const MINIMAL_TOOLBOX = {
     {
       kind: 'category' as const,
       name: 'Arduino',
-      colour: '240',
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.GENERIC),
       contents: [
         { kind: 'block' as const, type: 'base_setup_loop' },
         { kind: 'block' as const, type: 'base_code' }

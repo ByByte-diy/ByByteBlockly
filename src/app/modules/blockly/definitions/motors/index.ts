@@ -28,7 +28,7 @@ export function initialize(): void {
 
   BlockRegistry.registerCategory(CATEGORY_NAME, {
     name: CATEGORY_NAME,
-    colour: CATEGORY_COLOR.toString(),
+    colour: CATEGORY_COLOR,
     order: CATEGORY_ORDER,
     minLevel: TOOLBOX_LEVEL,
     isContainer: true,
@@ -36,7 +36,7 @@ export function initialize(): void {
 
   BlockRegistry.registerCategory(SERVO_CATEGORY, {
     name: SERVO_CATEGORY,
-    colour: CATEGORY_COLOR.toString(),
+    colour: CATEGORY_COLOR,
     order: CATEGORY_ORDER,
     subOrder: 0,
     parentCategory: CATEGORY_NAME,
@@ -45,7 +45,7 @@ export function initialize(): void {
 
   BlockRegistry.registerCategory(STEPPER_CATEGORY, {
     name: STEPPER_CATEGORY,
-    colour: CATEGORY_COLOR.toString(),
+    colour: CATEGORY_COLOR,
     order: CATEGORY_ORDER,
     subOrder: 1,
     parentCategory: CATEGORY_NAME,
@@ -54,7 +54,7 @@ export function initialize(): void {
 
   BlockRegistry.registerCategory(DC_CATEGORY, {
     name: DC_CATEGORY,
-    colour: CATEGORY_COLOR.toString(),
+    colour: CATEGORY_COLOR,
     order: CATEGORY_ORDER,
     subOrder: 2,
     parentCategory: CATEGORY_NAME,

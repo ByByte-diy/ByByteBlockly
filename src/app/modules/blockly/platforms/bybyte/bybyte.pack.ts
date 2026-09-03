@@ -1,19 +1,30 @@
+import { BlockRegistry } from "../../lib/registry/block-registry";
 import { IPlatformPack } from "../platform-pack.types";
+import { BYBYTE_BLOCKS } from "./bybyte.blocks";
+import { BYBYTE_BOARDS } from "./bybyte.boards";
 import { BYBYTE_PROFILES } from "./bybyte.profiles";
+import { BYBYTE_BOARD_IDS, BYBYTE_CONTAINER_CATEGORY_CONFIG } from "./config";
 
 export const bybytePack: IPlatformPack = {
   id: "bybyte",
-  supportedBoardIds: ["bybyte_nano", "bybyte_mega"],
+  supportedBoardIds: [...BYBYTE_BOARD_IDS],
 
   registerBoards() {
-    return [];
+    return Object.values(BYBYTE_BOARDS);
   },
 
   registerProfiles() {
     return Object.values(BYBYTE_PROFILES);
   },
 
-  initializeCategories() {},
+  initializeCategories() {
+    BlockRegistry.registerCategory(
+      BYBYTE_CONTAINER_CATEGORY_CONFIG.name,
+      BYBYTE_CONTAINER_CATEGORY_CONFIG
+    );
+  },
 
-  initializeBlocks() {},
+  initializeBlocks() {
+    BlockRegistry.registerMany(BYBYTE_BLOCKS);
+  },
 };

@@ -1,5 +1,7 @@
+import { CATEGORY_PALETTE } from "../../constants/category-palette.const";
 import { BlockLevelE, PlatformT } from "../../types";
 import { PLATFORMS_ALL } from "@app/modules/device/constants/device-boards.const";
+import { OTTO_CONTAINER_CATEGORY } from "../otto/config";
 
 /** Toolbox category (translation key added in a later phase). */
 export const CATEGORY_NAME = "%{BKY_CAT_ROBOT_ESCORNABOT}";
@@ -7,20 +9,18 @@ export const CATEGORY_NAME = "%{BKY_CAT_ROBOT_ESCORNABOT}";
 /** Legacy: escornabot blocks live under CAT_OTTO in toolbox_arduino_all.xml for all AVR boards. */
 export const ESCORNABOT_BOARD_IDS = ["OttoESP"] as const;
 
-/** Legacy movement block colour from escornabot.js */
-export const MOVEMENT_COLOR = "#4759F5";
+export const MOVEMENT_COLOR = CATEGORY_PALETTE.ROBOT;
 
-/** Legacy sensor block colour from escornabot.js */
-export const SENSOR_COLOR = "#C39BF2";
+export const SENSOR_COLOR = CATEGORY_PALETTE.ROBOT_ESCORNABOT_SENSOR;
 
 export const CATEGORY_COLOR = MOVEMENT_COLOR;
 export const CATEGORY_PLATFORMS = Array.from(PLATFORMS_ALL) as PlatformT[];
 export const TOOLBOX_LEVEL = BlockLevelE.ADVANCED;
-/** Same order as Otto robot container; subOrder set in pack registration. */
+/** Same order as Otto robot container; after Otto subcategories. */
 export const CATEGORY_ORDER = 14;
 export const ESCORNABOT_SUB_ORDER = 5;
 
-export const ROBOT_CONTAINER_CATEGORY = "%{BKY_CAT_ROBOT}";
+export { OTTO_CONTAINER_CATEGORY as ROBOT_CONTAINER_CATEGORY };
 
 /** From www/lang/Arduino_en.js Blockly.Msg.ESCORNABOT_MODE_CHOICE */
 export const MODE_OPTIONS: [string, string][] = [

@@ -9,7 +9,10 @@ import {
 export { createBlockIconField } from "../../../lib/helpers/block-icon.helper";
 export { registerDefinition, registerGlobalVariable, registerInclude };
 
-export const MU_BLOCK_COLOUR = "#0060aa";
+import { CATEGORY_PALETTE } from "../../../constants/category-palette.const";
+
+/** Legacy Mu Vision block colour (#0060aa) */
+export const MU_BLOCK_COLOUR = CATEGORY_PALETTE.COMMUNICATION;
 export const K_MU_NAME = "MU";
 
 export const MU_OBJ_OPTIONS: [string, string][] = [

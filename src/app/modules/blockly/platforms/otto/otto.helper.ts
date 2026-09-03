@@ -5,6 +5,7 @@ import {
   getDigitalPins,
 } from "@app/modules/device/helpers/device-board-globals.helper";
 import { BlockDefinition } from "../../types/block.types";
+import { CategoryHue } from "../../constants/category-colour.const";
 import { OTTO_DIY_URL } from "./config";
 
 export { createBlockIconField } from "../../lib/helpers/block-icon.helper";
@@ -45,7 +46,7 @@ export function registerSetup(
 
 export function wrapOttoBlock(
   block: BlockDefinition,
-  colour: string,
+  colour: CategoryHue,
   tooltip?: { key: string; fallback: string }
 ): void {
   const originalInit = block.init;

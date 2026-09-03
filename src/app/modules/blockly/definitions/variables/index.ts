@@ -37,7 +37,7 @@ export function initialize(): void {
   // Blockly will automatically populate this category with blocks for each variable
   BlockRegistry.registerCategory(CATEGORY_NAME, {
     name: CATEGORY_NAME,
-    colour: CATEGORY_COLOR.toString(),
+    colour: CATEGORY_COLOR,
     order: CATEGORY_ORDER,
     custom: "VARIABLE",
     requiredPlatform: "both",

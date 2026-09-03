@@ -52,7 +52,7 @@ export function initialize(): void {
   BlockRegistry.registerMany(MATH_BLOCKS);
   BlockRegistry.registerCategory(CATEGORY_NAME, {
     name: CATEGORY_NAME,
-    colour: CATEGORY_COLOR.toString(),
+    colour: CATEGORY_COLOR,
     requiredPlatform: "both",
     order: CATEGORY_ORDER,
     minLevel: BlockLevelE.BEGINNER,

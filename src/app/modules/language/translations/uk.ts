@@ -194,6 +194,8 @@ export const translations = {
   CAT_IOT_ALEXA: "Alexa",
 
   CAT_ROBOT: "Робот",
+  CAT_ROBOT_OTTO: "Робот Otto",
+  CAT_ROBOT_BYBYTE: "Робот ByByte",
   CAT_ROBOT_OTTO_BIPED: "Двоногий",
   CAT_ROBOT_OTTO_ARMS: "Руки",
   CAT_ROBOT_OTTO_QUAD: "Четвероногий",

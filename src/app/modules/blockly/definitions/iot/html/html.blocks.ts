@@ -6,6 +6,7 @@ import {
   HTML_CATEGORY,
   TOOLBOX_LEVEL,
 } from "../config";
+import { CATEGORY_PALETTE } from "../../../constants/category-palette.const";
 import {
   appendToDefinitionBody,
   CSSEscape,
@@ -13,12 +14,12 @@ import {
   looseEscape,
 } from "../iot.helper";
 
-const HTML_VAR_COLOR = "#FFA500";
-const HTML_TEXT_COLOR = "#FD6C9E";
-const HTML_BLOCK_COLOR = "#000000";
-const HTML_TABLE_COLOR = "#727272";
-const HTML_STYLE_COLOR = "#00CC00";
-const HTML_FORM_COLOR = "#154360";
+const HTML_VAR_COLOR = CATEGORY_PALETTE.IOT_HTML_VAR;
+const HTML_TEXT_COLOR = CATEGORY_PALETTE.IOT_HTML_TEXT;
+const HTML_BLOCK_COLOR = CATEGORY_PALETTE.IOT_HTML_ELEMENT;
+const HTML_TABLE_COLOR = CATEGORY_PALETTE.IOT_HTML_TABLE;
+const HTML_STYLE_COLOR = CATEGORY_PALETTE.IOT_HTML_STYLE;
+const HTML_FORM_COLOR = CATEGORY_PALETTE.IOT_HTML_FORM;
 
 function buildEmptyVar() {
   const block = new BlockBuilder("emptyVar")

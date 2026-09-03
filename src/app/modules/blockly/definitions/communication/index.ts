@@ -7,6 +7,7 @@ import {
   CATEGORY_NAME,
   CATEGORY_ORDER,
   KEYBOARD_CATEGORY,
+  KEYBOARD_COLOUR,
   KEYBOARD_LEVEL,
   MUVISION_CATEGORY,
   MUVISION_LEVEL,
@@ -80,7 +81,7 @@ export function initialize(): void {
 
   BlockRegistry.registerCategory(KEYBOARD_CATEGORY, {
     name: KEYBOARD_CATEGORY,
-    colour: "#54BCF7",
+    colour: KEYBOARD_COLOUR,
     order: CATEGORY_ORDER,
     subOrder: 4,
     parentCategory: CATEGORY_NAME,

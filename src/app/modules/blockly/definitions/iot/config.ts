@@ -1,4 +1,4 @@
-import { BLOCK_COLORS } from "../../constants/blockly.constants";
+import { CATEGORY_PALETTE } from "../../constants/category-palette.const";
 import { BlockLevelE, PlatformT } from "../../types";
 
 export const CATEGORY_NAME = "%{BKY_CAT_IOT}";
@@ -15,7 +15,7 @@ export const FIREBASE_CATEGORY = "%{BKY_CAT_IOT_FIREBASE}";
 export const ESPNOW_CATEGORY = "%{BKY_CAT_IOT_ESPNOW}";
 export const ALEXA_CATEGORY = "%{BKY_CAT_IOT_ALEXA}";
 
-export const CATEGORY_COLOR = BLOCK_COLORS.IOT;
+export const CATEGORY_COLOR = CATEGORY_PALETTE.IOT;
 export const CATEGORY_PLATFORMS = ["esp32", "esp8266"] as PlatformT[];
 export const TOOLBOX_LEVEL = BlockLevelE.ADVANCED;
 export const CATEGORY_ORDER = 16;
@@ -24,7 +24,7 @@ export const CATEGORY_ORDER = 16;
 export const ESP_BOARD_TYPES = ["esp32", "esp8266"] as const;
 
 /** Legacy #00AAAA for WiFi server async blocks (later phases). */
-export const WIFI_SERVER_ASYNC_COLOR = 180;
+export const WIFI_SERVER_ASYNC_COLOR = CATEGORY_PALETTE.IOT_WIFI_SERVER_ASYNC;
 
 export const GMT_OPTIONS: [string, string][] = [
   ["-12", "-12"],

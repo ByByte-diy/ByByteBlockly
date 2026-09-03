@@ -12,6 +12,8 @@ import {
 } from "../../types/toolbox.types";
 import { BlockRegistry } from "../registry/block-registry";
 import { getCategoryIconCssClass, getCategoryIconFile } from "../../constants/category-icons.const";
+import { categoryHueToToolboxColour } from "../../constants/category-colour.const";
+import { CATEGORY_PALETTE } from "../../constants/category-palette.const";
 import { isElectron } from "@app/platform/platform";
 
 /**
@@ -179,6 +181,12 @@ export class ToolboxBuilder {
       }
     }
 
+    if (config.hiddenBoardIds?.length && this.options.boardId) {
+      if (config.hiddenBoardIds.includes(this.options.boardId)) {
+        return false;
+      }
+    }
+
     if (config.requiredPlatform && config.requiredPlatform !== "both") {
       const appPlatform = isElectron() ? "electron" : "web";
       if (config.requiredPlatform !== appPlatform) {
@@ -275,7 +283,7 @@ export class ToolboxBuilder {
         categoryNodes.set(catName, {
           kind: CategoryKindE.Category,
           name: catName,
-          colour: config.colour ?? "0",
+          colour: categoryHueToToolboxColour(config.colour ?? 0),
           custom: config.custom,
           contents: [],
           ...iconProps,
@@ -287,7 +295,7 @@ export class ToolboxBuilder {
       categoryNodes.set(catName, {
         kind: CategoryKindE.Category,
         name: catName,
-        colour: config.colour ?? "0",
+        colour: categoryHueToToolboxColour(config.colour ?? 0),
         contents: config.isContainer
           ? []
           : blocks?.map((block) => ToolboxBuilder.blockToToolboxBlock(block)) ??
@@ -353,7 +361,7 @@ export class ToolboxBuilder {
     categories.push({
       kind: CategoryKindE.Category,
       name: "Logic",
-      colour: "210",
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.LOGIC),
       contents: [
         // { kind: BlockKindE.Block, type: "controls_if" },
         {
@@ -380,7 +388,7 @@ export class ToolboxBuilder {
     categories.push({
       kind: CategoryKindE.Category,
       name: "Loops",
-      colour: "120",
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.LOOPS),
       contents: [
         {
           kind: BlockKindE.Block,
@@ -428,7 +436,7 @@ export class ToolboxBuilder {
     categories.push({
       kind: CategoryKindE.Category,
       name: "Math",
-      colour: "230",
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.MATH),
       contents: [
         { kind: BlockKindE.Block, type: "math_number" },
         { kind: BlockKindE.Block, type: "math_arithmetic" },
@@ -448,7 +456,7 @@ export class ToolboxBuilder {
     categories.push({
       kind: CategoryKindE.Category,
       name: "Text",
-      colour: "160",
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.TEXT),
       contents: [
         { kind: BlockKindE.Block, type: "text" },
         { kind: BlockKindE.Block, type: "text_join" },
@@ -467,7 +475,7 @@ export class ToolboxBuilder {
     categories.push({
       kind: CategoryKindE.Category,
       name: "Variables",
-      colour: "330",
+      colour: categoryHueToToolboxColour(CATEGORY_PALETTE.VARIABLES),
       contents: [
         { kind: BlockKindE.Block, type: "variables_get" },
         { kind: BlockKindE.Block, type: "variables_set" },
@@ -588,7 +596,11 @@ export class ToolboxBuilder {
     return categories.sort((a, b) => {
       const metaA = BlockRegistry.getCategoryConfig(a.name);
       const metaB = BlockRegistry.getCategoryConfig(b.name);
-      return (metaA?.order ?? 50) - (metaB?.order ?? 50);
+      const orderDiff = (metaA?.order ?? 50) - (metaB?.order ?? 50);
+      if (orderDiff !== 0) {
+        return orderDiff;
+      }
+      return (metaA?.subOrder ?? 50) - (metaB?.subOrder ?? 50);
     });
   }
 

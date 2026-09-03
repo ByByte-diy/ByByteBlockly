@@ -1,0 +1,32 @@
+---
+description: ByByte Blockly conventions — read skill before editing blockly module
+globs: src/app/modules/blockly/**/*
+alwaysApply: false
+---
+
+# ByByte Blockly
+
+Before editing `src/app/modules/blockly/`, **read the skill**:
+
+`.cursor/skills/bybyte-blockly/SKILL.md`
+
+## Required
+
+- Category colours: `CATEGORY_PALETTE` (hue), not `#hex`.
+- New robot/platform blocks → `platforms/<pack>/`; universal hardware → `definitions/<domain>/`.
+- Platform Pack: boards → profiles → categories → blocks; register in `platforms/index.ts`.
+- Do not change legacy block type IDs.
+- After changes: `npm run build:web`.
+
+## Do not without explicit request
+
+- Git commit/push.
+- Remove `console.log` in `blockly-editor.component.ts`.
+- Robot Otto / Robot ByByte: use `hiddenBoardIds` from `robot-boards.const.ts`; do not use `requiredBoardIds` on robot containers.
+
+## Skill data tables
+
+- `data/requirements.md` — user rules
+- `data/structure.md` — directory layout
+- `data/palette.md` — hue table
+- `data/migration-phases.md` — plan status

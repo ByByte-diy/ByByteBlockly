@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 import { PLATFORMS_ALL } from "@app/modules/device/constants/device-boards.const";
+import { CATEGORY_PALETTE } from "../../constants/category-palette.const";
 import { BlockLevelE, PlatformT } from "../../types";
 import { initBlockLabel } from "../../lib/helpers/block-label.helper";
 import {
@@ -8,7 +9,8 @@ import {
 } from "@app/modules/device/helpers/device-board-globals.helper";
 
 export const CATEGORY_NAME = "%{BKY_CAT_COMMUNICATION}";
-export const CATEGORY_COLOUR = "#0060aa";
+/** Legacy CAT_COMMUNICATION colour (#0060aa) */
+export const CATEGORY_COLOUR = CATEGORY_PALETTE.COMMUNICATION;
 export const CATEGORY_PLATFORMS: PlatformT[] = ["arduino"];
 export const TOOLBOX_LEVEL = BlockLevelE.INTERMEDIATE;
 export const KEYBOARD_LEVEL = BlockLevelE.ADVANCED;
@@ -22,8 +24,8 @@ export const REMOTE_CATEGORY = "%{BKY_CAT_COMMUNICATION_REMOTE}";
 export const KEYBOARD_CATEGORY = "%{BKY_CAT_COMMUNICATION_KEYBOARD}";
 export const MUVISION_CATEGORY = "%{BKY_CAT_COMMUNICATION_MUVISION}";
 
-/** Legacy keyboard/mouse category colour */
-export const KEYBOARD_COLOUR = "#54BCF7";
+/** Legacy keyboard/mouse category colour (#54BCF7) */
+export const KEYBOARD_COLOUR = CATEGORY_PALETTE.KEYBOARD;
 
 /** Mu Vision blocks are available on all registered boards */
 export const MUVISION_PLATFORMS = Array.from(PLATFORMS_ALL) as PlatformT[];

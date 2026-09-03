@@ -22,9 +22,27 @@ app-root {
 
 app-blockly-editor {
   display: block;
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
   height: 100%;
-  flex: 1;
 }
 
-/* Blockly colours are driven by Blockly.Theme + workspace.setTheme() */
+app-code-editor-panel {
+  display: block;
+  flex: 0 0 auto;
+  height: 100%;
+}
+
+body.code-editor-panel-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.cm-editor {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+}
+
+.cm-editor.cm-focused {
+  outline: none;
+}

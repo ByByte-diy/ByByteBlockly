@@ -5,6 +5,7 @@ import { I18nModule } from '../../../modules/language';
 import { BlocklyModule } from '../../../modules/blockly/blockly.module';
 import { DeviceModule } from '../../../modules/device/device.module';
 import { UploadModule } from '../../../modules/upload/upload.module';
+import { CodeEditorModule } from '../../../modules/code-editor/code-editor.module';
 import { HeaderUiModule } from './header-ui.module';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { FileMenuComponent } from './file-menu/file-menu.component';
@@ -19,6 +20,7 @@ import { FileMenuComponent } from './file-menu/file-menu.component';
     BlocklyModule,
     DeviceModule,
     UploadModule,
+    CodeEditorModule,
   ],
   exports: [HeaderUiModule, AppHeaderComponent, FileMenuComponent],
 })

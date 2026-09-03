@@ -156,7 +156,7 @@ export class UploadManagerService {
     // Small delay for update
     await new Promise(resolve => setTimeout(resolve, 100));
 
-    // Get code from Blockly
+    // Phase 2: replace with this.codeEditorService.getEffectiveCode() for manual edits.
     const code = this.blocklyService.getCurrentCode();
     if (!code) {
       throw new Error('Code is empty or not generated');

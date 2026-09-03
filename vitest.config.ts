@@ -5,7 +5,10 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     environment: "jsdom",
-    include: ["src/app/modules/blockly/**/*.spec.ts"],
+    include: [
+      "src/app/modules/blockly/**/*.spec.ts",
+      "src/app/modules/code-editor/**/*.spec.ts",
+    ],
     globals: true,
   },
 });

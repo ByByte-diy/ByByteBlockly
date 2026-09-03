@@ -1,0 +1,55 @@
+<aside class="code-editor-panel" [attr.aria-hidden]="!isOpen">
+  <div
+    #resizeHandle
+    class="code-editor-panel__resize-handle"
+    role="separator"
+    aria-orientation="vertical"
+    [attr.aria-label]="'ui.code_panel_resize' | translate"
+    (pointerdown)="onResizeStart($event)"
+  ></div>
+
+  <div class="code-editor-panel__content">
+    <header class="code-editor-panel__header">
+      <h2 class="code-editor-panel__title">{{ 'ui.code_panel_title' | translate }}</h2>
+      <div class="code-editor-panel__actions">
+        @if (isDirty) {
+          <button
+            type="button"
+            class="code-editor-panel__btn code-editor-panel__btn--text"
+            (click)="onResetToGenerated($event)"
+          >
+            {{ 'ui.code_reset_to_blocks' | translate }}
+          </button>
+        }
+        <button
+          type="button"
+          class="code-editor-panel__btn code-editor-panel__btn--icon"
+          [title]="'ui.code_copy' | translate"
+          [attr.aria-label]="'ui.code_copy' | translate"
+          (click)="onCopy($event)"
+        >
+          <span class="code-editor-panel__icon" [style.--icon]="copyIcon" aria-hidden="true"></span>
+        </button>
+        <button
+          type="button"
+          class="code-editor-panel__btn code-editor-panel__btn--icon code-editor-panel__btn--close"
+          [title]="'ui.btn_close' | translate"
+          [attr.aria-label]="'ui.btn_close' | translate"
+          (click)="onClose($event)"
+        >
+          <span class="code-editor-panel__icon" [style.--icon]="closeIcon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="code-editor-panel__body">
+      <div #editorHost class="code-editor-panel__editor"></div>
+    </div>
+
+    @if (isDirty) {
+      <footer class="code-editor-panel__footer">
+        <span class="code-editor-panel__badge">{{ 'ui.code_edited_manually' | translate }}</span>
+      </footer>
+    }
+  </div>
+</aside>

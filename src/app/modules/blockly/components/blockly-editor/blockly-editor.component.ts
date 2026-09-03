@@ -29,6 +29,7 @@ import { ThemeService } from "@app/core/services/theme.service";
 import { ToolboxLevelService } from "../../services/toolbox-level.service";
 import { ProjectActionsService } from "../../services/project-actions.service";
 import { BlockLevelE } from "../../types/block.types";
+import { CodeEditorService } from "@app/modules/code-editor/services/code-editor.service";
 import { Subscription } from "rxjs";
 
 /**
@@ -42,12 +43,15 @@ import { Subscription } from "rxjs";
 export class BlocklyEditorComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  @ViewChild("blocklyDiv", { static: false }) blocklyDiv!: ElementRef;
+  @ViewChild("blocklyDiv", { static: false }) blocklyDiv!: ElementRef<HTMLElement>;
 
   private workspace: Blockly.WorkspaceSvg | null = null;
   private toolboxConfig: ToolboxDefinition | null = null;
   private themeSubscription: Subscription | null = null;
   private levelSubscription: Subscription | null = null;
+  private layoutSubscription: Subscription | null = null;
+  private containerResizeObserver: ResizeObserver | null = null;
+  private resizeAnimationFrame: number | null = null;
   private codeGenTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
@@ -58,6 +62,7 @@ export class BlocklyEditorComponent
     private themeService: ThemeService,
     private toolboxLevelService: ToolboxLevelService,
     private projectActions: ProjectActionsService,
+    private codeEditorService: CodeEditorService,
     private ngZone: NgZone,
   ) {}
 
@@ -75,6 +80,14 @@ export class BlocklyEditorComponent
     this.themeSubscription = null;
     this.levelSubscription?.unsubscribe();
     this.levelSubscription = null;
+    this.layoutSubscription?.unsubscribe();
+    this.layoutSubscription = null;
+    this.containerResizeObserver?.disconnect();
+    this.containerResizeObserver = null;
+    if (this.resizeAnimationFrame !== null) {
+      cancelAnimationFrame(this.resizeAnimationFrame);
+      this.resizeAnimationFrame = null;
+    }
     if (this.codeGenTimer) {
       clearTimeout(this.codeGenTimer);
       this.codeGenTimer = null;
@@ -239,6 +252,15 @@ export class BlocklyEditorComponent
       (theme) => this.applyBlocklyTheme(theme)
     );
 
+    this.setupContainerResizeObserver();
+    this.layoutSubscription = this.codeEditorService.panelOpenChange$.subscribe(() => {
+      this.scheduleWorkspaceResize();
+    });
+
+    if (this.codeEditorService.isPanelOpen()) {
+      this.scheduleWorkspaceResize();
+    }
+
     this.setupToolboxIcons();
     this.scheduleCodeGeneration();
   }
@@ -331,6 +353,36 @@ export class BlocklyEditorComponent
       .forEach((line) => {
         line.setAttribute('stroke', colour);
       });
+  }
+
+  private setupContainerResizeObserver(): void {
+    const container = this.blocklyDiv?.nativeElement?.parentElement;
+    if (!container || typeof ResizeObserver === 'undefined') {
+      return;
+    }
+
+    this.containerResizeObserver = new ResizeObserver(() => {
+      this.scheduleWorkspaceResize();
+    });
+    this.containerResizeObserver.observe(container);
+    this.containerResizeObserver.observe(this.blocklyDiv.nativeElement);
+  }
+
+  private scheduleWorkspaceResize(): void {
+    if (this.workspace) {
+      Blockly.svgResize(this.workspace);
+    }
+
+    if (this.resizeAnimationFrame !== null) {
+      cancelAnimationFrame(this.resizeAnimationFrame);
+    }
+
+    this.resizeAnimationFrame = requestAnimationFrame(() => {
+      this.resizeAnimationFrame = null;
+      if (this.workspace) {
+        Blockly.svgResize(this.workspace);
+      }
+    });
   }
 
   /**

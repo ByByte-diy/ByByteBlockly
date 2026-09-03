@@ -7,6 +7,7 @@ import { AppComponent } from '../app.component';
 import { BlocklyModule } from '../modules/blockly/blockly.module';
 import { DeviceModule } from '../modules/device/device.module';
 import { UploadModule } from '../modules/upload/upload.module';
+import { CodeEditorModule } from '../modules/code-editor/code-editor.module';
 import { HeaderModule } from './components/header/header.module';
 
 /**
@@ -23,6 +24,7 @@ import { HeaderModule } from './components/header/header.module';
     BlocklyModule,
     DeviceModule,
     UploadModule,
+    CodeEditorModule,
     HeaderModule,
   ],
   exports: [
@@ -31,6 +33,7 @@ import { HeaderModule } from './components/header/header.module';
     TranslateModule,
     I18nModule,
     HeaderModule,
+    CodeEditorModule,
   ],
 })
 export class SharedModule {}

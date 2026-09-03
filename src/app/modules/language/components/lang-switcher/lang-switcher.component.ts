@@ -1,44 +1,95 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  HostListener,
+  ChangeDetectorRef,
+  inject,
+} from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { I18nService } from '../../i18n.service';
 import { LanguageInfo, SupportedLanguageCode } from '../../types/lang.type';
 
-/**
- * Language Selector Component
- * Dropdown for switching application language
- */
+const PLANET_ICON = "url('assets/icons/header/planet.svg')";
+
 @Component({
-  selector: "app-lang-switcher",
+  selector: 'app-lang-switcher',
   template: `
-    <select
-      class="language-selector"
-      (change)="onLanguageChange($event)"
-      [value]="current"
-      aria-label="Language selector"
-    >
-      <option *ngFor="let lang of languages" [value]="lang.code">
-        {{ lang.flag }} {{ lang.name }}
-      </option>
-    </select>
+    <div class="header-dropdown">
+      <button
+        type="button"
+        class="header-icon-btn"
+        [title]="currentLang?.name || 'Language'"
+        aria-label="Language"
+        (click)="toggle($event)"
+      >
+        <span class="header-icon-mask" [style.--icon]="planetIcon" aria-hidden="true"></span>
+      </button>
+      @if (open) {
+        <div class="header-dropdown__menu" role="menu" aria-label="Language">
+          @for (lang of languages; track lang.code) {
+            <button
+              type="button"
+              class="header-menu-item"
+              [class.header-menu-item--active]="current === lang.code"
+              (click)="selectLanguage(lang.code)"
+            >
+              <span class="header-menu-item__check">{{ current === lang.code ? '✓' : '' }}</span>
+              <span>{{ lang.flag }} {{ lang.name }}</span>
+            </button>
+          }
+        </div>
+      }
+    </div>
   `,
-  styleUrls: ["./lang-switcher.component.scss"],
 })
 export class LangSwitcherComponent implements OnInit, OnDestroy {
-  private readonly i18n: I18nService = inject(I18nService);
+  private readonly i18n = inject(I18nService);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly destroy$ = new Subject<void>();
+
+  readonly planetIcon = PLANET_ICON;
+  open = false;
   protected languages: readonly LanguageInfo[] = [];
-  protected current: SupportedLanguageCode = "en";
+  protected current: SupportedLanguageCode = 'en';
+  protected currentLang: LanguageInfo | undefined;
+
+  toggle(event: MouseEvent): void {
+    event.stopPropagation();
+    this.open = !this.open;
+    this.cdr.detectChanges();
+  }
+
+  close(): void {
+    this.open = false;
+    this.cdr.detectChanges();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (this.open && !this.elementRef.nativeElement.contains(event.target as Node)) {
+      this.close();
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.close();
+  }
 
   ngOnInit(): void {
     this.current = this.i18n.getCurrentLanguage();
     this.languages = this.i18n.getSupportedLanguages();
+    this.syncCurrentLang();
 
-    // Subscribe to language changes
     this.i18n
       .getCurrentLanguage$()
       .pipe(takeUntil(this.destroy$))
       .subscribe((lang) => {
         this.current = lang;
+        this.syncCurrentLang();
       });
   }
 
@@ -47,12 +98,12 @@ export class LangSwitcherComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  /**
-   * Handle language change from dropdown
-   */
-  async onLanguageChange(event: Event): Promise<void> {
-    const select = event.target as HTMLSelectElement;
-    await this.i18n.setLanguage(select.value as SupportedLanguageCode);
+  async selectLanguage(code: SupportedLanguageCode): Promise<void> {
+    this.close();
+    await this.i18n.setLanguage(code);
+  }
+
+  private syncCurrentLang(): void {
+    this.currentLang = this.languages.find((l) => l.code === this.current);
   }
 }
-

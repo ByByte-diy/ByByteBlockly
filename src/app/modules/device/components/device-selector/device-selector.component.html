@@ -1,59 +1,71 @@
-<div class="device-selector">
-  <div class="selectors-row">
-  <div class="selector-group">
-    <label for="board-select">Плата:</label>
-    <select 
-      id="board-select" 
-      [ngModel]="selectedBoard?.id" 
-      (ngModelChange)="onBoardChange($event)"
-      class="selector">
-      <option *ngFor="let board of boards" [value]="board.id">
-        {{ board.name }}
-      </option>
-    </select>
-  </div>
+<div class="header-popover">
+  <button
+    type="button"
+    class="header-chip device-selector__trigger"
+    [attr.aria-label]="'ui.device_panel' | translate"
+    (click)="toggle($event)"
+  >
+    <span class="header-icon-mask" [style.--icon]="chipIcon" aria-hidden="true"></span>
+    <span class="header-chip__label">{{ boardLabel }}</span>
+  </button>
+  @if (open) {
+    <div class="header-popover__panel device-selector__panel" role="dialog" [attr.aria-label]="'ui.device_panel' | translate">
+      <div class="header-field">
+        <label for="board-select">{{ 'ui.board_label' | translate }}</label>
+        <select
+          id="board-select"
+          [ngModel]="selectedBoard?.id"
+          (ngModelChange)="onBoardChange($event)"
+        >
+          @for (board of boards; track board.id) {
+            <option [value]="board.id">{{ board.name }}</option>
+          }
+        </select>
+      </div>
 
-  <div class="selector-group">
-    <label for="port-select">Порт:</label>
-    <div class="port-selector-wrapper">
-      <select 
-        id="port-select" 
-        [value]="selectedPort?.path || ''" 
-        (change)="onPortChange($any($event.target).value)"
-        [disabled]="ports.length === 0"
-        class="selector">
-        <option value="" disabled>
-          {{ ports.length === 0 ? 'Ports not found' : 'Select a port' }}
-        </option>
-        <option *ngFor="let port of ports" [value]="port.path">
-          {{ port.path }} {{ port.friendlyName ? '- ' + port.friendlyName : '' }}
-        </option>
-      </select>
-      <button 
-        (click)="refreshPorts()" 
-        [disabled]="isRefreshing"
-        class="refresh-btn"
-        title="Refresh the list of ports">
-        {{ isRefreshing ? '⟳' : '🔄' }}
-      </button>
-      <!-- Web Serial API: button for selecting a device -->
-      <button 
-        *ngIf="needsPortRequest()"
-        (click)="requestNewPort()" 
-        [disabled]="isRefreshing"
-        class="connect-device-btn"
-        title="Select a device (Web Serial API)">
-        🔌 Connect Device
-      </button>
+      <div class="header-field">
+        <label for="port-select">{{ 'ui.port_label' | translate }}</label>
+        <div class="device-selector__port-row">
+          <select
+            id="port-select"
+            [value]="selectedPort?.path || ''"
+            (change)="onPortChange($any($event.target).value)"
+            [disabled]="ports.length === 0"
+          >
+            <option value="" disabled>
+              {{ ports.length === 0 ? ('ui.ports_not_found' | translate) : ('ui.select_port' | translate) }}
+            </option>
+            @for (port of ports; track port.path) {
+              <option [value]="port.path">
+                {{ port.path }} {{ port.friendlyName ? '- ' + port.friendlyName : '' }}
+              </option>
+            }
+          </select>
+          <button
+            type="button"
+            class="header-btn"
+            (click)="refreshPorts()"
+            [disabled]="isRefreshing"
+            [title]="'ui.refresh_ports' | translate"
+          >
+            {{ isRefreshing ? '⟳' : '↻' }}
+          </button>
+        </div>
+      </div>
+
+      @if (needsPortRequest()) {
+        <div class="header-action-row">
+          <button
+            type="button"
+            class="header-btn header-btn--primary"
+            (click)="requestNewPort()"
+            [disabled]="isRefreshing"
+          >
+            {{ 'ui.connect_device' | translate }}
+          </button>
+        </div>
+        <p class="device-selector__hint">{{ 'ui.web_serial_hint' | translate }}</p>
+      }
     </div>
-  </div>
-  </div>
-
-  <!-- Hint for Web Serial API -->
-  <div *ngIf="needsPortRequest()" class="web-serial-hint">
-    <small>
-      💡 <strong>Web version:</strong> Click "Connect Device" to select your Arduino/device.
-      Your browser will show a list of available USB devices.
-    </small>
-  </div>
+  }
 </div>

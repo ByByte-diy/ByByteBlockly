@@ -1,0 +1,34 @@
+<header class="app-header">
+  <a class="app-header__logo" href="https://www.bybyte.diy/" target="_blank" rel="noopener noreferrer" aria-label="ByByte DIY">
+    <img src="assets/icons/blocks/icon.png" alt="" width="40" height="40" />
+  </a>
+
+  <app-lang-switcher></app-lang-switcher>
+  <app-file-menu></app-file-menu>
+  <app-level-switcher class="app-header__levels"></app-level-switcher>
+  <app-device-selector></app-device-selector>
+  <app-upload-panel></app-upload-panel>
+
+  <div class="app-header__spacer" aria-hidden="true"></div>
+
+  <app-theme-toggle></app-theme-toggle>
+
+  <div #overflowRoot class="header-dropdown app-header__overflow">
+    <button
+      type="button"
+      class="header-icon-btn"
+      title="More"
+      aria-label="More options"
+      (click)="toggleOverflow($event)"
+    >
+      <span class="header-icon-mask" [style.--icon]="moreIcon" aria-hidden="true"></span>
+    </button>
+    @if (overflowOpen) {
+      <div class="header-dropdown__menu header-dropdown__menu--align-right" role="menu" aria-label="More">
+        <div class="app-header__overflow-levels">
+          <app-level-switcher></app-level-switcher>
+        </div>
+      </div>
+    }
+  </div>
+</header>

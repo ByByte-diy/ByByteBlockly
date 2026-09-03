@@ -1,70 +1,95 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  HostListener,
+  ChangeDetectorRef,
+  inject,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
-import { UploadManagerService, UploadStatus, UploadProgress } from '../../services/upload-manager.service';
+import { UploadManagerService, UploadStatus } from '../../services/upload-manager.service';
 import { DeviceManagerService } from '../../../device/services/device-manager.service';
 
-/**
- * Component of the upload management panel
- */
+const UPLOAD_ICON = "url('assets/icons/header/upload.svg')";
+
 @Component({
   selector: 'app-upload-panel',
   templateUrl: './upload-panel.component.html',
-  styleUrls: ['./upload-panel.component.scss']
+  styleUrls: ['./upload-panel.component.scss'],
 })
 export class UploadPanelComponent implements OnInit, OnDestroy {
-  status: UploadStatus = UploadStatus.IDLE;
-  message: string = 'Ready to upload';
-  isProcessing: boolean = false;
-  isDeviceReady: boolean = false;
+  readonly uploadIcon = UPLOAD_ICON;
+  open = false;
 
-  UploadStatus = UploadStatus; // For use in template
+  status: UploadStatus = UploadStatus.IDLE;
+  message = 'Ready to upload';
+  isProcessing = false;
+  isDeviceReady = false;
 
   private subscriptions: Subscription[] = [];
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly cdr = inject(ChangeDetectorRef);
+  readonly uploadManager = inject(UploadManagerService);
+  private readonly deviceManager = inject(DeviceManagerService);
 
-  constructor(
-    public uploadManager: UploadManagerService,
-    private deviceManager: DeviceManagerService
-  ) {}
+  toggle(event: MouseEvent): void {
+    event.stopPropagation();
+    this.open = !this.open;
+    this.cdr.detectChanges();
+  }
+
+  close(): void {
+    this.open = false;
+    this.cdr.detectChanges();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (this.open && !this.elementRef.nativeElement.contains(event.target as Node)) {
+      this.close();
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.close();
+  }
 
   ngOnInit(): void {
-    // Subscribe to status
     this.subscriptions.push(
-      this.uploadManager.status$.subscribe(status => {
+      this.uploadManager.status$.subscribe((status) => {
         this.status = status;
-        this.isProcessing = status === UploadStatus.COMPILING || status === UploadStatus.UPLOADING;
-      })
+        this.isProcessing =
+          status === UploadStatus.COMPILING || status === UploadStatus.UPLOADING;
+      }),
     );
 
-    // Subscribe to progress
     this.subscriptions.push(
-      this.uploadManager.progress$.subscribe(progress => {
+      this.uploadManager.progress$.subscribe((progress) => {
         this.message = progress.message;
-      })
+      }),
     );
 
-    // Check if the device is ready
     this.isDeviceReady = this.deviceManager.isDeviceReady();
-    
+
     this.subscriptions.push(
       this.deviceManager.selectedBoard$.subscribe(() => {
         this.isDeviceReady = this.deviceManager.isDeviceReady();
-      })
+      }),
     );
 
     this.subscriptions.push(
       this.deviceManager.selectedPort$.subscribe(() => {
         this.isDeviceReady = this.deviceManager.isDeviceReady();
-      })
+      }),
     );
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  /**
-   * Handler of the compile and upload button
-   */
   onCompileAndUpload(): void {
     if (!this.isDeviceReady) {
       alert('Please select a board and port');
@@ -72,21 +97,12 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
     }
 
     this.uploadManager.compileAndUpload().subscribe({
-      next: (success) => {
-        if (success) {
-          console.log('Upload successful!');
-        }
-      },
       error: (err) => {
-        console.error('Upload error:', err);
         alert(`Error: ${err.message}`);
-      }
+      },
     });
   }
 
-  /**
-   * Handler of the compile only button
-   */
   onCompileOnly(): void {
     if (!this.isDeviceReady) {
       alert('Please select a board');
@@ -94,49 +110,37 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
     }
 
     this.uploadManager.compileOnly().subscribe({
-      next: (result) => {
-        if (result.success) {
-          console.log('Compilation successful!', result);
-        }
-      },
       error: (err) => {
-        console.error('Compilation error:', err);
         alert(`Compilation error: ${err.message}`);
-      }
+      },
     });
   }
 
-  /**
-   * Gets the class for the status indicator
-   */
-  getStatusClass(): string {
+  getStatusDotClass(): string {
     switch (this.status) {
       case UploadStatus.SUCCESS:
-        return 'status-success';
+        return 'header-status-dot--success';
       case UploadStatus.ERROR:
-        return 'status-error';
+        return 'header-status-dot--error';
       case UploadStatus.COMPILING:
       case UploadStatus.UPLOADING:
-        return 'status-processing';
+        return 'header-status-dot--processing';
       default:
-        return 'status-idle';
+        return '';
     }
   }
 
-  /**
-   * Gets the status icon
-   */
-  getStatusIcon(): string {
+  getStatusBarClass(): string {
     switch (this.status) {
       case UploadStatus.SUCCESS:
-        return '✓';
+        return 'header-status-bar--success';
       case UploadStatus.ERROR:
-        return '✗';
+        return 'header-status-bar--error';
       case UploadStatus.COMPILING:
       case UploadStatus.UPLOADING:
-        return '⟳';
+        return 'header-status-bar--processing';
       default:
-        return '○';
+        return 'header-status-bar--idle';
     }
   }
 }

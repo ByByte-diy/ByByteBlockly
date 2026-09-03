@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Arduino generator golden (canary blocks) > controls_if with true condition 1`] = `
+"if (true) {
+
+}
+"
+`;
+
+exports[`Arduino generator golden (canary blocks) > otto_move forward at default speed 1`] = `
+"Otto.walk(1,1000,1); // FORWARD
+"
+`;
+
+exports[`Arduino generator golden (canary blocks) > paragraph HTML block with empty content 1`] = `
+"<p></p>
+"
+`;
+
+exports[`Arduino generator golden (canary blocks) > procedures_defnoreturn empty body 1`] = `""`;
+
+exports[`Arduino generator golden (canary blocks) > text_join with two numeric parts 1`] = `"String(1) + String(2)"`;

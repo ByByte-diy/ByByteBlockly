@@ -1,26 +1,40 @@
-<div class="upload-panel">
-  <div class="actions">
-    <button 
-      class="btn btn-primary btn-upload"
-      (click)="onCompileAndUpload()"
-      [disabled]="isProcessing || !isDeviceReady"
-      title="Compile and upload to the device">
-      <span class="btn-icon">⬆</span>
-      <span class="btn-text">Upload</span>
-    </button>
-
-    <button 
-      class="btn btn-secondary btn-compile"
-      (click)="onCompileOnly()"
-      [disabled]="isProcessing"
-      title="Compile only without upload">
-      <span class="btn-icon">⚙</span>
-      <span class="btn-text">Compile</span>
-    </button>
-  </div>
-
-  <div class="status-indicator" [ngClass]="getStatusClass()">
-    <span class="status-icon">{{ getStatusIcon() }}</span>
-    <span class="status-message">{{ message }}</span>
-  </div>
+<div class="header-popover">
+  <button
+    type="button"
+    class="header-icon-btn upload-panel__trigger"
+    [attr.aria-label]="'ui.upload_panel' | translate"
+    (click)="toggle($event)"
+  >
+    <span class="header-icon-mask" [style.--icon]="uploadIcon" aria-hidden="true"></span>
+    <span class="header-status-dot upload-panel__status-dot" [ngClass]="getStatusDotClass()"></span>
+  </button>
+  @if (open) {
+    <div
+      class="header-popover__panel header-popover__panel--align-right"
+      role="dialog"
+      [attr.aria-label]="'ui.upload_panel' | translate"
+    >
+      <div class="header-action-row">
+        <button
+          type="button"
+          class="header-btn header-btn--primary"
+          (click)="onCompileAndUpload()"
+          [disabled]="isProcessing || !isDeviceReady"
+        >
+          {{ 'ui.btn_upload' | translate }}
+        </button>
+        <button
+          type="button"
+          class="header-btn header-btn--secondary"
+          (click)="onCompileOnly()"
+          [disabled]="isProcessing"
+        >
+          {{ 'ui.btn_compile' | translate }}
+        </button>
+      </div>
+      <div class="header-status-bar" [ngClass]="getStatusBarClass()">
+        <span class="header-status-bar__message">{{ message }}</span>
+      </div>
+    </div>
+  }
 </div>

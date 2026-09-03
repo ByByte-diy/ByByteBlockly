@@ -1,124 +1,14 @@
-.upload-panel {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  padding: 10px;
-  background-color: #f5f5f5;
-  border-radius: 4px;
-
-  .actions {
-    display: flex;
-    gap: 10px;
-  }
-
-  .btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    &:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    &:active:not(:disabled) {
-      transform: translateY(0);
-    }
-
-    .btn-icon {
-      font-size: 18px;
-    }
-
-    .btn-text {
-      font-size: 14px;
-    }
-  }
-
-  .btn-primary {
-    background-color: #4caf50;
-    color: white;
-
-    &:hover:not(:disabled) {
-      background-color: #45a049;
-    }
-  }
-
-  .btn-secondary {
-    background-color: #2196f3;
-    color: white;
-
-    &:hover:not(:disabled) {
-      background-color: #0b7dda;
-    }
-  }
-
-  .status-indicator {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 13px;
-    flex: 1;
-    min-width: 200px;
-
-    .status-icon {
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .status-message {
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &.status-idle {
-      background-color: #e3f2fd;
-      color: #1976d2;
-    }
-
-    &.status-processing {
-      background-color: #fff3e0;
-      color: #f57c00;
-
-      .status-icon {
-        animation: spin 1s linear infinite;
-      }
-    }
-
-    &.status-success {
-      background-color: #e8f5e9;
-      color: #2e7d32;
-    }
-
-    &.status-error {
-      background-color: #ffebee;
-      color: #c62828;
-    }
-  }
+:host {
+  display: inline-flex;
+  flex-shrink: 0;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.upload-panel__trigger {
+  position: relative;
 }
 
+.upload-panel__status-dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}

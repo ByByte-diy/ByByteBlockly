@@ -1,0 +1,318 @@
+.header-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--app-header-btn-size);
+  height: var(--app-header-btn-size);
+  padding: 0;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  background: var(--app-surface);
+  color: var(--app-text-muted);
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: var(--app-header-btn-hover);
+    color: var(--app-text);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--app-header-btn-active);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--app-status-idle);
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &--active {
+    background: var(--app-header-btn-active);
+    color: var(--app-text);
+    border-color: var(--app-text-muted);
+  }
+}
+
+.header-icon-mask {
+  width: var(--app-header-icon-size);
+  height: var(--app-header-icon-size);
+  display: inline-block;
+  background-color: currentColor;
+  -webkit-mask: var(--icon) no-repeat center / contain;
+  mask: var(--icon) no-repeat center / contain;
+}
+
+.header-dropdown,
+.header-popover {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.header-dropdown__trigger,
+.header-popover__trigger {
+  display: inline-flex;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.header-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 1000;
+  min-width: 220px;
+  padding: 6px;
+  background: var(--app-header-panel-bg);
+  border: 1px solid var(--app-header-divider);
+  border-radius: 8px;
+  box-shadow: var(--app-header-panel-shadow);
+}
+
+.header-dropdown__menu--align-right {
+  left: auto;
+  right: 0;
+}
+
+.header-popover__panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 1000;
+  min-width: 320px;
+  max-width: min(420px, calc(100vw - 16px));
+  padding: 14px;
+  background: var(--app-header-panel-bg);
+  border: 1px solid var(--app-header-divider);
+  border-radius: 8px;
+  box-shadow: var(--app-header-panel-shadow);
+}
+
+.header-popover__panel--align-right {
+  left: auto;
+  right: 0;
+}
+
+.header-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--app-text);
+  font-size: var(--app-header-font-lg);
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: var(--app-header-btn-hover);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &--active {
+    background: var(--app-header-btn-active);
+    font-weight: 600;
+  }
+
+  &__check {
+    width: 24px;
+    flex-shrink: 0;
+    font-size: var(--app-header-font-lg);
+    text-align: center;
+    color: var(--app-status-success);
+  }
+}
+
+.header-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--app-header-btn-size);
+  padding: 0 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  background: var(--app-surface);
+  color: var(--app-text);
+  font-size: var(--app-header-font-md);
+  cursor: pointer;
+  max-width: 240px;
+  flex-shrink: 1;
+  min-width: 0;
+
+  &:hover {
+    background: var(--app-header-btn-hover);
+  }
+
+  &__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.header-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--app-status-idle);
+
+  &--processing {
+    background: var(--app-status-processing);
+    animation: header-pulse 1s ease-in-out infinite;
+  }
+
+  &--success {
+    background: var(--app-status-success);
+  }
+
+  &--error {
+    background: var(--app-status-error);
+  }
+}
+
+@keyframes header-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.header-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+
+  label {
+    font-size: var(--app-header-font-sm);
+    font-weight: 600;
+    color: var(--app-text-muted);
+  }
+
+  select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--app-border);
+    border-radius: 6px;
+    background: var(--app-surface);
+    color: var(--app-text);
+    font-size: var(--app-header-font-lg);
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &:focus {
+      outline: 2px solid var(--app-status-idle);
+      outline-offset: 1px;
+    }
+  }
+}
+
+.header-action-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.header-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  background: var(--app-surface);
+  color: var(--app-text);
+  font-size: var(--app-header-font-md);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: var(--app-header-btn-hover);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    background: var(--app-status-success);
+    border-color: var(--app-status-success);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.05);
+    }
+  }
+
+  &--secondary {
+    background: var(--app-status-idle);
+    border-color: var(--app-status-idle);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.05);
+    }
+  }
+}
+
+.header-status-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: var(--app-header-font-md);
+  color: var(--app-text);
+
+  &--idle {
+    background: var(--app-status-idle-bg);
+    color: var(--app-status-idle);
+  }
+
+  &--processing {
+    background: var(--app-status-processing-bg);
+    color: var(--app-status-processing);
+  }
+
+  &--success {
+    background: var(--app-status-success-bg);
+    color: var(--app-status-success);
+  }
+
+  &--error {
+    background: var(--app-status-error-bg);
+    color: var(--app-status-error);
+  }
+
+  &__message {
+    flex: 1;
+    min-width: 0;
+    word-break: break-word;
+  }
+}

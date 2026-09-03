@@ -1,44 +1,43 @@
 .level-switcher {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
   flex-shrink: 0;
 }
 
-.level-switcher__label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  white-space: nowrap;
-  opacity: 0.9;
-}
-
 .level-switcher__buttons {
-  display: flex;
-  border-radius: 4px;
+  display: inline-flex;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  height: var(--app-header-btn-size);
 }
 
 .level-switcher__btn {
-  padding: 0.35rem 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 100%;
+  padding: 0 10px;
   border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: inherit;
-  font-size: 0.8rem;
+  background: var(--app-surface);
+  color: var(--app-text-muted);
+  font-size: var(--app-header-font-md);
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
 
   &:not(:last-child) {
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: 1px solid var(--app-border);
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--app-header-btn-hover);
+    color: var(--app-text);
   }
 
   &--active {
-    background: rgba(255, 255, 255, 0.35);
-    font-weight: 600;
+    background: var(--app-header-btn-active);
+    color: var(--app-text);
   }
 }

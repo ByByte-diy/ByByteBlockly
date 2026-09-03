@@ -1,24 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { HeaderUiModule } from '../../shared/components/header/header-ui.module';
 import { UploadPanelComponent } from './components/upload-panel/upload-panel.component';
 import { UploadManagerService } from './services/upload-manager.service';
 
-/**
- * Upload Module
- * Contains components and services for compilation and upload of code
- */
 @NgModule({
-  declarations: [
-    UploadPanelComponent
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    UploadPanelComponent
-  ],
-  providers: [
-    UploadManagerService
-  ]
+  declarations: [UploadPanelComponent],
+  imports: [CommonModule, TranslateModule, HeaderUiModule],
+  exports: [UploadPanelComponent],
+  providers: [UploadManagerService],
 })
-export class UploadModule { }
+export class UploadModule {}

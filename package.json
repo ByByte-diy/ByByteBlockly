@@ -48,7 +48,9 @@
     "deb64": "electron-installer-debian --src dist/linux-unpacked --dest dist/installers/ --arch amd64 --config debconfig.json",
     "deb32": "electron-installer-debian --src dist/linux-unpacked32 --dest dist/installers/ --arch ia32 --config debconfig.json",
     "publier": "npm run rebuild && electron-builder --win --ia32 -p always",
-    "rebuild": "electron-rebuild -f -w serialport"
+    "rebuild": "electron-rebuild -f -w serialport",
+    "test:blockly": "vitest run src/app/modules/blockly",
+    "test:blockly:watch": "vitest src/app/modules/blockly"
   },
   "build": {
     "appId": "com.electron.bybyteblockly",
@@ -152,10 +154,14 @@
     "@angular-devkit/build-angular": "^17.3.17",
     "@angular/cli": "^17.3.17",
     "@angular/compiler-cli": "^17.3.12",
+    "@vitest/coverage-v8": "^5.0.0",
     "electron": "^39.2.3",
     "electron-builder": "^26.0.12",
     "electron-rebuild": "^3.2.9",
-    "typescript": "5.2"
+    "jsdom": "^30.0.1",
+    "typescript": "5.2",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^5.0.0"
   },
   "dependencies": {
     "@angular/common": "^17.3.12",

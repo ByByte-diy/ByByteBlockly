@@ -8,6 +8,10 @@ app-blockly-editor {
     border-top: none !important;
   }
 
+  .blockly-workspace {
+    background-color: var(--workspace-bg);
+  }
+
   .blocklyToolboxDiv {
     background-color: var(--toolbox-bg) !important;
     width: auto !important;

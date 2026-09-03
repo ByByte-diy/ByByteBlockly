@@ -3,44 +3,15 @@
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  
-  .app-header {
-    padding: 10px 20px;
-    background-color: var(--app-header-bg);
-    color: var(--app-text);
-    border-bottom: 1px solid var(--app-border);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    
-    h1 {
-      margin: 0;
-      font-size: 1.5rem;
-      white-space: nowrap;
-    }
 
-    app-device-selector {
-      flex: 1;
-      min-width: 400px;
-    }
-
-    app-upload-panel {
-      flex: 1;
-      min-width: 300px;
-    }
-  }
-  
   .app-main {
     flex: 1;
     display: flex;
     overflow: hidden;
-    min-height: 0; // Важливо для flexbox
-    
+    min-height: 0;
+
     app-blockly-editor {
       flex: 1;
     }
   }
 }
-

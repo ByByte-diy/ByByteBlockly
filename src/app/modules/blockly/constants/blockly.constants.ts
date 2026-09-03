@@ -13,7 +13,7 @@ export const DEFAULT_WORKSPACE_OPTIONS: BlocklyOptions = {
   grid: {
     spacing: 20,
     length: 3,
-    colour: '#ccc',
+    colour: '#888894',
     snap: true,
   },
   zoom: {

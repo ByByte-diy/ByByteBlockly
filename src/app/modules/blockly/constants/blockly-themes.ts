@@ -6,11 +6,14 @@ import * as Blockly from 'blockly';
 
 export type ResolvedAppTheme = 'light' | 'dark';
 
+/** Pastel gray — only the block canvas; toolbox/flyout stay unchanged. */
+const LIGHT_WORKSPACE_BACKGROUND = '#d0d0d6';
+
 export const BYBYTE_BLOCKLY_LIGHT_THEME = Blockly.Theme.defineTheme('bybyteLight', {
   name: 'bybyteLight',
   base: Blockly.Themes.Zelos,
   componentStyles: {
-    workspaceBackgroundColour: '#f9f9f9',
+    workspaceBackgroundColour: LIGHT_WORKSPACE_BACKGROUND,
     toolboxBackgroundColour: '#ececec',
     toolboxForegroundColour: '#3c4043',
     flyoutBackgroundColour: '#ececec',
@@ -49,6 +52,6 @@ export function getBlocklyTheme(resolved: ResolvedAppTheme): Blockly.Theme {
 }
 
 export const BLOCKLY_GRID_COLOURS: Record<ResolvedAppTheme, string> = {
-  light: '#cccccc',
-  dark: '#444444',
+  light: '#888894',
+  dark: '#5a5a66',
 };

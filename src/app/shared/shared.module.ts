@@ -7,15 +7,14 @@ import { AppComponent } from '../app.component';
 import { BlocklyModule } from '../modules/blockly/blockly.module';
 import { DeviceModule } from '../modules/device/device.module';
 import { UploadModule } from '../modules/upload/upload.module';
+import { HeaderModule } from './components/header/header.module';
 
 /**
  * Shared Module
  * Contains shared components for Web and Electron versions
  */
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -23,14 +22,15 @@ import { UploadModule } from '../modules/upload/upload.module';
     I18nModule,
     BlocklyModule,
     DeviceModule,
-    UploadModule
+    UploadModule,
+    HeaderModule,
   ],
   exports: [
     AppComponent,
     CommonModule,
     TranslateModule,
-    I18nModule
-  ]
+    I18nModule,
+    HeaderModule,
+  ],
 })
-export class SharedModule { }
-
+export class SharedModule {}

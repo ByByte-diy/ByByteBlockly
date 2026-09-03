@@ -6,13 +6,34 @@
   --app-text-muted: #5f6368;
   --app-border: #dadce0;
   --app-header-bg: #ffffff;
+  --app-header-height: 56px;
+  --app-header-btn-size: 44px;
+  --app-header-font-sm: 1.5rem;
+  --app-header-font-md: 1.625rem;
+  --app-header-font-lg: 1.75rem;
+  --app-header-icon-size: 24px;
+  --app-header-icon-size-sm: 20px;
+  --app-header-btn-hover: rgba(0, 0, 0, 0.06);
+  --app-header-btn-active: rgba(0, 0, 0, 0.1);
+  --app-header-divider: var(--app-border);
+  --app-header-panel-bg: var(--app-surface);
+  --app-header-panel-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --app-status-idle: #1976d2;
+  --app-status-processing: #f57c00;
+  --app-status-success: #2e7d32;
+  --app-status-error: #c62828;
+  --app-status-idle-bg: #e3f2fd;
+  --app-status-processing-bg: #fff3e0;
+  --app-status-success-bg: #e8f5e9;
+  --app-status-error-bg: #ffebee;
 
   --toolbox-bg: #ececec;
   --toolbox-flyout-bg: rgba(236, 236, 236, 0.92);
   --toolbox-text: #3c4043;
   --toolbox-icon-color: #5f6368;
   --toolbox-icon-color-selected: #ffffff;
-  --workspace-grid: #cccccc;
+  --workspace-grid: #888894;
+  --workspace-bg: #d0d0d6;
   --workspace-bg-stroke: #c6c6c6;
 }
 
@@ -24,13 +45,34 @@
   --app-text-muted: #9aa0a6;
   --app-border: #3c4043;
   --app-header-bg: #252525;
+  --app-header-height: 56px;
+  --app-header-btn-size: 44px;
+  --app-header-font-sm: 1.5rem;
+  --app-header-font-md: 1.625rem;
+  --app-header-font-lg: 1.75rem;
+  --app-header-icon-size: 24px;
+  --app-header-icon-size-sm: 20px;
+  --app-header-btn-hover: rgba(255, 255, 255, 0.08);
+  --app-header-btn-active: rgba(255, 255, 255, 0.14);
+  --app-header-divider: var(--app-border);
+  --app-header-panel-bg: var(--app-surface);
+  --app-header-panel-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --app-status-idle: #64b5f6;
+  --app-status-processing: #ffb74d;
+  --app-status-success: #81c784;
+  --app-status-error: #e57373;
+  --app-status-idle-bg: rgba(25, 118, 210, 0.18);
+  --app-status-processing-bg: rgba(245, 124, 0, 0.18);
+  --app-status-success-bg: rgba(46, 125, 50, 0.18);
+  --app-status-error-bg: rgba(198, 40, 40, 0.18);
 
   --toolbox-bg: #2b2b2b;
   --toolbox-flyout-bg: rgba(43, 43, 43, 0.95);
   --toolbox-text: #e8eaed;
   --toolbox-icon-color: #bdc1c6;
   --toolbox-icon-color-selected: #ffffff;
-  --workspace-grid: #444444;
+  --workspace-grid: #5a5a66;
+  --workspace-bg: #1e1e1e;
   --workspace-bg-stroke: #555555;
 }
 
@@ -41,13 +83,34 @@
   --app-text-muted: #5f6368;
   --app-border: #dadce0;
   --app-header-bg: #ffffff;
+  --app-header-height: 56px;
+  --app-header-btn-size: 44px;
+  --app-header-font-sm: 1.5rem;
+  --app-header-font-md: 1.625rem;
+  --app-header-font-lg: 1.75rem;
+  --app-header-icon-size: 24px;
+  --app-header-icon-size-sm: 20px;
+  --app-header-btn-hover: rgba(0, 0, 0, 0.06);
+  --app-header-btn-active: rgba(0, 0, 0, 0.1);
+  --app-header-divider: var(--app-border);
+  --app-header-panel-bg: var(--app-surface);
+  --app-header-panel-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --app-status-idle: #1976d2;
+  --app-status-processing: #f57c00;
+  --app-status-success: #2e7d32;
+  --app-status-error: #c62828;
+  --app-status-idle-bg: #e3f2fd;
+  --app-status-processing-bg: #fff3e0;
+  --app-status-success-bg: #e8f5e9;
+  --app-status-error-bg: #ffebee;
 
   --toolbox-bg: #ececec;
   --toolbox-flyout-bg: rgba(236, 236, 236, 0.92);
   --toolbox-text: #3c4043;
   --toolbox-icon-color: #5f6368;
   --toolbox-icon-color-selected: #ffffff;
-  --workspace-grid: #cccccc;
+  --workspace-grid: #888894;
+  --workspace-bg: #d0d0d6;
   --workspace-bg-stroke: #c6c6c6;
 }
 

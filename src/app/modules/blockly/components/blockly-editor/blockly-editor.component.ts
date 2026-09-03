@@ -27,6 +27,7 @@ import { ToolboxDefinition } from "blockly/core/utils/toolbox";
 import { WorkspaceStorageService } from "@app/modules/storage/workspace-storage.service";
 import { ThemeService } from "@app/core/services/theme.service";
 import { ToolboxLevelService } from "../../services/toolbox-level.service";
+import { ProjectActionsService } from "../../services/project-actions.service";
 import { BlockLevelE } from "../../types/block.types";
 import { Subscription } from "rxjs";
 
@@ -56,6 +57,7 @@ export class BlocklyEditorComponent
     private storage: WorkspaceStorageService,
     private themeService: ThemeService,
     private toolboxLevelService: ToolboxLevelService,
+    private projectActions: ProjectActionsService,
     private ngZone: NgZone,
   ) {}
 
@@ -78,6 +80,7 @@ export class BlocklyEditorComponent
       this.codeGenTimer = null;
     }
     if (this.workspace) {
+      this.projectActions.unregister();
       this.workspace.dispose();
       this.workspace = null;
     }
@@ -107,6 +110,9 @@ export class BlocklyEditorComponent
 
       // Initialize Blockly workspace
       this.initializeBlockly();
+      this.projectActions.register({
+        getWorkspace: () => this.workspace,
+      });
 
       // Load saved workspace if exists
       if (this.workspace && (await this.storage.hasSavedData())) {
@@ -172,6 +178,9 @@ export class BlocklyEditorComponent
       console.error("Failed to load blocks:", err);
       // Initialize Blockly with default toolbox
       this.initializeBlockly();
+      this.projectActions.register({
+        getWorkspace: () => this.workspace,
+      });
     }
   }
 
@@ -223,6 +232,7 @@ export class BlocklyEditorComponent
       registerProceduresFlyoutOnWorkspace(this.workspace);
 
       Blockly.svgResize(this.workspace);
+      this.updateGridColour(resolvedTheme);
     });
 
     this.themeSubscription = this.themeService.onResolvedThemeChange.subscribe(
@@ -313,11 +323,14 @@ export class BlocklyEditorComponent
 
   private updateGridColour(resolved: ResolvedAppTheme): void {
     const colour = BLOCKLY_GRID_COLOURS[resolved];
-
     const root = this.blocklyDiv?.nativeElement;
-    root?.querySelectorAll("line.blocklyGridLine").forEach((line) => {
-      line.setAttribute("stroke", colour);
-    });
+
+    // Blockly 13 renders grid as an SVG pattern (not .blocklyGridLine).
+    root
+      ?.querySelectorAll('pattern[id^="blocklyGridPattern"] line')
+      .forEach((line) => {
+        line.setAttribute('stroke', colour);
+      });
   }
 
   /**
@@ -447,103 +460,6 @@ Saved data will be cleared after pressing OK.
       this.storage.clearStorage();
       console.log("✅ Incompatible storage cleared");
     }
-  }
-
-  /**
-   * Export project to .bbb file (XML format)
-   */
-  public async exportProject(): Promise<void> {
-    try {
-      if (!this.workspace) {
-        alert("Workspace not initialized");
-        return;
-      }
-
-      // Get current settings
-      const board = this.deviceManager.getSelectedBoard();
-      const port = this.deviceManager.getSelectedPort();
-
-      const settings = {
-        selectedBoard: board.id,
-        selectedPort: port?.path,
-      };
-
-      // Generate .bbb XML content
-      const projectXml = this.storage.exportWorkspaceToBBB(
-        this.workspace,
-        settings
-      );
-
-      // Download file
-      const blob = new Blob([projectXml], { type: "application/xml" });
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `project-${Date.now()}.bbb`;
-      a.click();
-
-      URL.revokeObjectURL(url);
-      console.log("✅ Project exported to .bbb");
-    } catch (error) {
-      console.error("❌ Error exporting project:", error);
-      alert("Помилка експорту проекту");
-    }
-  }
-
-  /**
-   * Import project from .bbb file (XML format)
-   */
-  public async importProject(): Promise<void> {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = ".bbb,.xml";
-
-    input.onchange = async (e: any) => {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = async (event: any) => {
-        try {
-          if (!this.workspace) {
-            throw new Error("Workspace not initialized");
-          }
-
-          const xmlContent = event.target.result as string;
-
-          // Parse project file
-          const parsed = this.storage.parseProjectFile(xmlContent);
-
-          // Log metadata if available
-          if (parsed.metadata) {
-            if (parsed.metadata.board) {
-              console.log("📋 Project board:", parsed.metadata.board);
-            }
-            if (parsed.metadata.port) {
-              console.log("📋 Project port:", parsed.metadata.port);
-            }
-          }
-
-          // Load workspace
-          this.storage.loadWorkspaceFromXml(
-            this.workspace,
-            parsed.workspaceXml
-          );
-          scheduleWorkspaceRerender(this.workspace);
-
-          console.log("✅ Project imported from .bbb");
-          alert("Проект успішно імпортовано");
-        } catch (error) {
-          console.error("❌ Error importing project:", error);
-          alert("Помилка імпорту проекту. Перевірте формат файлу.");
-        }
-      };
-
-      reader.readAsText(file);
-    };
-
-    input.click();
   }
 
   /**

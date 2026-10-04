@@ -31,8 +31,10 @@
   ],
   "scripts": {
     "ng": "ng",
-    "start:web": "ng serve",
-    "build:web": "ng build --configuration production",
+    "start:web": "npm run prepare:wasm-avr && ng serve",
+    "build:web": "npm run prepare:wasm-avr && ng build --configuration production",
+    "prepare:wasm-avr": "node src/wasm-avr/prepare-bybyte-assets.mjs",
+    "verify:wasm-avr-w1": "node src/wasm-avr/verify-w1.mjs",
     "start:electron": "npm run build:electron:dev && electron .",
     "build:electron:dev": "ng run bybyte-blockly:build-electron:development",
     "build:electron:prod": "ng run bybyte-blockly:build-electron:production",
@@ -49,8 +51,11 @@
     "deb32": "electron-installer-debian --src dist/linux-unpacked32 --dest dist/installers/ --arch ia32 --config debconfig.json",
     "publier": "npm run rebuild && electron-builder --win --ia32 -p always",
     "rebuild": "electron-rebuild -f -w serialport",
-    "test:blockly": "vitest run src/app/modules/blockly",
-    "test:blockly:watch": "vitest src/app/modules/blockly"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:blockly": "vitest run src/app/modules/blockly/__tests__",
+    "test:blockly:watch": "vitest src/app/modules/blockly/__tests__",
+    "spike:wasm-avr": "node src/wasm-avr/spike/run-spike.mjs"
   },
   "build": {
     "appId": "com.electron.bybyteblockly",
@@ -154,6 +159,7 @@
     "@angular-devkit/build-angular": "^17.3.17",
     "@angular/cli": "^17.3.17",
     "@angular/compiler-cli": "^17.3.12",
+    "@horang-corp/avr-gcc-wasm": "^0.2.0",
     "@vitest/coverage-v8": "^5.0.0",
     "electron": "^39.2.3",
     "electron-builder": "^26.0.12",

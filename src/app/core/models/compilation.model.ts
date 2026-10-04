@@ -6,7 +6,11 @@ export interface CompileResult {
   output: string;
   error?: string;
   hexPath?: string;
+  hexContent?: string;
   binPath?: string;
+  flashBytes?: number;
+  fitsTarget?: boolean;
+  fqbn?: string;
   size?: {
     text: number;
     data: number;

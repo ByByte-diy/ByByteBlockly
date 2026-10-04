@@ -8,6 +8,7 @@ import {
   inject,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { CompileResult } from '@core/models';
 import { UploadManagerService, UploadStatus } from '../../services/upload-manager.service';
 import { DeviceManagerService } from '../../../device/services/device-manager.service';
 
@@ -104,16 +105,26 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
   }
 
   onCompileOnly(): void {
-    if (!this.isDeviceReady) {
-      alert('Please select a board');
-      return;
-    }
-
     this.uploadManager.compileOnly().subscribe({
+      next: (result) => this.logCompileResult(result),
       error: (err) => {
-        alert(`Compilation error: ${err.message}`);
+        console.group('[Compile]');
+        console.error(err);
+        console.groupEnd();
       },
     });
+  }
+
+  private logCompileResult(result: CompileResult): void {
+    console.group('[Compile]');
+    console.log(result.output);
+    if (result.error) {
+      console.error(result.error);
+    }
+    if (result.hexContent) {
+      console.log('HEX length:', result.hexContent.length, 'flash:', result.flashBytes);
+    }
+    console.groupEnd();
   }
 
   getStatusDotClass(): string {

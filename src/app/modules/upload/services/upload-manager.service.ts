@@ -3,7 +3,7 @@ import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { ICompiler, IUploader } from '@core/interfaces';
 import { CompileResult, UploadResult } from '@core/models';
 import { DeviceManagerService } from '../../device/services/device-manager.service';
-import { BlocklyService } from '../../blockly/services/blockly.service';
+import { CodeEditorService } from '../../code-editor/services/code-editor.service';
 
 /**
  * Status of the upload process
@@ -50,7 +50,7 @@ export class UploadManagerService {
     private compiler: ICompiler,
     private uploader: IUploader,
     private deviceManager: DeviceManagerService,
-    private blocklyService: BlocklyService
+    private codeEditorService: CodeEditorService,
   ) {}
 
   /**
@@ -156,8 +156,7 @@ export class UploadManagerService {
     // Small delay for update
     await new Promise(resolve => setTimeout(resolve, 100));
 
-    // Phase 2: replace with this.codeEditorService.getEffectiveCode() for manual edits.
-    const code = this.blocklyService.getCurrentCode();
+    const code = this.codeEditorService.getEffectiveCode();
     if (!code) {
       throw new Error('Code is empty or not generated');
     }

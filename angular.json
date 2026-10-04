@@ -37,6 +37,12 @@
                 "glob": "**/*",
                 "input": "www",
                 "output": "/www"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@horang-corp/avr-gcc-wasm",
+                "output": "/assets/wasm-avr",
+                "ignore": ["**/*.md", "package.json"]
               }
             ],
             "styles": [

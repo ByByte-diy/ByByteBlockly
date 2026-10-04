@@ -1,8 +1,8 @@
 import { NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { BlocklyService } from '../../blockly/services/blockly.service';
-import { CodeEditorService } from './code-editor.service';
+import { BlocklyService } from '@modules/blockly/services/blockly.service';
+import { CodeEditorService } from '../services/code-editor.service';
 
 const mockNgZone = {
   run: (fn: () => void) => fn(),

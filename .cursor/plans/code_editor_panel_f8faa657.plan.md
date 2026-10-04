@@ -34,7 +34,7 @@ todos:
     status: completed
   - id: compiler-phase2
     content: Підключити getEffectiveCode() у UploadManagerService
-    status: pending
+    status: completed
 isProject: false
 ---
 
@@ -237,18 +237,15 @@ interface ICodeSource {
 
 ## 6. Підготовка до компілятора
 
-**Фаза 1 (цей PR):** реалізувати `ICodeSource` + `getEffectiveCode()`, але **не змінювати** `UploadManagerService` — лише додати unit-тести, що effective code коректний.
+**Фаза 1:** `ICodeSource` + `getEffectiveCode()` + unit-тести sync logic. ✅
 
-**Фаза 2 (наступний крок, 1 рядок зміни):** у [upload-manager.service.ts](src/app/modules/upload/services/upload-manager.service.ts):
+**Фаза 2:** у [upload-manager.service.ts](src/app/modules/upload/services/upload-manager.service.ts) компілятор читає effective code:
 
 ```typescript
-// було:
-const code = this.blocklyService.getCurrentCode();
-// стане:
 const code = this.codeEditorService.getEffectiveCode();
 ```
 
-Це забезпечить parity з legacy: компіляція відредагованого коду.
+Parity з legacy: якщо користувач правив код у панелі (`isDirty`), на плату йде відредагований текст; інакше — згенерований з Blockly. ✅
 
 ---
 
@@ -325,7 +322,11 @@ Vitest (як [upload-manager.service.spec.ts](src/app/modules/upload/services/up
 - Іконки Copy / Close: SVG-mask як у header (`copy.svg`, `close.svg`), 28px / 32px
 - Компактна смуга: padding `0.375rem 0.75rem`, кнопки 44–48px
 
-### Залишилось (фаза 2)
+### Фаза 2 (компілятор)
 
-- [upload-manager.service.ts](src/app/modules/upload/services/upload-manager.service.ts): замінити `getCurrentCode()` на `codeEditorService.getEffectiveCode()`
+- [upload-manager.service.ts](src/app/modules/upload/services/upload-manager.service.ts) читає `codeEditorService.getEffectiveCode()` — компіляція йде з відредагованого коду, якщо панель dirty
+- Vitest: `upload-manager.service.spec.ts` перевіряє, що в compiler потрапляє effective code
+
+### Залишилось
+
 - За потреби — замінити placeholder `assets/icons/header/copy.svg` на фінальну іконку

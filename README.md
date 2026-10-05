@@ -30,14 +30,12 @@ benefit you and everyone in your community.
 The more people helping to translate the better, it is important to translate while understanding the context and what 
 is the robot actually doing to be accurate.
 
-1. Go to the [lang folder](https://github.com/ByByte-diy/ByByteBlockly/tree/master/www/lang) and duplicate the Arduino_en.js 
-Blockly_en.js and msg_en.js files from English
-2. Rename them according to your ISO language code, for example fr is for French, so the files are renamed like this:
-Arduino_fr.js Blockly_fr.js and msg_fr.js  
-3. Edit the files with any code editor software like [Visual Studio Code](https://code.visualstudio.com/) translating 
-only the English part after = in between the quotes "" in visual studio is the text in red.
-4. Then open a pull request [here in github](https://github.com/ByByte-diy/ByByteBlockly/pulls) or just attach the files in a
-[new issue](https://github.com/ByByte-diy/ByByteBlockly/issues).
+1. Duplicate `src/app/modules/language/translations/en.ts` and rename for your locale (e.g. `fr.ts`).
+2. Translate string values; register the locale in the language module.
+3. Open a pull request [on GitHub](https://github.com/ByByte-diy/ByByteBlockly/pulls) or attach files in a
+   [new issue](https://github.com/ByByte-diy/ByByteBlockly/issues).
+
+See [docs/i18n/](docs/i18n/README.md) for details.
 
 ## 🎉 New Angular Architecture
 

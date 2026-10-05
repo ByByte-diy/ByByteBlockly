@@ -9,15 +9,23 @@ import {
   isAvr328pFqbn,
   isBybyteWasmManifest,
   prepareSketchForWasm,
-  resolveWasmAssetsBase,
   WASM_AVR_UNSUPPORTED_MESSAGE,
 } from './web-avr-wasm.util';
+import { WasmAssetProvider } from './wasm-asset.provider';
+import { resolveWasmLibraries } from './wasm-library-resolver';
+
+interface WasmSelectiveLoad {
+  headerFiles: string[];
+  bybyteObjects: string[];
+  includePaths: string[];
+}
 
 interface WasmCompileFn {
   (options: {
     source: string;
     sensors?: string[];
     assetsBase?: string;
+    selectiveLoad?: WasmSelectiveLoad;
   }): Promise<WasmBuildResult>;
 }
 
@@ -33,6 +41,8 @@ interface WasmBuildResult {
 export class WebAvrWasmCompilerService implements ICompiler {
   private compileFn: WasmCompileFn | null = null;
 
+  constructor(private readonly wasmAssets: WasmAssetProvider) {}
+
   compile(options: CompileOptions): Observable<CompileResult> {
     return from(this.compileAsync(options));
   }
@@ -42,7 +52,16 @@ export class WebAvrWasmCompilerService implements ICompiler {
   }
 
   private async probeTools(): Promise<{ ok: boolean; detail: string }> {
-    const manifestUrl = new URL('assets/manifest.json', resolveWasmAssetsBase()).href;
+    try {
+      await this.wasmAssets.ensureValid();
+      await this.wasmAssets.loadCatalog();
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      return { ok: false, detail: `asset cache: ${message}` };
+    }
+
+    const assetsBase = await this.wasmAssets.resolveAssetsBase();
+    const manifestUrl = new URL('assets/manifest.json', assetsBase).href;
     try {
       const response = await fetch(manifestUrl, { method: 'GET' });
       if (!response.ok) {
@@ -111,7 +130,20 @@ export class WebAvrWasmCompilerService implements ICompiler {
     let progressSimulator: ReturnType<typeof createProgressSimulator> | null = null;
 
     try {
+      const catalog = await this.wasmAssets.loadCatalog();
+      const resolved = resolveWasmLibraries(source, catalog);
+
+      this.reportProgress(options, { percent: 24, message: 'ui.compile_progress_loading' });
+      await this.wasmAssets.prefetchCatalogPaths(resolved.prefetchPaths, (progress) => {
+        const percent = 24 + Math.round((progress.completed / Math.max(progress.total, 1)) * 10);
+        this.reportProgress(options, {
+          percent,
+          message: 'ui.compile_progress_loading',
+        });
+      });
+
       this.reportProgress(options, { percent: 28, message: 'ui.compile_progress_loading' });
+      this.compileFn = null;
       const compile = await this.loadCompileFn();
 
       this.reportProgress(options, { percent: 35, message: 'ui.compile_progress_compiling' });
@@ -122,7 +154,12 @@ export class WebAvrWasmCompilerService implements ICompiler {
       const wasmResult = await compile({
         source,
         sensors: detectWasmSensors(source),
-        assetsBase: resolveWasmAssetsBase(),
+        assetsBase: await this.wasmAssets.resolveAssetsBase(),
+        selectiveLoad: {
+          headerFiles: resolved.headerFiles,
+          bybyteObjects: resolved.bybyteObjects,
+          includePaths: resolved.includePaths,
+        },
       });
 
       progressSimulator.stop();
@@ -162,7 +199,8 @@ export class WebAvrWasmCompilerService implements ICompiler {
       return this.compileFn;
     }
 
-    const moduleUrl = new URL('index.js', resolveWasmAssetsBase()).href;
+    const assetsBase = await this.wasmAssets.resolveAssetsBase();
+    const moduleUrl = new URL('index.js', assetsBase).href;
     const wasmModule = await import(/* webpackIgnore: true */ moduleUrl);
     if (typeof wasmModule.compile !== 'function') {
       throw new Error('AVR WASM module does not export compile()');

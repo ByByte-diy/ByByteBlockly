@@ -1,7 +1,4 @@
-/**
- * Overrides for legacy www/css/blocklino.css inside the Angular Blockly editor.
- * blocklino targets Blockly 9-era DOM; unscoped rules break flyout layout in v13.
- */
+/** Blockly editor layout overrides (scoped for Blockly v13 / Zelos). */
 app-blockly-editor {
   .blocklySvg {
     background-color: transparent !important;
@@ -26,6 +23,13 @@ app-blockly-editor {
 
   .blocklyFlyout {
     z-index: 10;
+  }
+
+  .blocklyText,
+  .blocklyFlyoutLabelText,
+  .blocklyTreeLabel {
+    font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, sans-serif;
+    font-weight: 400;
   }
 
   /* MAX7219 8×8 draw grid — SVG LED dots */

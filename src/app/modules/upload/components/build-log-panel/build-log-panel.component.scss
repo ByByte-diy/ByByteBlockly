@@ -106,23 +106,19 @@
     color: var(--app-text);
   }
 
-  &--text {
-    min-height: 44px;
-    padding: 0 0.625rem;
-    font-size: var(--app-header-font-md, 13px);
-    font-weight: 500;
-    white-space: nowrap;
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   &--icon {
     min-width: 44px;
     height: 44px;
     padding: 0;
+  }
+
+  &--copied {
+    color: var(--app-status-success);
   }
 }
 

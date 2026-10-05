@@ -1,6 +1,7 @@
 import { injectForwardDeclarations } from './sketch-preprocessor';
 
-export const WASM_AVR_ASSETS_PATH = 'assets/wasm-avr/';
+/** @deprecated Use WasmAssetProvider.resolveAssetsBase() — base URL comes from cache-manifest.json */
+export const WASM_AVR_ASSETS_PATH = 'assets/wasm/';
 
 export const WASM_AVR_SUPPORTED_FQBNS = [
   'arduino:avr:uno',
@@ -24,8 +25,12 @@ export function isAvr328pFqbn(fqbn: string): boolean {
   return (WASM_AVR_SUPPORTED_FQBNS as readonly string[]).includes(normalizeFqbn(fqbn));
 }
 
-export function resolveWasmAssetsBase(baseHref = document.baseURI): string {
-  return new URL(WASM_AVR_ASSETS_PATH, baseHref).href;
+export function resolveWasmAssetsBase(baseUrl?: string, baseHref = document.baseURI): string {
+  const base = baseUrl ?? WASM_AVR_ASSETS_PATH;
+  if (base.startsWith('http://') || base.startsWith('https://')) {
+    return base.endsWith('/') ? base : `${base}/`;
+  }
+  return new URL(base, baseHref).href;
 }
 
 export function prepareSketchForWasm(code: string): string {

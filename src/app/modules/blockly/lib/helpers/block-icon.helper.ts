@@ -38,7 +38,7 @@ export function blockIconUrl(filename: string): string {
   return `assets/icons/blocks/${filename}`;
 }
 
-/** Blockly field using a legacy PNG from `www/media` (copied to assets). */
+/** Blockly field using a PNG from `src/assets/icons/blocks/`. */
 export function createBlockIconField(
   filename: string,
   size: BlockIconSize = "init",

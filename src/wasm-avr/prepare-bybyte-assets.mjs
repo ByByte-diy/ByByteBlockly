@@ -1,35 +1,31 @@
 #!/usr/bin/env node
 /**
- * Overlay ByByte library waves (W1, W2, …) onto src/assets/wasm-avr:
+ * Overlay ByByte library waves (W1, W2, …) onto versioned src/assets/wasm/avr-328p/:
  * headers + prebuilt .o (via WASM avr-gcc) + patched firmware-builder.js.
  */
 import http from 'node:http';
 import { createReadStream, existsSync, statSync } from 'node:fs';
-import { access, cp, lstat, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { access, cp, lstat, mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   flattenWaveCatalog,
+  loadMergedCatalog,
   mergeBybyteManifest,
-  mergeWaveCatalogs,
   resolveCatalogFile,
-} from './merge-manifest.mjs';
-import { patchFirmwareBuilderSource } from './patch-firmware-builder.mjs';
+} from './libraries-manifest.mjs';
 import { compileLibraryObject, setCompileAssetsBase } from './compile-library-object.mjs';
+import {
+  WASM_FAMILY_AVR_328P,
+  bundleDiskPath,
+} from './wasm-bundle-paths.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '../..');
 const PKG = join(ROOT, 'node_modules/@horang-corp/avr-gcc-wasm');
-const DEST = join(ROOT, 'src/assets/wasm-avr');
-const CATALOG_FILES = [
-  'libraries.w1.json',
-  'libraries.w2.json',
-  'libraries.w3.json',
-  'libraries.w4.json',
-  'libraries.w5.json',
-  'libraries.w6.json',
-  'libraries.w7.json',
-];
+const ASSETS_DIR = join(ROOT, 'src/assets');
+const DEST = bundleDiskPath(ASSETS_DIR, WASM_FAMILY_AVR_328P, '_staging');
+const LEGACY_DEST = join(ASSETS_DIR, 'wasm-avr');
 const PORT = 4175;
 const MIME = {
   '.wasm': 'application/wasm',
@@ -149,18 +145,24 @@ async function compileSources(catalog, manifest) {
   return compiled;
 }
 
-async function overlayFirmwareBuilder() {
+async function overlayWasmRuntime() {
+  const { patchFirmwareBuilderSource, patchIndexSource, patchWorkerSource } = await import(
+    './patch-wasm-bundle.mjs',
+  );
+
   const builderPath = join(DEST, 'firmware-builder.js');
-  const stockPath = join(PKG, 'firmware-builder.js');
-  const stock = await readFile(stockPath, 'utf8');
-  await writeFile(builderPath, patchFirmwareBuilderSource(stock));
+  const stockBuilder = await readFile(join(PKG, 'firmware-builder.js'), 'utf8');
+  await writeFile(builderPath, patchFirmwareBuilderSource(stockBuilder));
+
+  const indexPath = join(DEST, 'index.js');
+  await writeFile(indexPath, patchIndexSource(await readFile(indexPath, 'utf8')));
+
+  const workerPath = join(DEST, 'worker.js');
+  await writeFile(workerPath, patchWorkerSource(await readFile(workerPath, 'utf8')));
 }
 
 async function loadCatalog() {
-  const catalogs = await Promise.all(
-    CATALOG_FILES.map((file) => readFile(join(__dirname, file), 'utf8').then(JSON.parse)),
-  );
-  return mergeWaveCatalogs(catalogs);
+  return loadMergedCatalog(__dirname);
 }
 
 async function main() {
@@ -184,8 +186,8 @@ async function main() {
     `${JSON.stringify(headersOnlyManifest, null, 2)}\n`,
   );
 
-  await overlayFirmwareBuilder();
-  console.log('Patched firmware-builder.js');
+  await overlayWasmRuntime();
+  console.log('Patched firmware-builder.js, index.js, worker.js');
 
   const server = await startStaticServer(DEST);
   setCompileAssetsBase(`http://127.0.0.1:${PORT}/`);
@@ -211,6 +213,24 @@ async function main() {
   }
 
   console.log(`ByByte ${catalog.wave} assets ready: ${DEST}`);
+
+  const { generateCatalog, generateCacheManifest } = await import('./generate-catalog.mjs');
+  const wasmCatalog = await generateCatalog({ destDir: DEST, rootDir: ROOT });
+  console.log(`Generated wasm-catalog.json (${wasmCatalog.entryCount} files)`);
+
+  const finalDir = bundleDiskPath(ASSETS_DIR, WASM_FAMILY_AVR_328P, wasmCatalog.deployVersion);
+  await rm(finalDir, { recursive: true, force: true });
+  await rm(LEGACY_DEST, { recursive: true, force: true });
+  try {
+    await rename(DEST, finalDir);
+  } catch {
+    await cp(DEST, finalDir, { recursive: true });
+    await rm(DEST, { recursive: true, force: true });
+  }
+  console.log(`Published bundle: ${finalDir}`);
+
+  await generateCacheManifest({ rootDir: ROOT, wasmCatalog });
+  console.log('Generated cache-manifest.json');
 }
 
 main().catch((error) => {

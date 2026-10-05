@@ -107,7 +107,7 @@ mv bin/arduino-cli ./
 - В Electron: має працювати автоматично через serialport
 
 ### Блоки не завантажуються
-- Перевірте що файли існують в `www/blocs&generateurs/`
+- Перевірте що блок зареєстрований у `src/app/modules/blockly/definitions/` або `platforms/`
 - Подивіться в консоль DevTools на помилки завантаження
 
 ### Компіляція не працює

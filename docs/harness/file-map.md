@@ -1,5 +1,15 @@
 # File map
 
+## Asset cache
+
+| Файл | Опис |
+|------|------|
+| `modules/asset-cache/asset-cache.module.ts` | NgModule (import in AppModule) |
+| `modules/asset-cache/services/asset-cache.service.ts` | IDB + LRU store |
+| `modules/asset-cache/services/asset-cache-registry.service.ts` | Manifest validate / invalidate |
+| `modules/asset-cache/services/asset-cache-manifest.service.ts` | Load cache-manifest.json |
+| `platform/web/services/wasm-asset.provider.ts` | WASM bundle consumer |
+
 ## Compile & Upload
 
 | Файл | Опис |

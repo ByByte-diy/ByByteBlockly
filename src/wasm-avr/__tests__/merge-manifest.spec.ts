@@ -7,30 +7,18 @@ import {
   mergeBybyteManifest,
   mergeWaveCatalogs,
   resolveCatalogFile,
-} from '../merge-manifest.mjs';
+  waveCatalogsFromDocument,
+} from '../libraries-manifest.mjs';
 
-const w1Catalog = JSON.parse(
-  readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../libraries.w1.json'), 'utf8'),
+const wasmAvrDir = join(dirname(fileURLToPath(import.meta.url)), '..');
+const waveCatalogs = waveCatalogsFromDocument(
+  JSON.parse(readFileSync(join(wasmAvrDir, 'libraries.json'), 'utf8')),
 );
-const w2Catalog = JSON.parse(
-  readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../libraries.w2.json'), 'utf8'),
-);
-const w3Catalog = JSON.parse(
-  readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../libraries.w3.json'), 'utf8'),
-);
-const w4Catalog = JSON.parse(
-  readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../libraries.w4.json'), 'utf8'),
-);
-const w5Catalog = JSON.parse(
-  readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../libraries.w5.json'), 'utf8'),
-);
-const w6Catalog = JSON.parse(
-  readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../libraries.w6.json'), 'utf8'),
-);
-const w7Catalog = JSON.parse(
-  readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../libraries.w7.json'), 'utf8'),
-);
-const catalog = mergeWaveCatalogs([w1Catalog, w2Catalog, w3Catalog, w4Catalog]);
+const w1Catalog = waveCatalogs.find((entry) => entry.wave === 'W1')!;
+const w5Catalog = waveCatalogs.find((entry) => entry.wave === 'W5')!;
+const w6Catalog = waveCatalogs.find((entry) => entry.wave === 'W6')!;
+const w7Catalog = waveCatalogs.find((entry) => entry.wave === 'W7')!;
+const catalog = mergeWaveCatalogs(waveCatalogs.slice(0, 4));
 
 describe('mergeBybyteManifest', () => {
   const base = {

@@ -6,6 +6,7 @@ import { CoreModule } from './core';
 import { SharedModule } from './shared/shared.module';
 import { ElectronPlatformModule } from './platform/electron/electron-platform.module';
 import { I18nModule } from './modules/language';
+import { AssetCacheModule } from './modules/asset-cache';
 
 /**
  * App Module for Electron platform
@@ -15,6 +16,7 @@ import { I18nModule } from './modules/language';
   imports: [
     BrowserModule,
     CoreModule,
+    AssetCacheModule,
     I18nModule,
     ElectronPlatformModule,
     SharedModule

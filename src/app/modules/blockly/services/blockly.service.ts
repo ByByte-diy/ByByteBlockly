@@ -58,7 +58,7 @@ export class BlocklyService {
 
   /**
    * Loads the existing blocks and generators
-   * TODO: Load from www/blocks&generators
+   * Block definitions are registered via BlockRegistry (see blocks-loader.service).
    */
   loadCustomBlocks(): Promise<void> {
     return new Promise((resolve) => {
@@ -69,7 +69,7 @@ export class BlocklyService {
 
   /**
    * Loads the toolbox configuration
-   * TODO: Load from www/toolbox
+   * Toolbox is built dynamically via ToolboxBuilderService.
    */
   loadToolbox(board: string): Promise<any> {
     return new Promise((resolve) => {

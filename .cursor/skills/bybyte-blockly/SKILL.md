@@ -3,13 +3,13 @@ name: bybyte-blockly
 description: >-
   Maintain ByByteBlockly block definitions, platform packs, toolbox, boards,
   i18n, and category colours. Use when editing src/app/modules/blockly/,
-  migrating blocks from www/, adding hardware/platform blocks, toolbox
+  adding hardware/platform blocks, toolbox
   categories, board profiles, or Blockly colours.
 ---
 
 # ByByte Blockly
 
-Angular + Blockly 13 (Zelos). Legacy source: `www/blocs&generateurs/`, `www/toolbox/`, `www/js/boards.js`.
+Angular + Blockly 13 (Zelos). Block sources live under `src/app/modules/blockly/`.
 
 ## Before changes
 
@@ -50,7 +50,7 @@ platforms/<pack>/
   <group>/*.blocks.ts   # BYBYTE_BLOCKS / BIPED_BLOCKS arrays
 ```
 
-1. Keep **legacy block type ID** from `www/`.
+1. Keep **stable block type IDs** when refactoring (workspace XML compatibility).
 2. `BlockBuilder`: `.setCategory()`, `.setColor(CATEGORY_PALETTE.*)`, `.setLevel()`, `.setPlatforms()` / `.setBoards()`.
 3. i18n keys → `en.ts` + `uk.ts`; icon → `category-icons.const.ts`.
 4. `npm run build:web`.

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-import { readdir, stat, writeFile } from 'node:fs/promises';
+import { readdir, stat } from 'node:fs/promises';
 import { basename, dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { writeWaveCatalog } from './libraries-manifest.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const LIB_ROOT = join(__dirname, 'libraries');
@@ -70,7 +71,7 @@ async function buildSimple(id, folder, virtualBase, files) {
   };
 }
 
-async function main() {
+export async function generateW5Catalog() {
   const defs = [
     await buildSimple('RTClib', 'RTClib', '/libraries/RTClib', ['RTClib.h', 'RTClib.cpp']),
     await buildSimple('BME280', 'BME280', '/libraries/BME280', ['BME280.h', 'BME280.cpp']),
@@ -175,11 +176,13 @@ async function main() {
     libraries,
   };
 
-  await writeFile(join(__dirname, 'libraries.w5.json'), `${JSON.stringify(catalog, null, 2)}\n`);
-  console.log(`Wrote libraries.w5.json (${libraries.length} libraries)`);
+  await writeWaveCatalog(__dirname, catalog);
+  console.log(`Updated libraries.json W5 (${libraries.length} libraries)`);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  generateW5Catalog().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

@@ -15,19 +15,24 @@
         @if (lastCompileResult?.hexContent) {
           <button
             type="button"
-            class="build-log-panel__btn build-log-panel__btn--text"
+            class="build-log-panel__btn build-log-panel__btn--icon"
+            [title]="'ui.build_log_download_hex' | translate"
+            [attr.aria-label]="'ui.build_log_download_hex' | translate"
             (click)="downloadHex($event)"
           >
-            {{ 'ui.build_log_download_hex' | translate }}
+            <span class="build-log-panel__icon" [style.--icon]="hexIcon" aria-hidden="true"></span>
           </button>
         }
         <button
           type="button"
-          class="build-log-panel__btn build-log-panel__btn--text"
+          class="build-log-panel__btn build-log-panel__btn--icon"
+          [class.build-log-panel__btn--copied]="copyFeedback"
+          [title]="copyFeedback ? ('ui.build_log_copied' | translate) : ('ui.build_log_copy' | translate)"
+          [attr.aria-label]="copyFeedback ? ('ui.build_log_copied' | translate) : ('ui.build_log_copy' | translate)"
           (click)="copyBuildLog($event)"
           [disabled]="!buildLog"
         >
-          {{ copyFeedback ? ('ui.build_log_copied' | translate) : ('ui.build_log_copy' | translate) }}
+          <span class="build-log-panel__icon" [style.--icon]="copyIcon" aria-hidden="true"></span>
         </button>
         <button
           type="button"

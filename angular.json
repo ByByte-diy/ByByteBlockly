@@ -32,22 +32,28 @@
                 "glob": "**/*",
                 "input": "node_modules/blockly/media",
                 "output": "/assets/blockly/media"
-              },
-              {
-                "glob": "**/*",
-                "input": "www",
-                "output": "/www"
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "www/css/bootstrap.min.3.3.6.css",
-              "www/css/blocklino.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
           "configurations": {
             "production": {
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets",
+                  "ignore": ["wasm/**"],
+                  "output": "/assets"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "node_modules/blockly/media",
+                  "output": "/assets/blockly/media"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -104,17 +110,10 @@
                 "glob": "**/*",
                 "input": "node_modules/blockly/media",
                 "output": "/assets/blockly/media"
-              },
-              {
-                "glob": "**/*",
-                "input": "www",
-                "output": "/www"
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "www/css/bootstrap.min.3.3.6.css",
-              "www/css/blocklino.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },

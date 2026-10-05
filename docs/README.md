@@ -14,6 +14,7 @@
 | [Web Serial](./web-serial/README.md) | Користувачі + web dev | Підключення порту, upload |
 | [Blockly](./blockly/README.md) | Block authors | Blocks, toolbox, mutators |
 | [Storage](./storage/README.md) | Розробники | Workspace persistence |
+| [Asset cache](./asset-cache/README.md) | Web / WASM | Unified IDB cache + manifest |
 | [i18n](./i18n/README.md) | Перекладачі | Angular + Blockly locales |
 | [Testing](./testing/README.md) | QA / CI | Unit tests, manual checklist |
 | [History](./history/README.md) | Архів | Angular migration notes |
@@ -44,6 +45,5 @@ npm run build:web
 
 ## Не документувати / не чіпати
 
-- `www/` — legacy код, буде видалено
 - `compilation/` — third-party Arduino libs (власні README vendor)
 - `.cursor/` — skills/plans для IDE

@@ -6,6 +6,7 @@ import { CoreModule } from './core';
 import { SharedModule } from './shared/shared.module';
 import { WebPlatformModule } from './platform/web/web-platform.module';
 import { I18nModule } from './modules/language';
+import { AssetCacheModule } from './modules/asset-cache';
 
 /**
  * App Module
@@ -18,6 +19,7 @@ import { I18nModule } from './modules/language';
   imports: [
     BrowserModule,
     CoreModule,
+    AssetCacheModule,
     I18nModule,
     WebPlatformModule,
     SharedModule

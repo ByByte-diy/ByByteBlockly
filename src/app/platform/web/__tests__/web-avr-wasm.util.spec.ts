@@ -70,9 +70,9 @@ int helper(int value) {
   });
 
   it('resolves assets next to the document base', () => {
-    expect(resolveWasmAssetsBase('http://localhost:4200/')).toBe(
-      'http://localhost:4200/assets/wasm-avr/',
-    );
+    expect(
+      resolveWasmAssetsBase('/assets/wasm/avr-328p/v0.2.0-W1/', 'http://localhost:4200/'),
+    ).toBe('http://localhost:4200/assets/wasm/avr-328p/v0.2.0-W1/');
   });
 
   it('formats wasm stderr and flash stats', () => {

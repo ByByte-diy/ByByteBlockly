@@ -8,22 +8,9 @@
  *   node src/wasm-avr/wasm-avr.mjs verify all
  *   node src/wasm-avr/wasm-avr.mjs sync w6
  */
-import { spawnSync } from 'node:child_process';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '../..');
-
-const VERIFY = {
-  w1: 'verify-w1.mjs',
-  w2: 'verify-w2.mjs',
-  w3: 'verify-w3.mjs',
-  w4: 'verify-w4.mjs',
-  w5: 'verify-w5.mjs',
-  w6: 'verify-w6.mjs',
-  w7: 'verify-w7.mjs',
-};
+import { generateW5Catalog } from './generate-w5-catalog.mjs';
+import { syncLibraries } from './sync-libraries.mjs';
+import { VERIFY_WAVES, verifyWave } from './verify-wave.mjs';
 
 function usage() {
   console.log(`Usage: node src/wasm-avr/wasm-avr.mjs [command] [args]
@@ -41,22 +28,11 @@ Examples:
 `);
 }
 
-function runNode(script, args = []) {
-  const result = spawnSync(process.execPath, [join(__dirname, script), ...args], {
-    cwd: ROOT,
-    stdio: 'inherit',
-  });
-  if (result.error) {
-    throw result.error;
-  }
-  return result.status ?? 1;
-}
-
 async function runPrepare() {
   await import('./prepare-bybyte-assets.mjs');
 }
 
-function runVerify(target) {
+async function runVerify(target) {
   const key = target?.toLowerCase();
   if (!key || key === 'help' || key === '-h' || key === '--help') {
     usage();
@@ -65,40 +41,40 @@ function runVerify(target) {
 
   if (key === 'all') {
     let failed = false;
-    for (const wave of Object.keys(VERIFY)) {
+    for (const wave of Object.keys(VERIFY_WAVES)) {
       console.log(`\n=== verify ${wave} ===`);
-      const code = runNode(VERIFY[wave]);
+      const code = await verifyWave(wave);
       if (code !== 0) failed = true;
     }
     return failed ? 1 : 0;
   }
 
-  const script = VERIFY[key];
-  if (!script) {
+  if (!VERIFY_WAVES[key]) {
     console.error(`Unknown verify target: ${target}`);
     usage();
     return 1;
   }
-  return runNode(script);
+  return verifyWave(key);
 }
 
-function runSync(target) {
+async function runSync(target) {
   const key = target?.toLowerCase();
-  if (key === 'w5') {
-    let code = runNode('sync-w5-libraries.mjs');
-    if (code !== 0) return code;
-    return runNode('generate-w5-catalog.mjs');
-  }
-  if (key === 'w6') {
-    return runNode('sync-w6-libraries.mjs');
-  }
-  if (key === 'w7') {
-    return runNode('sync-w7-libraries.mjs');
+  if (!key || !['w5', 'w6', 'w7'].includes(key)) {
+    console.error(`Unknown sync target: ${target}`);
+    usage();
+    return 1;
   }
 
-  console.error(`Unknown sync target: ${target}`);
-  usage();
-  return 1;
+  try {
+    await syncLibraries(key);
+    if (key === 'w5') {
+      await generateW5Catalog();
+    }
+    return 0;
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : error);
+    return 1;
+  }
 }
 
 const [command = 'prepare', arg] = process.argv.slice(2);
@@ -110,10 +86,10 @@ try {
       await runPrepare();
       break;
     case 'verify':
-      exitCode = runVerify(arg);
+      exitCode = await runVerify(arg);
       break;
     case 'sync':
-      exitCode = runSync(arg);
+      exitCode = await runSync(arg);
       break;
     case 'help':
     case '-h':

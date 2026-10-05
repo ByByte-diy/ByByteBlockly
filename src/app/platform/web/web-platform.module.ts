@@ -5,6 +5,8 @@ import { WebUploaderService } from './services/web-uploader.service';
 import { WebSerialService } from './services/web-serial.service';
 import { WebSerialPortRegistry } from './services/web-serial-port-registry.service';
 import { WebFileSystemService } from './services/web-filesystem.service';
+import { WasmAssetProvider } from './services/wasm-asset.provider';
+import { WasmBoardPrefetchService } from './services/wasm-board-prefetch.service';
 
 /**
  * Web Platform Module
@@ -14,6 +16,8 @@ import { WebFileSystemService } from './services/web-filesystem.service';
   providers: [
     WebSerialPortRegistry,
     WebSerialService,
+    WasmAssetProvider,
+    WasmBoardPrefetchService,
     WebAvrWasmCompilerService,
     WebUploaderService,
     WebFileSystemService,

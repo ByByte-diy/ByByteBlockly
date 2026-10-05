@@ -1,0 +1,3896 @@
+{
+  "schemaVersion": 1,
+  "bundleId": "wasm-avr-328p",
+  "version": "0.2.0+W1+W2+W3+W4+W5+W6+W7",
+  "deployVersion": "v0.2.0-W1-W2-W3-W4-W5-W6-W7",
+  "contentHash": "sha256:e1dc060ce34864de634229474beece63e08ff69b4c9efe4482030cc718904a21",
+  "assetsBase": "/assets/wasm/avr-328p/v0.2.0-W1-W2-W3-W4-W5-W6-W7/",
+  "fqbn": [
+    "arduino:avr:uno",
+    "arduino:avr:nano"
+  ],
+  "generatedAt": "2026-10-05T19:19:54.754Z",
+  "entryCount": 696,
+  "totalBytes": 56565078,
+  "files": {
+    "firmware-builder.js": {
+      "sha256": "789a4de74cda397bbcea2dc8f928a9fc54bfcb41d3ae6d4e16cb3922229c1428",
+      "size": 12404
+    },
+    "index.js": {
+      "sha256": "17d969c3c174e3085ad97273e0e67b2cf96bdac171b5cc3ea20befce4b4596bf",
+      "size": 2033
+    },
+    "worker.js": {
+      "sha256": "ab765a7d43365f467c093e8f2a35e6d636768a3d34ae21afa1c4dd255ea9a5ee",
+      "size": 521
+    },
+    "tools/avr-as.mjs": {
+      "sha256": "f87023c95bb4fb900a8787eadf8058b657fbc8117aa212e1faf629e20ed5a38b",
+      "size": 134895
+    },
+    "tools/avr-as.wasm": {
+      "sha256": "cf228116046caa8865bcd49dc8f2cafe1fbf61dabc3920d51ca27cf020d0f34b",
+      "size": 761856
+    },
+    "tools/avr-ld.mjs": {
+      "sha256": "f7e7434ee053a8b86349e20b828cbc96e5b7dde7596ea992d775b70881dc1229",
+      "size": 142386
+    },
+    "tools/avr-ld.wasm": {
+      "sha256": "8b884781cd1bde8007bc4f878e82335c502f9bed57f62b182d72ec6372371675",
+      "size": 1078207
+    },
+    "tools/avr-objcopy.mjs": {
+      "sha256": "6bda2f075bcbab021b5506175631008ef1f0db4ac8ff9ff78c2b6f7d89fb9416",
+      "size": 135032
+    },
+    "tools/avr-objcopy.wasm": {
+      "sha256": "9de9e2fcc18f0ce549234340222ab4b301123f1465d670a407ed065d5f02edd4",
+      "size": 725405
+    },
+    "tools/cc1plus.mjs": {
+      "sha256": "b33f286338e5774ed705f321d05556a533bf8b43dd8f832144905b2bce08e2d7",
+      "size": 183199
+    },
+    "tools/cc1plus.wasm": {
+      "sha256": "c987b310a29dc685b9ba8bf7710d346cb890d735bf2d5db03d44fe864dc17584",
+      "size": 13844490
+    },
+    "assets/fs/arduino/core/Arduino.h": {
+      "sha256": "335f45c59532cd7df39ce1435fbf1abf8d503d42ac6085a92e0f2ff75f5fffac",
+      "size": 7613
+    },
+    "assets/fs/arduino/core/binary.h": {
+      "sha256": "cf4471358657a38f744807fe2b6eb7ab5dd13bab402e77d3dd38e78635c02755",
+      "size": 11214
+    },
+    "assets/fs/arduino/core/Client.h": {
+      "sha256": "0619cd22b5f07c705d1c19db2c868bf5e2441ce3278f3fba11e71104ee2636bd",
+      "size": 1529
+    },
+    "assets/fs/arduino/core/HardwareSerial.h": {
+      "sha256": "f64d1a45fb14b94ca2425e73978f61bd054a886e5f838089098008d199a9bd73",
+      "size": 5262
+    },
+    "assets/fs/arduino/core/HardwareSerial_private.h": {
+      "sha256": "ff787b0f29eebaaa903aff4d12349e4a45f5c6ca995cec7aa699bd8296253a93",
+      "size": 4470
+    },
+    "assets/fs/arduino/core/IPAddress.h": {
+      "sha256": "7703aef6f91a385729cf8f16ed561b0f8c7eb823698c80af3a33f9e0de3b4e72",
+      "size": 2861
+    },
+    "assets/fs/arduino/core/new.h": {
+      "sha256": "46d737ed07098aa51ea868c000f7dd0a919361cc7481518754632547fa60d858",
+      "size": 149
+    },
+    "assets/fs/arduino/core/PluggableUSB.h": {
+      "sha256": "555ba172a3004d809a10a8c6bc5ae93154a0148eb5a5a62e9855ad1b57535704",
+      "size": 2063
+    },
+    "assets/fs/arduino/core/Print.h": {
+      "sha256": "29403f23a682faae75437ca4e8370e0075efa3c70f9850d27ff0105eca4c9146",
+      "size": 2964
+    },
+    "assets/fs/arduino/core/Printable.h": {
+      "sha256": "ba6be49c4ef46aa03fa7b78cc444e72f811805cf33dfdddf26bd062cdbc14a0b",
+      "size": 1335
+    },
+    "assets/fs/arduino/core/Server.h": {
+      "sha256": "a75dd1f4e53398af5006b2f9b26df53ca76dd3999649bdf31bf4120aef4ea144",
+      "size": 963
+    },
+    "assets/fs/arduino/core/Stream.h": {
+      "sha256": "4f8adb5c1ab52d5f2b5a831cf8bdc0ae49b92c32dd22f2dc5c53389322701cdb",
+      "size": 6060
+    },
+    "assets/fs/arduino/core/Udp.h": {
+      "sha256": "2bcab2ff8d1e4acfa389085d81b065dafc0fe7173c808447986f89a852d073ba",
+      "size": 4363
+    },
+    "assets/fs/arduino/core/USBAPI.h": {
+      "sha256": "72f7b2eb6361a200106d9041dfa77669e438d64c93c253e79cecf385546d90ae",
+      "size": 6282
+    },
+    "assets/fs/arduino/core/USBCore.h": {
+      "sha256": "4da9e387bade6ae523b311e8f2cac1db5e5b5353028419a5183a07e67f38552f",
+      "size": 8372
+    },
+    "assets/fs/arduino/core/USBDesc.h": {
+      "sha256": "09370bbb62b01fe6f56f19aaed0b9cc7a859049ef7ecd94dfccfa19764fd0903",
+      "size": 2070
+    },
+    "assets/fs/arduino/core/WCharacter.h": {
+      "sha256": "26aa841fe42aeace3a7caf3af27b9ffecde391b4a5661782027c0c14b6ccf4e3",
+      "size": 4576
+    },
+    "assets/fs/arduino/core/wiring_private.h": {
+      "sha256": "c416d346d436f2ba55507ba867a0fd6bf8d261440194a237fa318e20c5617bdc",
+      "size": 2255
+    },
+    "assets/fs/arduino/core/WString.h": {
+      "sha256": "7c592098302f4c17883863514bfb6de50ab51957d69c5dccbb6ec0900c777a50",
+      "size": 10001
+    },
+    "assets/fs/arduino/libraries/EEPROM/src/EEPROM.h": {
+      "sha256": "9f1c31da3792ce1a639a92a95eba78cf7a418cbe3035003730818ca61f714da3",
+      "size": 5457
+    },
+    "assets/fs/arduino/libraries/SoftwareSerial/src/SoftwareSerial.h": {
+      "sha256": "5897e15a3fc14307066fbad6e201f88e39417a8d40368c21b41ea14a0abf2f25",
+      "size": 3903
+    },
+    "assets/fs/arduino/libraries/SPI/src/SPI.h": {
+      "sha256": "5b444eebc18adac5a69e99cfdc229cb7c8622125b67e1e0d2e2127fa2cde52b1",
+      "size": 10393
+    },
+    "assets/fs/arduino/libraries/Wire/src/utility/twi.h": {
+      "sha256": "a8551bcf840a1d17dfa435fb6f299726bf45abfe75018ddc860a7788053a0f30",
+      "size": 1840
+    },
+    "assets/fs/arduino/libraries/Wire/src/Wire.h": {
+      "sha256": "e08adefc3c3b31d9444ba8bd28d67beef1efff310cdef4d8f8aa4ad88542da92",
+      "size": 2925
+    },
+    "assets/fs/arduino/variant/pins_arduino.h": {
+      "sha256": "d313845f9916c1f21c8ba9848d40806f5caab52529ad510e81b3f15318441631",
+      "size": 6437
+    },
+    "assets/fs/libraries/Adafruit_APDS9960/Adafruit_APDS9960.h": {
+      "sha256": "a8207b59b90cc46e3e06e06c988d192cbae10261dff8c8dcfc2a617859b88d69",
+      "size": 16682
+    },
+    "assets/fs/libraries/Adafruit_BMP085_Library/Adafruit_BMP085.h": {
+      "sha256": "93abb4157fdb1e88b2eca3a17502b17bbad17428a69848370f1575fe8fbfa6d0",
+      "size": 3827
+    },
+    "assets/fs/libraries/Adafruit_BusIO/Adafruit_BusIO_Register.h": {
+      "sha256": "91560f9fc1b8cda42ab039ccdfe0abf92bf09c425a6142ff54af099809b9d47a",
+      "size": 3802
+    },
+    "assets/fs/libraries/Adafruit_BusIO/Adafruit_GenericDevice.h": {
+      "sha256": "b12c364e359a0aba6aabc440bc64e375b825214a2835fa1bf38ac709f9e25546",
+      "size": 2268
+    },
+    "assets/fs/libraries/Adafruit_BusIO/Adafruit_I2CDevice.h": {
+      "sha256": "88b843d7a44e3f974950d883649e5682f21d9f8ce135daff3a42d015f7cd27e7",
+      "size": 1139
+    },
+    "assets/fs/libraries/Adafruit_BusIO/Adafruit_I2CRegister.h": {
+      "sha256": "8318d1f65d5468742c0aa48bd50a7e3bd4ddf02e3eba11bc01ad50cf9c20bc67",
+      "size": 252
+    },
+    "assets/fs/libraries/Adafruit_BusIO/Adafruit_SPIDevice.h": {
+      "sha256": "58ff1433718cef7317638403160d5dd918d92c0f7b4204fb08ad401751d74508",
+      "size": 5515
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Adafruit_GFX.h": {
+      "sha256": "e4ace04cbed4499c0e2a80df33b381c87ce98689d98da82712f0748bf7359171",
+      "size": 18022
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Adafruit_GrayOLED.h": {
+      "sha256": "27c451c21b6d16bef0fb6b94527dfe1d738a9445de4b351f75f24cc360c4e0ad",
+      "size": 3920
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Adafruit_SPITFT.h": {
+      "sha256": "23901ed7ab3953816d13471c4016763b25983fa0400448589f06376d53be1b10",
+      "size": 25059
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Adafruit_SPITFT_Macros.h": {
+      "sha256": "c6f1e4e0cc97b98e85bb0c863954d41f72d3bd31874b03a57faa9ae4f8984f6d",
+      "size": 329
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/examples/GFXcanvas/GFXcanvasSerialDemo.h": {
+      "sha256": "c1bfa43f9e35f3488c091734eefd8c6994db9445488e5e3c035a983f31423221",
+      "size": 2408
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMono12pt7b.h": {
+      "sha256": "21f369cca12e929a6cc26c740b64d2e9bb40ebf8f20c5b878f064d4ebb3d36de",
+      "size": 13799
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMono18pt7b.h": {
+      "sha256": "f09df516cb487de3d2e0f36d9c45ffe4ea4bfc938735d10b47ff641842618688",
+      "size": 24117
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMono24pt7b.h": {
+      "sha256": "c9a03fb1fad357e68f7487da819b083711d7c3d11201635da5ed12a6a83821a2",
+      "size": 40387
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMono9pt7b.h": {
+      "sha256": "6bef1a38a049113ee9f4c7874ba3a164631e74d608df117491bcfb60fec56ec3",
+      "size": 9702
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBold12pt7b.h": {
+      "sha256": "0739083a428d8120ac0818e0585717f46b2183f08530f9b83813f1447febc611",
+      "size": 15460
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBold18pt7b.h": {
+      "sha256": "0c89a48671074e834b9c00d2347cb4e433799b8bfcde9eade8979a07d5bedda4",
+      "size": 28745
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBold24pt7b.h": {
+      "sha256": "660733c0f5bdf2afc72472af94404bc59dc2eebe7e9787f064ba7756a594ce38",
+      "size": 47645
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBold9pt7b.h": {
+      "sha256": "8cfea064cff367cf3e6a89cd2400ffdb731271f88a5016fb619dcd79b7dad733",
+      "size": 10813
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBoldOblique12pt7b.h": {
+      "sha256": "e7d8dc059aca726294f1dbc6eb4826e13261059434d426bc717cba629cd4b61a",
+      "size": 17082
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBoldOblique18pt7b.h": {
+      "sha256": "97083aec2726a168deafb4766377187dceb8fe6e52382b242730c3ec34cc8f8f",
+      "size": 31586
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBoldOblique24pt7b.h": {
+      "sha256": "b30c44c9aa6edc573c1b587ac0dc56388c62d05114cb76510a0f78e4ded86d18",
+      "size": 52988
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBoldOblique9pt7b.h": {
+      "sha256": "77e4c898599042277d04d3004feffd39b18c89d1a93f5cba65ff7506e25dd6ea",
+      "size": 11829
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoOblique12pt7b.h": {
+      "sha256": "cd07c68d1dd9ecb2654a66fbb1aeb0117f779844cc079f99678cf9c3dabf04fe",
+      "size": 15329
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoOblique18pt7b.h": {
+      "sha256": "d80a751b9b2a60178699602ee042006b944263175494d53d1a404d2968a1a508",
+      "size": 26771
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoOblique24pt7b.h": {
+      "sha256": "f7f878d3b47231b43c9dd07d57100dd0364abfdb8953a25fd85b107da7ab0d1f",
+      "size": 45474
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeMonoOblique9pt7b.h": {
+      "sha256": "8bbee06061722f180fe53e8813857dfd00cf404630c60283c4407f6f7700ac89",
+      "size": 10635
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSans12pt7b.h": {
+      "sha256": "0e15e376ec314ac1399613e2466288d795501a467d4e7860e852976997cd7850",
+      "size": 17025
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSans18pt7b.h": {
+      "sha256": "b6cc5607b838fcb422ef5c5925439b54061ab63eda1e00767d0c0bf3ee0b429f",
+      "size": 30893
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSans24pt7b.h": {
+      "sha256": "e3cde750f607f1db3bd6c6d2d92e5cfd36a9a20d49df90d6a13b6eee7a490747",
+      "size": 51823
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSans9pt7b.h": {
+      "sha256": "feacaaf7df57be67d483ed35a7aeb59402ad8c9736e456e3f044e62eaf3a9314",
+      "size": 11733
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansBold12pt7b.h": {
+      "sha256": "50b008dd06cf02fc3e46d872781f3bebb2009f09f80ca791e67138ef51d58630",
+      "size": 18348
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansBold18pt7b.h": {
+      "sha256": "4b3a67ee0d2fd5bce431a256cc77c0acd53f8cce4e0d0619a7a2695a7fbee970",
+      "size": 33022
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansBold24pt7b.h": {
+      "sha256": "ce00fb926f7d718b253dde1cbdd2f18c509c748ecec608c0ddc639ce188e9a54",
+      "size": 56169
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansBold9pt7b.h": {
+      "sha256": "a833751a8153c442afaadc16de2699e9a0163264c1df2ef30f3b5bbdba2b93ed",
+      "size": 12269
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansBoldOblique12pt7b.h": {
+      "sha256": "6cf7dc07ecc478acb2822e067b05be5834331f0751bd2aba030a3d38e001a6de",
+      "size": 20593
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansBoldOblique18pt7b.h": {
+      "sha256": "b6cd1ab0683ca218a93b22c499e750300c1d4c101ac4566db84a6fa28d236f30",
+      "size": 38016
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansBoldOblique24pt7b.h": {
+      "sha256": "4fed61aa9cd99eb0a492f10e8aa01287db136e24235fb195f75412ae2e1db0ab",
+      "size": 64465
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansBoldOblique9pt7b.h": {
+      "sha256": "399a69c387df1a8cd84987f9d2b9a015443e18bf1d819b74b5bf66af6aed3ebc",
+      "size": 13802
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansOblique12pt7b.h": {
+      "sha256": "c3ae703940f3f08bf4ccbcbb24cae7771720ab8b9b8ca74d390edd99a9659688",
+      "size": 19475
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansOblique18pt7b.h": {
+      "sha256": "9d03873e93cc61fcbed21128c22c37e2d93a470165280a0822dbbf331eefa122",
+      "size": 35968
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansOblique24pt7b.h": {
+      "sha256": "d41e526b2d677bc32edcc5e5b674a07be7a08048375ad69d3651717de3cb7753",
+      "size": 60416
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSansOblique9pt7b.h": {
+      "sha256": "1ddc19a4b495408ba0d0c7efb48904d9c3459c62ab722aa54b99d283fa5cd0d4",
+      "size": 13184
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerif12pt7b.h": {
+      "sha256": "d9e664a614eeda7ea7942b0fd85e2715d28747a712f346377c47efcbab99aed9",
+      "size": 16208
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerif18pt7b.h": {
+      "sha256": "498cd6591b04cc27c0306979016a059ed284f44338375143e99a0c6fa1000171",
+      "size": 29170
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerif24pt7b.h": {
+      "sha256": "c6cbb427f51e1ffe1f4cfe89e1f2c2317edbe0a5a8c3b517eb02719721e27c57",
+      "size": 48958
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerif9pt7b.h": {
+      "sha256": "330670dc6c05b39915dc47bd5b1e272a44f2bf18108eca799649d2ac7368839a",
+      "size": 11296
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBold12pt7b.h": {
+      "sha256": "e1aa2959eb408b289cff144996efd7bf2d6b08e5eebde8dbb80792aaee8dbfeb",
+      "size": 17115
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBold18pt7b.h": {
+      "sha256": "4fbfb1faa143e09b570e95c434c0821a07994529bec579fd22bfd9f9baad3780",
+      "size": 31666
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBold24pt7b.h": {
+      "sha256": "e66cb62a26127b5776848167c9cb406ebc51c480123eb313e6fc9f2e38c62460",
+      "size": 54298
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBold9pt7b.h": {
+      "sha256": "61ebd809fca54d93b4195289be5f4e837cfe41f7998cff66b5fa2c09c5916b3f",
+      "size": 11765
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBoldItalic12pt7b.h": {
+      "sha256": "c4587d3d064b6ee43cdc27c4fbe1828cf0bf531dc19ff692d177f71b358d2277",
+      "size": 18806
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBoldItalic18pt7b.h": {
+      "sha256": "ec0ca5a439493bded92a41534644c9db51298bcda976362880ae6ee933aea0a5",
+      "size": 34638
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBoldItalic24pt7b.h": {
+      "sha256": "98cc662d98016e0e69125f4e0da5bce9a364490eccb008c73bf9ed313df9831a",
+      "size": 56852
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBoldItalic9pt7b.h": {
+      "sha256": "96aec072db8f36a223d055521f1f04f6c9a1aa64395a974464d00e80e5ed67ea",
+      "size": 12830
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifItalic12pt7b.h": {
+      "sha256": "587bc04736886112a06d1bc4fbafc242c4a24de032acb42d9fda43596e2dcbcd",
+      "size": 17178
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifItalic18pt7b.h": {
+      "sha256": "86cdd8f59ca0b47508a6e858f84e796adf735c0a8355e2f52784ad526033cdff",
+      "size": 30788
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifItalic24pt7b.h": {
+      "sha256": "3af05ccf96780dc26b9154b7871528e3c8c7e09f82b6b00e17d9dfb5020478f8",
+      "size": 52612
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/FreeSerifItalic9pt7b.h": {
+      "sha256": "ee4f79365a5ec0dcac844c497cbb484cc6d46d6c2391b3ebad58eec8e4ea0620",
+      "size": 11781
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/Org_01.h": {
+      "sha256": "6366cd58da1ab53f7b27d68f85463d3db207c88b7a01f97132f8c6a8c3be4451",
+      "size": 9394
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/Picopixel.h": {
+      "sha256": "035c01e6d48efdfef1e4de6152d0d03910210e449236506ec7c8f71799073363",
+      "size": 9089
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/Tiny3x3a2pt7b.h": {
+      "sha256": "96fe2267efcd0f9086c735ad594fe9798b868b9198720af9bf18cc929d96f474",
+      "size": 5684
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/Fonts/TomThumb.h": {
+      "sha256": "a2b89525189e738feb2eba5288f9f6c7ece0b171d603468c4c585372a3342723",
+      "size": 20296
+    },
+    "assets/fs/libraries/Adafruit_GFX_Library/gfxfont.h": {
+      "sha256": "4e1b06371217d63102bac242d4a3ec8dcaff93cd34b4241bbc39eda521a1be11",
+      "size": 1108
+    },
+    "assets/fs/libraries/Adafruit_HMC5883_Unified/Adafruit_HMC5883_U.h": {
+      "sha256": "3ded8eb94c9319bf54982bc286af83e3a5b023a11f380941fea98bcd102640dd",
+      "size": 2645
+    },
+    "assets/fs/libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.h": {
+      "sha256": "8b0dd5e20018d78d832bcf5aed72ed4ba37df9084ed9cd36b9ad868bef805684",
+      "size": 18300
+    },
+    "assets/fs/libraries/Adafruit_PWMServoDriver/Adafruit_PWMServoDriver.h": {
+      "sha256": "74c960e5dca6d6d6db84de9e10a4bac495a1e7a6bfdb97346165f84440df6eda",
+      "size": 4281
+    },
+    "assets/fs/libraries/Adafruit_SH1106/Adafruit_SH1106.h": {
+      "sha256": "0a830e4c30df343a8a5fc2a24538509224ebe1e738a92c4819669b21fda42f03",
+      "size": 5751
+    },
+    "assets/fs/libraries/Adafruit_SSD1306/Adafruit_SSD1306.h": {
+      "sha256": "89c5e18cc19a41bd47130e1a4dc344733ad2bb6b6ef6c4c43eeddaf9854db6a2",
+      "size": 9042
+    },
+    "assets/fs/libraries/Adafruit_SSD1306/splash.h": {
+      "sha256": "01d79e7b12ba9e2f29f967803bb85b037ad8981b2b2f7d3997db51811d47177d",
+      "size": 13813
+    },
+    "assets/fs/libraries/Adafruit_ST7735/Adafruit_ST7735.h": {
+      "sha256": "b4e04b0e06a37c3b364a7a2d8ac1bdbc82699d5c2f9a89f8a23eda28da1835e3",
+      "size": 2045
+    },
+    "assets/fs/libraries/Adafruit_ST7735/Adafruit_ST77xx.h": {
+      "sha256": "a5a233e6c8d68eaf485b3c9809fd1be4b14c05f359b3fb3429ea3e857bb9a8c9",
+      "size": 3896
+    },
+    "assets/fs/libraries/Adafruit_TCS34725/Adafruit_TCS34725.h": {
+      "sha256": "926a8277fffd519d8071b280fbb2cb1e52c8e507c84d88b6ccd9ae844bf0042e",
+      "size": 10521
+    },
+    "assets/fs/libraries/Adafruit_Unified_Sensor/Adafruit_Sensor.h": {
+      "sha256": "7f3a6d8889e9d852aecf1c64cdab9d66d801101ae03a9af28e86021245b04c64",
+      "size": 9721
+    },
+    "assets/fs/libraries/AFMotor/AFMotor.h": {
+      "sha256": "09bafa44fcc1dd5708ca4c122a84660f14c55ca56763649103a635c42e25d141",
+      "size": 6163
+    },
+    "assets/fs/libraries/BME280/BME280.h": {
+      "sha256": "70c5f4162b00e89a3d05c76e6da04c7637d79e439d347ea8e9aab83f73b91811",
+      "size": 5598
+    },
+    "assets/fs/libraries/DHT_sensor_library/DHT.h": {
+      "sha256": "6301be3c1d7cdb6174932a09b2d1c2cd5dc1ae242a48802b425cd2c2515d0ffb",
+      "size": 2969
+    },
+    "assets/fs/libraries/DHT_sensor_library/DHT_U.h": {
+      "sha256": "b94797389a9a357767fc97f39d6cf68b53f478e79f3a080be57fed9fb368163f",
+      "size": 3102
+    },
+    "assets/fs/libraries/Encoder/Encoder.h": {
+      "sha256": "e951aa7f6cf4c3c7f875bf24e4196c15f74572e1d55509374639918bac984434",
+      "size": 27551
+    },
+    "assets/fs/libraries/Encoder/utility/direct_pin_read.h": {
+      "sha256": "532a6b6c206afe4110b496934d4558246a88765a29b379130e590f7075a04def",
+      "size": 4284
+    },
+    "assets/fs/libraries/Encoder/utility/interrupt_config.h": {
+      "sha256": "8c9542bc27828d75f7d701d99ac24e33379e1d34dbe7ff77d6f4ee1e2f8ec5c1",
+      "size": 2056
+    },
+    "assets/fs/libraries/Encoder/utility/interrupt_pins.h": {
+      "sha256": "ec62047d060736b9aac75c212db8821f730c4bba8eaa30057abd6b9ec8f41874",
+      "size": 10174
+    },
+    "assets/fs/libraries/Firmata/Boards.h": {
+      "sha256": "36941ecc9a0dc6c60666a5ab49c86b0d0c745e8403837852b38c03ee4d399b36",
+      "size": 57022
+    },
+    "assets/fs/libraries/Firmata/examples/StandardFirmataBLE/bleConfig.h": {
+      "sha256": "04d11d61cfc4d11cca53a5f4c976d62e3daaee697fc7e64705520b7bc305cca2",
+      "size": 6666
+    },
+    "assets/fs/libraries/Firmata/examples/StandardFirmataEthernet/ethernetConfig.h": {
+      "sha256": "33b4ed6b8dfc3a4cdaa866eeff1d5194160c7aadf9d451735afca373cfd9fd1d",
+      "size": 3450
+    },
+    "assets/fs/libraries/Firmata/examples/StandardFirmataWiFi/wifiConfig.h": {
+      "sha256": "02ba5231c7e029f655b1beff7aa55b4a271fcccc2541e9daf1507b5a2f3dd0e8",
+      "size": 10341
+    },
+    "assets/fs/libraries/Firmata/Firmata.h": {
+      "sha256": "0a12454416fdd17718a7ff3a0bd10ce9e94ad82e8d925e201e0a191e03fb898c",
+      "size": 8189
+    },
+    "assets/fs/libraries/Firmata/FirmataConstants.h": {
+      "sha256": "d58f48a8c41afbf647ac253ee2fff1887d71227d392fed227f20a453d96c1b3b",
+      "size": 5687
+    },
+    "assets/fs/libraries/Firmata/FirmataDefines.h": {
+      "sha256": "13ff4ed5675073968edd6832687c0cde1ad6d3d6fd3fd679855535cbc2e02cf9",
+      "size": 8635
+    },
+    "assets/fs/libraries/Firmata/FirmataMarshaller.h": {
+      "sha256": "fc701319534e6bdd0635872bcf5e1caefb291827847112a21bb685a77307f0aa",
+      "size": 2417
+    },
+    "assets/fs/libraries/Firmata/FirmataParser.h": {
+      "sha256": "f630d6707f8811d971ea6880b8bc1be5fba535d625a11a691c952b85806346b3",
+      "size": 4206
+    },
+    "assets/fs/libraries/Firmata/utility/ArduinoBLE_UART_Stream.h": {
+      "sha256": "add4bcd444315315aa1e02822b57269682f5664899b6fc41be17eb0f81752138",
+      "size": 6386
+    },
+    "assets/fs/libraries/Firmata/utility/BLEStream.h": {
+      "sha256": "804ee02dd0c836e590e30c77adb5407b31c782fb0b7c3fa0fc8c13919b7c270d",
+      "size": 6769
+    },
+    "assets/fs/libraries/Firmata/utility/BluefruitLE_SPI_Stream.h": {
+      "sha256": "a0b16f9edfe7965e08bd855bace0468816633cc987166506bfb421d4f28d1a2d",
+      "size": 4084
+    },
+    "assets/fs/libraries/Firmata/utility/EthernetClientStream.h": {
+      "sha256": "d20329060477d1fd9421b457f5bd28fa8e256515169f8bf178008475a441967a",
+      "size": 3847
+    },
+    "assets/fs/libraries/Firmata/utility/EthernetServerStream.h": {
+      "sha256": "0e9182b48f18e9116522abeee6cc82a739ad53f68905f9665a343869e5a49d79",
+      "size": 2810
+    },
+    "assets/fs/libraries/Firmata/utility/firmataDebug.h": {
+      "sha256": "63fe7160fdb361f46afa1a797bb13dc102322ba40487f505f8bc907ce80d3a40",
+      "size": 367
+    },
+    "assets/fs/libraries/Firmata/utility/FirmataFeature.h": {
+      "sha256": "fc74d23a4c1f9b2ae5286f2b80142d9af22eb3c48eff351f6c586656a9a129b2",
+      "size": 1207
+    },
+    "assets/fs/libraries/Firmata/utility/SerialFirmata.h": {
+      "sha256": "1076a8bef302f74e335074afcd24988a9ee5920d1456ad500cf4b5fed89e22f8",
+      "size": 8660
+    },
+    "assets/fs/libraries/Firmata/utility/WiFiClientStream.h": {
+      "sha256": "90271c477c824edfd07b5b8b0e7b8eddbdc9aab8f78af2e2dada24100c678d0b",
+      "size": 2457
+    },
+    "assets/fs/libraries/Firmata/utility/WiFiServerStream.h": {
+      "sha256": "54a1cfb63ee90c439d23d4624217176f4a66ce399e345cb5c1f110c3799f7306",
+      "size": 2415
+    },
+    "assets/fs/libraries/Firmata/utility/WiFiStream.h": {
+      "sha256": "91eba1d97b1c94f587864ca939b0e923477b454914c6537de41d4d9cddf09ba7",
+      "size": 5794
+    },
+    "assets/fs/libraries/IRremote/src/IRremote.h": {
+      "sha256": "39aad33b9dc41e386890c93a4342fd3cb0c23eb5500d69f57849de4d947a4790",
+      "size": 19530
+    },
+    "assets/fs/libraries/IRremote/src/ir_Lego_PF_BitStreamEncoder.h": {
+      "sha256": "ac2c72ed91fdfc974045442dad284facb2339f7d1541840c0daef212e8d9ba8d",
+      "size": 3930
+    },
+    "assets/fs/libraries/IRremote/src/private/IRremoteBoardDefs.h": {
+      "sha256": "8cdeb45263ec5ea674fd750a56c19822d1e04da5d81a25458ae86d6251b3bdcb",
+      "size": 35282
+    },
+    "assets/fs/libraries/IRremote/src/private/IRremoteInt.h": {
+      "sha256": "a7fedb6c33d96cfc1faa502c0a86ebc17c6702daa685ccf873c67618a063dc65",
+      "size": 4822
+    },
+    "assets/fs/libraries/LedControl/LedControl.h": {
+      "sha256": "f3bbf64ae1100f49eb38a2ede196b15e9ee4b352874d43d4fc610fdc6e7a3aed",
+      "size": 7370
+    },
+    "assets/fs/libraries/LiquidCrystal_I2C/LiquidCrystal_I2C.h": {
+      "sha256": "33cb2768263d26b04cea0544fced9d74206f92bf12deca63812df03a7212f1f3",
+      "size": 3429
+    },
+    "assets/fs/libraries/MFRC522/deprecated.h": {
+      "sha256": "456832335259771ae2b429ecb3c150f29e47f25ad01cc033b9c9b6093a2671fd",
+      "size": 658
+    },
+    "assets/fs/libraries/MFRC522/MFRC522.h": {
+      "sha256": "3fb4dccd9fc9bdb2e6a2673671d4dbdaad643c6d2a606709e834274bac8b4bcd",
+      "size": 20434
+    },
+    "assets/fs/libraries/MFRC522/MFRC522Extended.h": {
+      "sha256": "f574634047362d7955c12d34011aede3086d173769f3d8f64a71cacc4d30c1e0",
+      "size": 4296
+    },
+    "assets/fs/libraries/MFRC522/require_cpp11.h": {
+      "sha256": "6b4c249652887a6cecdb04829007e1aaa9855a2014a08e3ee6eb1246d9356613",
+      "size": 397
+    },
+    "assets/fs/libraries/MPU6050/helper_3dmath.h": {
+      "sha256": "7c2ab617cb3ce44a780174cb68d7668975cf13823050647ad2d3586b714b39d9",
+      "size": 6628
+    },
+    "assets/fs/libraries/MPU6050/I2Cdev.h": {
+      "sha256": "6d3feb947293b6e5a6b14b0af959319772fa4a17edea740bea57b62534166cc3",
+      "size": 12773
+    },
+    "assets/fs/libraries/MPU6050/MPU6050.h": {
+      "sha256": "cc005e0b385869046bdd3c2273f98c91e7b60940f2b2ea59e2938a930d0a7dd6",
+      "size": 45875
+    },
+    "assets/fs/libraries/MPU6050/MPU6050_6Axis_MotionApps20.h": {
+      "sha256": "36e7af28abaefb073784e75de3ff55cc1b8da852e94f72137585061475d9d178",
+      "size": 33960
+    },
+    "assets/fs/libraries/MPU6050/MPU6050_6Axis_MotionApps_V6_12.h": {
+      "sha256": "e24bc4d45c104d0def87efad4fa3e0168ea8067005d34b905841f04d773cb449",
+      "size": 39306
+    },
+    "assets/fs/libraries/MPU6050/MPU6050_9Axis_MotionApps41.h": {
+      "sha256": "77d728a893965f789314e67ae18a335a9a01bf8fbf0f0eb2943d8fd91a561dc5",
+      "size": 50785
+    },
+    "assets/fs/libraries/MuVisionSensor/DebugTool/morpx_debug_tool.h": {
+      "sha256": "e1dd0f68b9390aee35cc9d32ac11dd4961337852427ea459ec834e7f61b3ddcc",
+      "size": 1537
+    },
+    "assets/fs/libraries/MuVisionSensor/MorpxProtocolAnalysis/morpx_protocol_analysis.h": {
+      "sha256": "d7902d0aacb162ced51fc035f94eaa8901cbbb9309fe7e3e7dd2ed1809406721",
+      "size": 2350
+    },
+    "assets/fs/libraries/MuVisionSensor/MorpxProtocolAnalysis/morpx_protocol_types.h": {
+      "sha256": "56d461d474f272d11c09209b503dbc342210911ced77738c0b75411b41778f76",
+      "size": 1793
+    },
+    "assets/fs/libraries/MuVisionSensor/MorpxProtocolAnalysis/mu_protocol_analysis.h": {
+      "sha256": "b4b87c5aaee2a7aee1e4b1b272a3621df26e0f450155876e7517ca15ee04d289",
+      "size": 3438
+    },
+    "assets/fs/libraries/MuVisionSensor/MorpxProtocolAnalysis/SimpleList.h": {
+      "sha256": "6e60568532f9fe125c08e2e3186b13d94c1f63165988cb864277380a16a56221",
+      "size": 8835
+    },
+    "assets/fs/libraries/MuVisionSensor/MuVisionSensor.h": {
+      "sha256": "81f39bab15a31c94da593014ad041bb9fa512e13ff6922cd57f919f782efc2ad",
+      "size": 14648
+    },
+    "assets/fs/libraries/MuVisionSensor/MuVisionSensor3_AT.h": {
+      "sha256": "73d8267a2c678c573b09b5f741fffa2756bea002cd31df2a96166a3f6b2ef5b5",
+      "size": 3319
+    },
+    "assets/fs/libraries/MuVisionSensor/mu_uart_interface.h": {
+      "sha256": "1b508b1d51fd2870ec7802ff1144896ce07ec1d1534a9e4c38aec9af2b78243b",
+      "size": 707
+    },
+    "assets/fs/libraries/MuVisionSensor/mu_vision_sensor_i2c_hw_interface.h": {
+      "sha256": "825ee45beeb561dc70cb5eb85190beae2fd6c0a1c36cbdce702e251bfb3b80af",
+      "size": 2037
+    },
+    "assets/fs/libraries/MuVisionSensor/mu_vision_sensor_i2c_interface.h": {
+      "sha256": "97d2c916556e378658aeae13eff28f4f084f8ff8f8fc34d70ebdf47cae2878e5",
+      "size": 1647
+    },
+    "assets/fs/libraries/MuVisionSensor/mu_vision_sensor_interface.h": {
+      "sha256": "3214f99c480ce19726539f912f6dea86db4ff88dc03d55a2b371d961842ab88b",
+      "size": 1317
+    },
+    "assets/fs/libraries/MuVisionSensor/mu_vision_sensor_type.h": {
+      "sha256": "0a56de4e6014442e395ab1999befbc22dd4e62d937cd35f594b40e2ee637c0e1",
+      "size": 8380
+    },
+    "assets/fs/libraries/MuVisionSensor/mu_vision_sensor_uart_interface.h": {
+      "sha256": "ac20c999862bf48b1cb48bb0dff71f8c32a786d34497b3144f81148b4881f0e2",
+      "size": 2702
+    },
+    "assets/fs/libraries/NDEF/Due.h": {
+      "sha256": "5489c029027de9cfbbcb0e9a4dec6c70f605158985cea35c552d7297aeabf0f8",
+      "size": 944
+    },
+    "assets/fs/libraries/NDEF/MifareClassic.h": {
+      "sha256": "fafd7f28027f166ad9c76bbdcfa5ae1d1ae303e6caf254adfbc1b9a59deac5de",
+      "size": 738
+    },
+    "assets/fs/libraries/NDEF/MifareUltralight.h": {
+      "sha256": "2e069a3370a2ad82dc0c4b15add874d949b307f8acb16df05712ba682e7c83d0",
+      "size": 741
+    },
+    "assets/fs/libraries/NDEF/Ndef.h": {
+      "sha256": "c0abef9ddbb7185c56da03fa2594482afb7ef9e0be138e2db1a322ccc0fba3be",
+      "size": 428
+    },
+    "assets/fs/libraries/NDEF/NdefMessage.h": {
+      "sha256": "cca2461471624c078e25f01b67f7580cfd688f21ac932dd47739064f3aa7b644",
+      "size": 1118
+    },
+    "assets/fs/libraries/NDEF/NdefRecord.h": {
+      "sha256": "7c0e019f0a3dd7b3cddee701efde2c89cb98a225222416cf004a7438183b9641",
+      "size": 1488
+    },
+    "assets/fs/libraries/NDEF/NfcAdapter.h": {
+      "sha256": "320621d7e307e9de651a93769f05afac0ef02edd108e1df8ebf91f9309888d0b",
+      "size": 1222
+    },
+    "assets/fs/libraries/NDEF/NfcDriver.h": {
+      "sha256": "2119619e8ec0917f642118e027b4f26167da4300124e5c6e40b314ed9eb443e3",
+      "size": 283
+    },
+    "assets/fs/libraries/NDEF/NfcTag.h": {
+      "sha256": "f9c1d754339d4b76cb180a4ba33cf018c12e3e8832e3da5064a3c72a2472ca91",
+      "size": 1061
+    },
+    "assets/fs/libraries/Otto/Oscillator.h": {
+      "sha256": "9c889626d80101f652a7b5a3ade2583aa6aa257ebe69ac662c21fae6325cad10",
+      "size": 2058
+    },
+    "assets/fs/libraries/Otto/Otto.h": {
+      "sha256": "ed191260ed1e7c044f08bb2b91d66a3e4b7a7c753f1d13e5673573867efe75aa",
+      "size": 3183
+    },
+    "assets/fs/libraries/Otto/Otto_gestures.h": {
+      "sha256": "0706b97f21873abcadff52090cc1f62e3b1c22d1d11b7fe3cbba3cc6eb4ba849",
+      "size": 5253
+    },
+    "assets/fs/libraries/Otto/Otto_matrix.h": {
+      "sha256": "fee61da8f4851fd0e5d8d396b69892794a4e7664ae65caedb78c7613eea6137b",
+      "size": 1521
+    },
+    "assets/fs/libraries/Otto/Otto_mouths.h": {
+      "sha256": "f747e1db756fbfaa2d186acac47ce456a7ad98025af0fbf5bd263c7f5fbd836e",
+      "size": 3235
+    },
+    "assets/fs/libraries/Otto/Otto_sounds.h": {
+      "sha256": "faf1a63e5ea75d252cdde4c43f2d6d62a203b8a1d492fd442feb17a9c697a7b2",
+      "size": 3989
+    },
+    "assets/fs/libraries/PlayRtttl/pitches.h": {
+      "sha256": "9bc93d2c6cbe365a391fe56d2104861021f0824981e5bd66c33379afe26a8b63",
+      "size": 2438
+    },
+    "assets/fs/libraries/PlayRtttl/PlayRtttl.h": {
+      "sha256": "7538ec7fe1a17fcb32e09b32da094c098e507bffa9db4d5ce55e8a352c65b1c8",
+      "size": 18917
+    },
+    "assets/fs/libraries/PN532/PN532.h": {
+      "sha256": "d88fe03b1ee76bf5939c058f706c3a3a9fb854eafded57a447753b0bf87bda5c",
+      "size": 9350
+    },
+    "assets/fs/libraries/PN532/PN532Interface.h": {
+      "sha256": "89600a2407d552806a0443ca4155d7b9ed11ddaf7c0836ae6f7ec27b90bccffa",
+      "size": 1848
+    },
+    "assets/fs/libraries/PN532/PN532_debug.h": {
+      "sha256": "dbe31aa87fb32f2b68895259c86ef74d97307102b61ba5ba272b4eb3d1aab3ae",
+      "size": 491
+    },
+    "assets/fs/libraries/PN532_I2C/PN532_I2C.h": {
+      "sha256": "9643c4bb727772d1d2f7e44b8f7a3de7b3a842cf7a9e9341f4b12cd816355a8e",
+      "size": 1005
+    },
+    "assets/fs/libraries/Quad/Octosnake.h": {
+      "sha256": "ac32ffdb5d5c3cadc516d82bcaca28bbdd37a17f903676749f134b4b0f127110",
+      "size": 1066
+    },
+    "assets/fs/libraries/Quad/Quad.h": {
+      "sha256": "e79fa2cf119b4e81fd107a5655d9786a915068df7912f36b33d9540f84854b66",
+      "size": 2077
+    },
+    "assets/fs/libraries/RedMP3/RedMP3.h": {
+      "sha256": "f1e29389da37ab274d42a61de506a6fbc80b07c0a1858e9608711aef02a8e2cc",
+      "size": 2086
+    },
+    "assets/fs/libraries/RTClib/RTClib.h": {
+      "sha256": "9f18f464f363cb93b909beb1721eb2f6a25052bc50e319159addb37d186226dd",
+      "size": 19317
+    },
+    "assets/fs/libraries/SerialCommand/SerialCommand.h": {
+      "sha256": "aba56c631bd27681fec80338ebce9fcf9b1d534e533be976297f27c118173b7c",
+      "size": 4987
+    },
+    "assets/fs/libraries/Servo/src/avr/ServoTimers.h": {
+      "sha256": "c18bf7dfd3804d0862572b4e0ea3b4e73431916771ceb531c28e88ed36ec4461",
+      "size": 2174
+    },
+    "assets/fs/libraries/Servo/src/esp32/ServoTimers.h": {
+      "sha256": "c6dd843a248d976fb320033bd13e5fb19fbadea98be0506f27810bed7004ffc8",
+      "size": 362
+    },
+    "assets/fs/libraries/Servo/src/mbed/ServoTimers.h": {
+      "sha256": "a601289af8327e6bf55140e76f38f6487912254cbf7988a43e4ba728b8b9850b",
+      "size": 25
+    },
+    "assets/fs/libraries/Servo/src/megaavr/ServoTimers.h": {
+      "sha256": "a62bb3292892e49d1f6d2bb61039fd04d102ecd47c26880598ce9b3fc6d8aaee",
+      "size": 1535
+    },
+    "assets/fs/libraries/Servo/src/nrf52/ServoTimers.h": {
+      "sha256": "b21ebb93e4112f65efe41cb85025795e780c6a3da262ed815b3311199e0b7f72",
+      "size": 1216
+    },
+    "assets/fs/libraries/Servo/src/renesas/ServoTimers.h": {
+      "sha256": "4a467f2a963fdc1ba93f056e14e2c8e5a23d620ff67b1fbb9eed584a2785ceb4",
+      "size": 24
+    },
+    "assets/fs/libraries/Servo/src/sam/ServoTimers.h": {
+      "sha256": "a57c1963d74bb1e5183b49ffa55e7072e9334eff621e4095344572de5bf895eb",
+      "size": 2635
+    },
+    "assets/fs/libraries/Servo/src/samd/ServoTimers.h": {
+      "sha256": "4dc4cb22c655cd76a2fafe486d0c754c4e9857c37f8fc52b80236b53c144897c",
+      "size": 2414
+    },
+    "assets/fs/libraries/Servo/src/Servo.h": {
+      "sha256": "baf96f1d65390abddb1c88121198480e4d993b7c9ef87657640082aa73944d7d",
+      "size": 5546
+    },
+    "assets/fs/libraries/Servo/src/stm32f4/ServoTimers.h": {
+      "sha256": "c8e934ff558624c97a6623e94366a2dff6a495214591015ab69e44e292754b2f",
+      "size": 7171
+    },
+    "assets/fs/libraries/Servo/src/xmc/ServoTimers.h": {
+      "sha256": "58307e1798f219049b85753eff5c2a80b8966d50e621d8b41a266d29ea4ec50b",
+      "size": 9274
+    },
+    "assets/fs/libraries/Servo/src/zephyr/ServoTimers.h": {
+      "sha256": "13e47457f62bd3c911019077497f0917dc2347634704a72e7300cf40b686fe9d",
+      "size": 189
+    },
+    "assets/fs/libraries/Stepper/Stepper.h": {
+      "sha256": "e5c6ef1f42c3264aa46c0d561f243f01362eb62d807a0268c92889e5200f02eb",
+      "size": 4246
+    },
+    "assets/fs/libraries/TEA5767/TEA5767N.h": {
+      "sha256": "c3f57c048e105fd7af7d2b11f8b0962f93d1df1fd9e120e97d8b1109d77ed8f8",
+      "size": 3965
+    },
+    "assets/fs/libraries/TinyGPSPlus/TinyGPSPlus.h": {
+      "sha256": "e892f5994d35a3d7fe485ffe957b257a7e37f423d4aba595bc4e8b033d01b269",
+      "size": 8349
+    },
+    "assets/fs/libraries/TM1637/TM1637Display.h": {
+      "sha256": "6795d1f5cedd09a81f97784a0041eb2cd4eeebca8a9a8e61d0be10b2e2e02c3d",
+      "size": 7478
+    },
+    "assets/fs/libraries/VL53L0X/VL53L0X.h": {
+      "sha256": "9f3b71a36b4d3e3103a00b0ac25ea72fa13c48f0aa972ad8c8ae151a8eb08f16",
+      "size": 6419
+    },
+    "assets/fs/sysroot/avr/include/alloca.h": {
+      "sha256": "3b36dce800c1e0a38697737bd9a11dcc616370e573eb58cb5614d277109b8d6d",
+      "size": 2559
+    },
+    "assets/fs/sysroot/avr/include/assert.h": {
+      "sha256": "c2b38e1aa6b9f2eb8919bbada02f03130d3796c5462cdb2d60fa57a6a2eae746",
+      "size": 3831
+    },
+    "assets/fs/sysroot/avr/include/avr/boot.h": {
+      "sha256": "e73c6e2ebfe5c2ba5d49acdfc98a7239b0b60b5165f38397840e71463ebcb532",
+      "size": 26134
+    },
+    "assets/fs/sysroot/avr/include/avr/builtins.h": {
+      "sha256": "597e8a3cfe1fb328cc034560e835328e1ce95dbaaa9e43e998c886f3644911bb",
+      "size": 3509
+    },
+    "assets/fs/sysroot/avr/include/avr/common.h": {
+      "sha256": "a5c449e9388f19e70eb261391673ac207dea51c9dde336b1253fa1ecf8519a89",
+      "size": 8121
+    },
+    "assets/fs/sysroot/avr/include/avr/cpufunc.h": {
+      "sha256": "f6a9859a6589ebbc1358ce797ec393e7c8114f4036c59e161d149aad74c6f204",
+      "size": 3340
+    },
+    "assets/fs/sysroot/avr/include/avr/crc16.h": {
+      "sha256": "b99acc0f9cac7226cecf7c624fab1cdc2ba2b0f67172162e3931a527a02d2c91",
+      "size": 1716
+    },
+    "assets/fs/sysroot/avr/include/avr/delay.h": {
+      "sha256": "e73febb4c2fb7eb6dfc4eda995ed289746b1801c6c8dfe802e90020b0d7f1c19",
+      "size": 1716
+    },
+    "assets/fs/sysroot/avr/include/avr/eeprom.h": {
+      "sha256": "37c8601ef50e3f32a53edb5dccf5ecae1427ab9ac6a30684123ebf4399393528",
+      "size": 8432
+    },
+    "assets/fs/sysroot/avr/include/avr/fuse.h": {
+      "sha256": "5050c2b9991f064e464c0a5a6632474efde3686fe62d4da50ddd352808595fc9",
+      "size": 9228
+    },
+    "assets/fs/sysroot/avr/include/avr/interrupt.h": {
+      "sha256": "9627582846252bf42efd6eb4d1ea6d03ae125b021b6ea630a2f08ebf0a0bf041",
+      "size": 11346
+    },
+    "assets/fs/sysroot/avr/include/avr/io.h": {
+      "sha256": "9f2e5d7f9b6251424bb0c52365bafda3a777c156479f11a4f1b44798a0c6331f",
+      "size": 23148
+    },
+    "assets/fs/sysroot/avr/include/avr/io1200.h": {
+      "sha256": "d70e040709539663cfa055a0ecd9c14da5fa8cc5f8471728bbe069c057982369",
+      "size": 5734
+    },
+    "assets/fs/sysroot/avr/include/avr/io2313.h": {
+      "sha256": "9bde90cba8f2f7091e95a3bbf3c81b8706beb845abf3325b8e3ee09ee73abdb5",
+      "size": 9637
+    },
+    "assets/fs/sysroot/avr/include/avr/io2323.h": {
+      "sha256": "4cf8e83505f288bdf4499bb4d3230679122f0aa609bfc2ff2cab3aa1a7e37e3b",
+      "size": 5283
+    },
+    "assets/fs/sysroot/avr/include/avr/io2333.h": {
+      "sha256": "cedce66a6c2e24fe827bc095344b8ca935cd2edfab36d691f05c32a975f754e3",
+      "size": 11672
+    },
+    "assets/fs/sysroot/avr/include/avr/io2343.h": {
+      "sha256": "c7e5081ee4b6d9f898445a0f1b4c4a5c615820c5de20a7c9cc9886f7af7f87b3",
+      "size": 5395
+    },
+    "assets/fs/sysroot/avr/include/avr/io43u32x.h": {
+      "sha256": "9c089fab15f1742e666c0ac22727bd482e7a337e458ac5ee70212c32b40d3ae6",
+      "size": 11699
+    },
+    "assets/fs/sysroot/avr/include/avr/io43u35x.h": {
+      "sha256": "90765e3525c8411fd81e66fd0803a64b1171e34b5bd471c06586b026a80de045",
+      "size": 11312
+    },
+    "assets/fs/sysroot/avr/include/avr/io4414.h": {
+      "sha256": "7e637e99ec2f1d7669ec41f059b1837c09327fdfdcb1e4578216b070f526e0b6",
+      "size": 13012
+    },
+    "assets/fs/sysroot/avr/include/avr/io4433.h": {
+      "sha256": "b8c84231864e85f05d5864e868cb90a2fb77ab14531b54630c07fab20cd733d8",
+      "size": 12240
+    },
+    "assets/fs/sysroot/avr/include/avr/io4434.h": {
+      "sha256": "8b009196e25a342b884e2c13da1c3187f18cca73313602d94bdfb3ba46effb3d",
+      "size": 14567
+    },
+    "assets/fs/sysroot/avr/include/avr/io76c711.h": {
+      "sha256": "e93f1d5f1a2385e389b0737bd32ee23701bfc8a4c2a664a653edb74b17846a80",
+      "size": 10873
+    },
+    "assets/fs/sysroot/avr/include/avr/io8515.h": {
+      "sha256": "d95ccffa826d1f93262a4d7f663f13d4781be5bd7f91c03c4393bb28c8e1f577",
+      "size": 13015
+    },
+    "assets/fs/sysroot/avr/include/avr/io8534.h": {
+      "sha256": "a88aeff1b5ab2c2c9c00e56fe1728dab4fd279563974169bf63f28d4027da94d",
+      "size": 5071
+    },
+    "assets/fs/sysroot/avr/include/avr/io8535.h": {
+      "sha256": "66ceb490b308c0791b3e4c5932ae46ca69ab3bfcfb82ab060a5e2aa737861db3",
+      "size": 14630
+    },
+    "assets/fs/sysroot/avr/include/avr/io86r401.h": {
+      "sha256": "1c302e89b47c2f9305c3c27faf2a3f7b9175b8bf0d303bda983b95dfc4ad6176",
+      "size": 7952
+    },
+    "assets/fs/sysroot/avr/include/avr/io90pwm1.h": {
+      "sha256": "1498f32ce9bd6cc407f3eb95b3227b4e4ee82dbfcef5c157aa0318b9b722d63f",
+      "size": 35912
+    },
+    "assets/fs/sysroot/avr/include/avr/io90pwm161.h": {
+      "sha256": "da12f706dca791f87062144622662fc086018a11b46e2d999e39637eba1399e0",
+      "size": 20852
+    },
+    "assets/fs/sysroot/avr/include/avr/io90pwm216.h": {
+      "sha256": "ea0fe03d2145b45756dcba36536007b5c853f09e224f7d6f4d0372c9c2233786",
+      "size": 40627
+    },
+    "assets/fs/sysroot/avr/include/avr/io90pwm2b.h": {
+      "sha256": "094803a79e8aa6422b4c2a70ecda28500d6ca24c573c83d4f0f9bee1ff4bf800",
+      "size": 30471
+    },
+    "assets/fs/sysroot/avr/include/avr/io90pwm316.h": {
+      "sha256": "44d9e23a6b16895a3fc8cb7182c6694a86dcc95c89b270c74c5f2f83c01f9b25",
+      "size": 41693
+    },
+    "assets/fs/sysroot/avr/include/avr/io90pwm3b.h": {
+      "sha256": "94e78e35a269b8005e4ba97d0b048b11e80b38e7daeef7280403987137ac8c8c",
+      "size": 30468
+    },
+    "assets/fs/sysroot/avr/include/avr/io90pwm81.h": {
+      "sha256": "07c248092765883feaeab7b1b4a07b16b5d3d473202207862278154037b94d2a",
+      "size": 22516
+    },
+    "assets/fs/sysroot/avr/include/avr/io90pwmx.h": {
+      "sha256": "e623a51a95681f0d687fdd2484384891fe6c34e50ba988d88717820b53287911",
+      "size": 46134
+    },
+    "assets/fs/sysroot/avr/include/avr/io90scr100.h": {
+      "sha256": "ee9044d695ebee3eb7179dfb92e0d39b3330be9dc4d97db45f1d8f02eaefbe73",
+      "size": 35166
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa5272.h": {
+      "sha256": "2c9b0a315b48809b50d3bb24ec236b703bd066f758c5618584d3fe0534e4b588",
+      "size": 18004
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa5505.h": {
+      "sha256": "eecb77aa8cd4b50a08aa8fbf970bb6993f2d3237ec5c37c846d224f22abf19db",
+      "size": 18004
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa5702m322.h": {
+      "sha256": "0e0cb438229f4b665a124594252ccd2283162e68f0a051ce7fc00c2d25178d8e",
+      "size": 53351
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa5782.h": {
+      "sha256": "7adb15e069c4c2bade3758fbfa7686a3bfbde9788d2dc251e0136267d1941508",
+      "size": 38451
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa5790.h": {
+      "sha256": "e063cd4edc0922b8ecbad6ef204f0d19e4d38a15ca1a4d1ca057544d8d8ee45d",
+      "size": 20531
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa5790n.h": {
+      "sha256": "73e29d9fa98c75fce67dc2ae14b658e373d6c9386f3ea6d147da26c9df19ca5c",
+      "size": 20884
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa5791.h": {
+      "sha256": "c874d089a19ee54024d7fb3c51f6547212cb1e7fa76324405279e461aa425e55",
+      "size": 20929
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa5795.h": {
+      "sha256": "6ea7ba87fa994c2af236ffdf702da3005e678b63fecae95fc41d9832346eaeb7",
+      "size": 17150
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa5831.h": {
+      "sha256": "8e7b2fdb7fe2c59cfd4998eb2642cb1c6f731cf3263197beb7b636537b287c6c",
+      "size": 40598
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa6285.h": {
+      "sha256": "f6a65aec3adcec4bbad5f6a5b59083a91101150eac222a5b56818fd25a5786d4",
+      "size": 17203
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa6286.h": {
+      "sha256": "c8e94e60c4113cc014110750d40cf87ea77ed156dc207e3607d7e14376f3b89d",
+      "size": 17203
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa6289.h": {
+      "sha256": "da27d8db9261a877fe3ee4a394e5d43a28c22aa174fce80f8786a418d78ed63e",
+      "size": 18641
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa6612c.h": {
+      "sha256": "ba4e91de92edbdce09759e7e909bb7663e55e2bd478d6cf9bdf7bb6c22f920f1",
+      "size": 17808
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa6613c.h": {
+      "sha256": "8985f45b7b756cf0715eef99ed5d0b131acd62366385e1bbd0b49e7af10a491c",
+      "size": 17810
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa6614q.h": {
+      "sha256": "d51d42df25b113f3ab6c30173a17ee2493bf925333f71d0fadee4db96aa2c8d7",
+      "size": 17898
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa6616c.h": {
+      "sha256": "07f1d7be268133af89bbb276e7d23efb2d5d8f29436716e361659e883cc08b39",
+      "size": 18659
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa6617c.h": {
+      "sha256": "e9940f49b9225de76a124c7aa05c0dbd638412f4ce49077822cd89b84909a249",
+      "size": 18659
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa664251.h": {
+      "sha256": "0d0727f0002c4e778b34e05b4edda79904d835561fbdad5626f35ad81279549c",
+      "size": 18511
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa8210.h": {
+      "sha256": "db94c2893d6aa16669c404eff3c8fa81ea5a86007f05b4f2cc1d2f622dabc9d3",
+      "size": 38451
+    },
+    "assets/fs/sysroot/avr/include/avr/ioa8510.h": {
+      "sha256": "ac44e33388aef1350749eb2b6b1e2ef9d0d61de23cbc95df6f6c00808c53b9c6",
+      "size": 40598
+    },
+    "assets/fs/sysroot/avr/include/avr/ioat94k.h": {
+      "sha256": "3ddf6deed3a041f042f1a7386824879a6a8b98afa0f311d8beee66e8ae0662e4",
+      "size": 14961
+    },
+    "assets/fs/sysroot/avr/include/avr/ioavr128da28.h": {
+      "sha256": "5dcef7b4d180e93e830fe835db9b36910791042a6685e64fdb02bb3b59025873",
+      "size": 347994
+    },
+    "assets/fs/sysroot/avr/include/avr/ioavr128da32.h": {
+      "sha256": "90b703eb7b352488ea275377b13a58b29997deea76c015f0f42928e85d414b53",
+      "size": 349540
+    },
+    "assets/fs/sysroot/avr/include/avr/ioavr128da48.h": {
+      "sha256": "f97a3b71a8ed34da343d25c1bc2aba25e43c818f71c4accec637ffc83c179537",
+      "size": 363325
+    },
+    "assets/fs/sysroot/avr/include/avr/ioavr128da64.h": {
+      "sha256": "678eae21b729e81e442acdae1d2304ad27cc3b305823e06c69eb81e3e4f24b9f",
+      "size": 366935
+    },
+    "assets/fs/sysroot/avr/include/avr/iocan128.h": {
+      "sha256": "f04a3fed5ec4f956a4a1b69ec226ef0e2bee625fa3e7bc24d845c81a93897106",
+      "size": 3739
+    },
+    "assets/fs/sysroot/avr/include/avr/iocan32.h": {
+      "sha256": "57dc3673b5e71a3f0f0e25485773acf77e60b0e6044b2d7042fd8577e4d5807f",
+      "size": 3740
+    },
+    "assets/fs/sysroot/avr/include/avr/iocan64.h": {
+      "sha256": "58772599d9c5af3393055fa21551995d53dacb9e15f8ed07a818f081f46a4187",
+      "size": 3740
+    },
+    "assets/fs/sysroot/avr/include/avr/iocanxx.h": {
+      "sha256": "296f4d00156b43566e49059bc9ab26d03ebda6d13c1c1d286e65232bea22f241",
+      "size": 53862
+    },
+    "assets/fs/sysroot/avr/include/avr/iom103.h": {
+      "sha256": "8dd8530e7bed0aa7cf5f19d4ea8b652a718215e6b1e6c36a099f9a26ad127a5b",
+      "size": 19483
+    },
+    "assets/fs/sysroot/avr/include/avr/iom128.h": {
+      "sha256": "2a5ba823c5a9b8dfadd9eb225d5cfa08c94341ad687a2189b1928bd8e72af706",
+      "size": 35644
+    },
+    "assets/fs/sysroot/avr/include/avr/iom1280.h": {
+      "sha256": "7ad0c8afbd0726b112d17f62ed56dd0e6eb369ea4bd9a1b1640fdae8184faec4",
+      "size": 3749
+    },
+    "assets/fs/sysroot/avr/include/avr/iom1281.h": {
+      "sha256": "d88b3319930ff361fc02be2a36f1771fad19e87012c423107007f3bddd265340",
+      "size": 3746
+    },
+    "assets/fs/sysroot/avr/include/avr/iom1284.h": {
+      "sha256": "656487a657b68240328fcb02e1c425c99146e197f08ba0fed2c8850cb48d7a3e",
+      "size": 25221
+    },
+    "assets/fs/sysroot/avr/include/avr/iom1284p.h": {
+      "sha256": "b5efa680d7f58243ee40b2a265f4067813a9aa18f688130c357c57ca10e3986f",
+      "size": 25783
+    },
+    "assets/fs/sysroot/avr/include/avr/iom1284rfr2.h": {
+      "sha256": "ef865f279c4746caf277727e7f2c2903dbd082243674bd9ed068d7751815fe7f",
+      "size": 60402
+    },
+    "assets/fs/sysroot/avr/include/avr/iom128a.h": {
+      "sha256": "a69304d3592fd69903fc6f5372bf5b52c748db06c78c165dc9900ccb8d223f82",
+      "size": 25292
+    },
+    "assets/fs/sysroot/avr/include/avr/iom128rfa1.h": {
+      "sha256": "9f105ff902ccabe9a683d50fd4816c8c182e1b4bc629f00248d88a6999bcc0f3",
+      "size": 177238
+    },
+    "assets/fs/sysroot/avr/include/avr/iom128rfr2.h": {
+      "sha256": "4ab3f06a07b803a350ac1b42e05e68990077676713000ef8a3dddf0b65030352",
+      "size": 60702
+    },
+    "assets/fs/sysroot/avr/include/avr/iom16.h": {
+      "sha256": "a9845d3f52e74abe5b45ddb1d90e1859978d2342faa83e4d7ff55467f265d166",
+      "size": 15921
+    },
+    "assets/fs/sysroot/avr/include/avr/iom1608.h": {
+      "sha256": "4972f4d140d25ada71a0cde3b60870c36f20252c18f7ba0eb99140759602493d",
+      "size": 218239
+    },
+    "assets/fs/sysroot/avr/include/avr/iom1609.h": {
+      "sha256": "3aa4a7a2fba30e3b2f712928421b5d6d509d9b6a4687d86b8e6cb6dbe98d9561",
+      "size": 220687
+    },
+    "assets/fs/sysroot/avr/include/avr/iom161.h": {
+      "sha256": "4091496c9eed09933dcc7ada35c60f0609e56db096abb0dbef526b7414b62776",
+      "size": 15361
+    },
+    "assets/fs/sysroot/avr/include/avr/iom162.h": {
+      "sha256": "e1b85c628c1b144b800ac15e9a9cc8940e7d87dfca41d112f934e205a826c390",
+      "size": 23186
+    },
+    "assets/fs/sysroot/avr/include/avr/iom163.h": {
+      "sha256": "9a517a1e727996dbe8a20f290652734960e7a7bbf830ece923abbb5a2ac32c05",
+      "size": 14230
+    },
+    "assets/fs/sysroot/avr/include/avr/iom164.h": {
+      "sha256": "f07a3f4908d34eed44ce07db07ce344766c61c179a952c7f4889f68b5e6ad90a",
+      "size": 3767
+    },
+    "assets/fs/sysroot/avr/include/avr/iom164a.h": {
+      "sha256": "9cf03457032e9b977f1f4cfcfffdac5528305d6412923a2978e5157dc0a62a78",
+      "size": 1790
+    },
+    "assets/fs/sysroot/avr/include/avr/iom164p.h": {
+      "sha256": "9cf03457032e9b977f1f4cfcfffdac5528305d6412923a2978e5157dc0a62a78",
+      "size": 1790
+    },
+    "assets/fs/sysroot/avr/include/avr/iom164pa.h": {
+      "sha256": "a40426d0013061fd71f223acf29d339cf686ca2d559a13720d04d51fec9064fd",
+      "size": 23385
+    },
+    "assets/fs/sysroot/avr/include/avr/iom165.h": {
+      "sha256": "76ead7ebec21c30cdf02a15939329bcec77aa209888e9f215ed9efa1061ca29e",
+      "size": 20193
+    },
+    "assets/fs/sysroot/avr/include/avr/iom165a.h": {
+      "sha256": "aab9030865290f8d8659804e1a75d7c601fa58aa2a67f7d144891bdd8e1fb77e",
+      "size": 18220
+    },
+    "assets/fs/sysroot/avr/include/avr/iom165p.h": {
+      "sha256": "8e6fe76d8b4afcd996cf57bf97c06ee8094c9078b0e0e0bfe6fb1b5ec3c3eafa",
+      "size": 20274
+    },
+    "assets/fs/sysroot/avr/include/avr/iom165pa.h": {
+      "sha256": "37d659b60628cfeabce7c3cf0ee05a987305c10237b2885c56861ae38a885800",
+      "size": 22343
+    },
+    "assets/fs/sysroot/avr/include/avr/iom168.h": {
+      "sha256": "9e271eb6c400f9aed08e8b3964da97d36bc75d40b41db78340b2e16e0b83336b",
+      "size": 4048
+    },
+    "assets/fs/sysroot/avr/include/avr/iom168a.h": {
+      "sha256": "3c735b5607e74b8ac9f0cc26c4a03e9879cc3d261fffca6fe162c66f28f9ac42",
+      "size": 1832
+    },
+    "assets/fs/sysroot/avr/include/avr/iom168p.h": {
+      "sha256": "5333dd58fecae4d28966844c5ac8335beff5d31d5e5d855512cfcb8f7ea8eb5e",
+      "size": 20247
+    },
+    "assets/fs/sysroot/avr/include/avr/iom168pa.h": {
+      "sha256": "620911980de1925ec564f0620374985e115a5b3eac1c29902e61938117d0a5a6",
+      "size": 19557
+    },
+    "assets/fs/sysroot/avr/include/avr/iom168pb.h": {
+      "sha256": "98d6de3c7fd7eedd636fe3b3203f26bd673a21ef6b50d6ecc89066408c6bfdea",
+      "size": 20770
+    },
+    "assets/fs/sysroot/avr/include/avr/iom169.h": {
+      "sha256": "7e69165113fec98f5c59c7f547d122b04d78595309fe2a019301c3fd7adabf23",
+      "size": 24667
+    },
+    "assets/fs/sysroot/avr/include/avr/iom169a.h": {
+      "sha256": "02d7ee7634b5dbb8ce47d12acdcc4b65dd2c83bb44242142a24f4e625179f841",
+      "size": 1905
+    },
+    "assets/fs/sysroot/avr/include/avr/iom169p.h": {
+      "sha256": "ed1195f04e6d330542e37e919dfaa8c7a3105eb8ec931b3bed8b214eb843e441",
+      "size": 24198
+    },
+    "assets/fs/sysroot/avr/include/avr/iom169pa.h": {
+      "sha256": "7a75a47ad0b989e78718c80dc12137f2c49f3f63cd2c4632385183f294df27d8",
+      "size": 31114
+    },
+    "assets/fs/sysroot/avr/include/avr/iom16a.h": {
+      "sha256": "185125f4421912b79234ea3074764444846427275945159a8bc70599c7860cf5",
+      "size": 20161
+    },
+    "assets/fs/sysroot/avr/include/avr/iom16hva.h": {
+      "sha256": "1e13ff81e229a00e1236e9d01e20dca3841a09064bce54da86e5f64883871386",
+      "size": 2817
+    },
+    "assets/fs/sysroot/avr/include/avr/iom16hva2.h": {
+      "sha256": "9225981d12ece8040ac31950d46fbba0ecbcd0202a0da00ad9e0263855e00c31",
+      "size": 19283
+    },
+    "assets/fs/sysroot/avr/include/avr/iom16hvb.h": {
+      "sha256": "d7b2904b780173640cfbde48018075352e24ac0db8eb1af972eacce111f399e5",
+      "size": 22781
+    },
+    "assets/fs/sysroot/avr/include/avr/iom16hvbrevb.h": {
+      "sha256": "3504d3272d816dc43564b8e09752d864adcd681f8e8754222a4c493481aadb06",
+      "size": 22835
+    },
+    "assets/fs/sysroot/avr/include/avr/iom16m1.h": {
+      "sha256": "ced62c0d9cee0061888f7a8698462876729152c2221a1bcebe1798483eecf27b",
+      "size": 32759
+    },
+    "assets/fs/sysroot/avr/include/avr/iom16u2.h": {
+      "sha256": "f7a74a63118c9375ed87833f3c0fa0ae932bf84d310b869ea235c6f58e07edc8",
+      "size": 22096
+    },
+    "assets/fs/sysroot/avr/include/avr/iom16u4.h": {
+      "sha256": "d782daa7cb5bdace5281a3501814cf8dea6b615672f978265544629369e9887c",
+      "size": 30308
+    },
+    "assets/fs/sysroot/avr/include/avr/iom2560.h": {
+      "sha256": "07727c7f618217e8e352f9dcba92bf69eb8e3cdc5b1600596f4afa795394c214",
+      "size": 3697
+    },
+    "assets/fs/sysroot/avr/include/avr/iom2561.h": {
+      "sha256": "08db115ef7f638e6750fd6aebbd55f297f79ad5da939bbdb479797fac7e46e62",
+      "size": 3697
+    },
+    "assets/fs/sysroot/avr/include/avr/iom2564rfr2.h": {
+      "sha256": "00da332ca52e0f09b586115ee9ac0a5b5315b2361ed384c25d277d1353fcd03b",
+      "size": 60430
+    },
+    "assets/fs/sysroot/avr/include/avr/iom256rfr2.h": {
+      "sha256": "14d178303135df0a7e6ac4968a95995a31bc34183cf578edca5dffad2edb4b46",
+      "size": 60730
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3000.h": {
+      "sha256": "a6e26165b2876380553b38a4662b09d20ccaa3cef715a70541cb9b624af76a9a",
+      "size": 8252
+    },
+    "assets/fs/sysroot/avr/include/avr/iom32.h": {
+      "sha256": "b1dba59ed0193a0fc6c9b7e36f23034839160b9566af32eda8f02f9c57af5f13",
+      "size": 16772
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3208.h": {
+      "sha256": "000e748844c508b2f036a1187ca9cc3a0950432a4fe96e2a37ecf9d0c7b1525e",
+      "size": 218228
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3209.h": {
+      "sha256": "3251c12bd6f36fef0c9759d5cbd35e75609f1309d1b42151499b4bc90e8a6b5b",
+      "size": 220676
+    },
+    "assets/fs/sysroot/avr/include/avr/iom323.h": {
+      "sha256": "5496f0db3feae4bb05901977964c5d07bccd8f777e5d63d3f9f11f64aa91f34f",
+      "size": 15393
+    },
+    "assets/fs/sysroot/avr/include/avr/iom324a.h": {
+      "sha256": "abc673ebf8d885680fb59bfa63a3801a2520428fb08e89169071c67547992d5f",
+      "size": 23344
+    },
+    "assets/fs/sysroot/avr/include/avr/iom324p.h": {
+      "sha256": "d8b2187ac2cc1e178ba5d7ac1e057bffb9f35978cdec2659c9017763144b5cff",
+      "size": 23382
+    },
+    "assets/fs/sysroot/avr/include/avr/iom324pa.h": {
+      "sha256": "8e9fcbcf1a8169f6e6707385b063ab88063bae61e1ac0fcc6ec2c0c92352d09e",
+      "size": 29816
+    },
+    "assets/fs/sysroot/avr/include/avr/iom324pb.h": {
+      "sha256": "d7bf25d4ac2410d7ffd1996df1b52df88443c5620014d79618cfe01e26f1e067",
+      "size": 28882
+    },
+    "assets/fs/sysroot/avr/include/avr/iom325.h": {
+      "sha256": "f951fe0245c0059ea65ae0f52756a8f104a073b426f91e4a5e632d9df4f0c686",
+      "size": 19946
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3250.h": {
+      "sha256": "e4720270fd05d36392993f8ed7718fe12b37a8ee06764a2c66736a717b9921dd",
+      "size": 22070
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3250a.h": {
+      "sha256": "63523142a19d77e4463f0c558cd94a760cd189809c9b53e3ef7b3315ca3ef0ad",
+      "size": 1791
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3250p.h": {
+      "sha256": "63523142a19d77e4463f0c558cd94a760cd189809c9b53e3ef7b3315ca3ef0ad",
+      "size": 1791
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3250pa.h": {
+      "sha256": "e5cb3aecde577780434612092115aee2d16ee9695246a79ec25c1eda456ac260",
+      "size": 24732
+    },
+    "assets/fs/sysroot/avr/include/avr/iom325a.h": {
+      "sha256": "27ba966c8f2d106fa8bd27723da93300edf33a5ca6268b7f8b2d460bac7e7384",
+      "size": 1790
+    },
+    "assets/fs/sysroot/avr/include/avr/iom325p.h": {
+      "sha256": "27ba966c8f2d106fa8bd27723da93300edf33a5ca6268b7f8b2d460bac7e7384",
+      "size": 1790
+    },
+    "assets/fs/sysroot/avr/include/avr/iom325pa.h": {
+      "sha256": "a81095b9345d5f2d915c9a1b6d295be8fb8a0d3901a5fc8f7ec9ba491955a0ec",
+      "size": 22127
+    },
+    "assets/fs/sysroot/avr/include/avr/iom328.h": {
+      "sha256": "6a3464423c0854ebd3d89dd172ee77e3da644d236310f3c4ba38ca801ada995a",
+      "size": 1791
+    },
+    "assets/fs/sysroot/avr/include/avr/iom328p.h": {
+      "sha256": "3613a1da7610c4afb1f9a774b88e066b5b555a791814ae9b89be84ec1f525837",
+      "size": 20476
+    },
+    "assets/fs/sysroot/avr/include/avr/iom328pb.h": {
+      "sha256": "41ac9ee1ecd1df744adea97403213c9b474abc11b1a0e70fb654739076db3457",
+      "size": 26151
+    },
+    "assets/fs/sysroot/avr/include/avr/iom329.h": {
+      "sha256": "408a71972630dddfbbdde61706e6f45be5bb3b842e5a0743f9e6cf9da52bcb14",
+      "size": 23430
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3290.h": {
+      "sha256": "9a49324fd733503968ff281bdf8af5fe30f96df5b37b81a4202b29cb383a614f",
+      "size": 26533
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3290a.h": {
+      "sha256": "71ddf48f09dff9f82228c7728e28c7f3c75899a4434e996d223176f52a217b75",
+      "size": 1791
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3290p.h": {
+      "sha256": "71ddf48f09dff9f82228c7728e28c7f3c75899a4434e996d223176f52a217b75",
+      "size": 1791
+    },
+    "assets/fs/sysroot/avr/include/avr/iom3290pa.h": {
+      "sha256": "f0143b51d684bcd77a572f7657f28b939bd114141268e8a6e20f1c5e67a3e10b",
+      "size": 26185
+    },
+    "assets/fs/sysroot/avr/include/avr/iom329a.h": {
+      "sha256": "361a03c513a1d60f40e942e5a465968d01e357782c43b49536d80941d981a960",
+      "size": 1790
+    },
+    "assets/fs/sysroot/avr/include/avr/iom329p.h": {
+      "sha256": "54eec51eec0167942b01f16fc9af4a3cf32d0106becf5798322813ad1a26a15d",
+      "size": 26348
+    },
+    "assets/fs/sysroot/avr/include/avr/iom329pa.h": {
+      "sha256": "361a03c513a1d60f40e942e5a465968d01e357782c43b49536d80941d981a960",
+      "size": 1790
+    },
+    "assets/fs/sysroot/avr/include/avr/iom32a.h": {
+      "sha256": "210655ac8d6da990cd541d9b0344ca1b180d068f41d62cf6287daf8f99e95fd6",
+      "size": 16603
+    },
+    "assets/fs/sysroot/avr/include/avr/iom32c1.h": {
+      "sha256": "9e1e55fc1c5de7d9aeeaba85b45963d70370cffc34d163da952c3b4db3612a66",
+      "size": 27913
+    },
+    "assets/fs/sysroot/avr/include/avr/iom32hvb.h": {
+      "sha256": "cd48c19fdb7efd600917c074282a19b3374dc5d51196f1bbaad2ff138ec29f09",
+      "size": 22774
+    },
+    "assets/fs/sysroot/avr/include/avr/iom32hvbrevb.h": {
+      "sha256": "3f6f7f0956730afac9c09eb7e3fd28a52b7f597ece51b3c38a59566b0d015f5d",
+      "size": 20254
+    },
+    "assets/fs/sysroot/avr/include/avr/iom32m1.h": {
+      "sha256": "c9061e2ae37128bb3833522addea7b33389f6431af7fd516b43b92f3164c6dad",
+      "size": 34556
+    },
+    "assets/fs/sysroot/avr/include/avr/iom32u2.h": {
+      "sha256": "b80a92c9e7996c750a2a8cb50a5a9937107d65c388fd4ec6704e469950dd53e2",
+      "size": 22097
+    },
+    "assets/fs/sysroot/avr/include/avr/iom32u4.h": {
+      "sha256": "988d1b7e4593b9d44e8da1c48d3d77bcef25b5ffaf7ff3599b03ebefccb1c0c1",
+      "size": 31109
+    },
+    "assets/fs/sysroot/avr/include/avr/iom32u6.h": {
+      "sha256": "1a7626fb30633c0fa6c942da45d8fe131d60cf6b6cb48daabd31c8e556741fe9",
+      "size": 30431
+    },
+    "assets/fs/sysroot/avr/include/avr/iom406.h": {
+      "sha256": "512d95b0971d0cd1bdef499da4c8d4c21cc66c183f73fb6827372cb1a178e014",
+      "size": 18256
+    },
+    "assets/fs/sysroot/avr/include/avr/iom48.h": {
+      "sha256": "2ab46a0d4310b6f505b547f1aa3be411bb584514074fe2ed1dc5a94959ebf23f",
+      "size": 3871
+    },
+    "assets/fs/sysroot/avr/include/avr/iom4808.h": {
+      "sha256": "d42c6edf1d9e4aed8aadc56e7f59fc3f5474ea92a75e7be7b0cedbd757a5566a",
+      "size": 218228
+    },
+    "assets/fs/sysroot/avr/include/avr/iom4809.h": {
+      "sha256": "04bc1e51d5bdd203d9620e0f1ab1bf9dcd1de3419318cf580e5feb905e545c6d",
+      "size": 220676
+    },
+    "assets/fs/sysroot/avr/include/avr/iom48a.h": {
+      "sha256": "da7de829f0f73881a026df086de89ce8fd5a43b2990c1865f3e1d16880920689",
+      "size": 1831
+    },
+    "assets/fs/sysroot/avr/include/avr/iom48p.h": {
+      "sha256": "40d64e1b2f84353374a31ac45adcc50961eb0bae541d3434672b399d03433687",
+      "size": 20113
+    },
+    "assets/fs/sysroot/avr/include/avr/iom48pa.h": {
+      "sha256": "e37a1d4be8cada4e2c322d70670e696f95d0baf5e86f81d8806fcd067ce1ad81",
+      "size": 19335
+    },
+    "assets/fs/sysroot/avr/include/avr/iom48pb.h": {
+      "sha256": "84425525a1a2a953883a142106185e869c809b884d2c7ca1ec7798965ab08228",
+      "size": 20446
+    },
+    "assets/fs/sysroot/avr/include/avr/iom64.h": {
+      "sha256": "c792a025198e390d8f964e4d1f2c8e97d1adfb195497456a9828789c820a478f",
+      "size": 35740
+    },
+    "assets/fs/sysroot/avr/include/avr/iom640.h": {
+      "sha256": "f46135c2fd503876214c0e596678211548d1b5a581808d820761ac4a215dcb54",
+      "size": 3742
+    },
+    "assets/fs/sysroot/avr/include/avr/iom644.h": {
+      "sha256": "80f50e17ab969812fc149ea39119b630ffb059550800ef874b04dee85a0d35db",
+      "size": 3727
+    },
+    "assets/fs/sysroot/avr/include/avr/iom644a.h": {
+      "sha256": "e2ce97647eca9f93ccb7fd555c3924525f1924e5525a48465cfb4e511dae0d66",
+      "size": 1790
+    },
+    "assets/fs/sysroot/avr/include/avr/iom644p.h": {
+      "sha256": "0e50897134877b1e394300c8e454081b1a4d770041231f62da7a5a477ef7b6da",
+      "size": 3733
+    },
+    "assets/fs/sysroot/avr/include/avr/iom644pa.h": {
+      "sha256": "585a7fa0d782ec9e7a68d103b36461aed20c535c85c7b5e2bfe9e84b7f25edcb",
+      "size": 30094
+    },
+    "assets/fs/sysroot/avr/include/avr/iom644rfr2.h": {
+      "sha256": "2112493d0b3929f33890482769d0c54e72a67594e2de642ec7b210281d983814",
+      "size": 60318
+    },
+    "assets/fs/sysroot/avr/include/avr/iom645.h": {
+      "sha256": "8951d7fd01f47af77a47eac8db1b4230b145a56a4d5f37042510916a4ef9400a",
+      "size": 19820
+    },
+    "assets/fs/sysroot/avr/include/avr/iom6450.h": {
+      "sha256": "3a77cb180c93ca714ecbca82900edc41cf071a16781f8a33f88c7d84e4eb39c0",
+      "size": 21944
+    },
+    "assets/fs/sysroot/avr/include/avr/iom6450a.h": {
+      "sha256": "0acba568a57d9b4346c33c26c7153c43a47874597f14b69a91aeb9f2af06d288",
+      "size": 1791
+    },
+    "assets/fs/sysroot/avr/include/avr/iom6450p.h": {
+      "sha256": "0acba568a57d9b4346c33c26c7153c43a47874597f14b69a91aeb9f2af06d288",
+      "size": 1791
+    },
+    "assets/fs/sysroot/avr/include/avr/iom645a.h": {
+      "sha256": "4f03ea9a4958f58b16776ad78f97fd25bee438d780cf559a66f7804582ca32ed",
+      "size": 1790
+    },
+    "assets/fs/sysroot/avr/include/avr/iom645p.h": {
+      "sha256": "4f03ea9a4958f58b16776ad78f97fd25bee438d780cf559a66f7804582ca32ed",
+      "size": 1790
+    },
+    "assets/fs/sysroot/avr/include/avr/iom649.h": {
+      "sha256": "db7c5432a1c39afa65ddb89ea038a2079d0459ed72e63cce3fa8a562ce6b193f",
+      "size": 23174
+    },
+    "assets/fs/sysroot/avr/include/avr/iom6490.h": {
+      "sha256": "7edd48fba06cda7ad961e731a4d708be2a5914f70f6f78c1cb0f06d188b6d7fa",
+      "size": 25258
+    },
+    "assets/fs/sysroot/avr/include/avr/iom6490a.h": {
+      "sha256": "a1b235a5398400142fb5fdb65ae05345e9de52648b0285accc02d74d9f20bbe4",
+      "size": 1791
+    },
+    "assets/fs/sysroot/avr/include/avr/iom6490p.h": {
+      "sha256": "a1b235a5398400142fb5fdb65ae05345e9de52648b0285accc02d74d9f20bbe4",
+      "size": 1791
+    },
+    "assets/fs/sysroot/avr/include/avr/iom649a.h": {
+      "sha256": "8344978a08860d54a394f704f61aa28b568883470e0e97990fbe07b86518d222",
+      "size": 1790
+    },
+    "assets/fs/sysroot/avr/include/avr/iom649p.h": {
+      "sha256": "590e9df107c747ab9510fa213cc649703d84ed1f972a6951a3fb027039d629f3",
+      "size": 31144
+    },
+    "assets/fs/sysroot/avr/include/avr/iom64a.h": {
+      "sha256": "19bd6e3bcd92f67b68e976011e40f62558b76ec2301a37fe1980e4fc1ec483df",
+      "size": 25525
+    },
+    "assets/fs/sysroot/avr/include/avr/iom64c1.h": {
+      "sha256": "be1f46bbd0986405dc769e66899f67bd5f8d6e2516fea10f7c74b5af8e0bd508",
+      "size": 27931
+    },
+    "assets/fs/sysroot/avr/include/avr/iom64hve.h": {
+      "sha256": "c3fe213ff5411d8c55767155a79c1b5cac84cd67ed8ae30c73f55b601588ed2e",
+      "size": 22298
+    },
+    "assets/fs/sysroot/avr/include/avr/iom64hve2.h": {
+      "sha256": "a62728d1e8feda1455ad40496dfea543df7ec77857f39f3061503d38c714f9ef",
+      "size": 17246
+    },
+    "assets/fs/sysroot/avr/include/avr/iom64m1.h": {
+      "sha256": "b7be098210a1596f01de7c49a14b9e756066c0b9f48c6c949031aec6726d26a5",
+      "size": 32777
+    },
+    "assets/fs/sysroot/avr/include/avr/iom64rfr2.h": {
+      "sha256": "f989903a61e5ab9423e434699d2e73f0d6b573bb21a78fbdbf0de1d619809d9a",
+      "size": 60618
+    },
+    "assets/fs/sysroot/avr/include/avr/iom8.h": {
+      "sha256": "cbb6db63a62b937dd6304e726167e9f2e6a79136c1cc808f9e74ed4bf1766b6a",
+      "size": 14547
+    },
+    "assets/fs/sysroot/avr/include/avr/iom808.h": {
+      "sha256": "64c2f7073fa024e40301f8b67a2be7006b7e5a873a5bc5342582f95cb644471a",
+      "size": 218229
+    },
+    "assets/fs/sysroot/avr/include/avr/iom809.h": {
+      "sha256": "40b670f5c5ad835d747c4ce2ab9037e6b99a4fc0cebe63f17457a036baf06bcb",
+      "size": 220677
+    },
+    "assets/fs/sysroot/avr/include/avr/iom8515.h": {
+      "sha256": "c776b3817cd63bac3051bfc3979e4063ce4686f43b00ba9d2711c7f505587a3b",
+      "size": 18794
+    },
+    "assets/fs/sysroot/avr/include/avr/iom8535.h": {
+      "sha256": "d0fb02a653be14382ff7b9a5bf14d27958ab9a4992b46f61e91ac7d2dc001873",
+      "size": 20687
+    },
+    "assets/fs/sysroot/avr/include/avr/iom88.h": {
+      "sha256": "b721dc51824523fd36ad30185af8c3588f5bb31400ad594d5f773346e31eac65",
+      "size": 4048
+    },
+    "assets/fs/sysroot/avr/include/avr/iom88a.h": {
+      "sha256": "f075e9a79da9c854bb8f1def4b3f92f06833cd0e85122296f4d67fc07aed9ef3",
+      "size": 1831
+    },
+    "assets/fs/sysroot/avr/include/avr/iom88p.h": {
+      "sha256": "57e251d17580751d63e194717ec1ec0b80f40b64ca6bc50ccf8f499457720e87",
+      "size": 20239
+    },
+    "assets/fs/sysroot/avr/include/avr/iom88pa.h": {
+      "sha256": "ae1bef69ed3bc0456b922fa3339a7a2f778f032ec6e816db4c617904662e4afe",
+      "size": 25934
+    },
+    "assets/fs/sysroot/avr/include/avr/iom88pb.h": {
+      "sha256": "abb8388b61b7f2a78fafc280a4f52f0f5f59d8f4d229e557811159e08fac1116",
+      "size": 20764
+    },
+    "assets/fs/sysroot/avr/include/avr/iom8a.h": {
+      "sha256": "e38b27e994192615d679969a8f19a9629f0f070c882c33b59ed5d55bd43a25f9",
+      "size": 14918
+    },
+    "assets/fs/sysroot/avr/include/avr/iom8hva.h": {
+      "sha256": "dc672580882a7d98d0aabce1969d36fbb6e2158514bfd13d41501fec16f3783b",
+      "size": 2716
+    },
+    "assets/fs/sysroot/avr/include/avr/iom8u2.h": {
+      "sha256": "cdd9ca24f09208523c9920c09b80634dbe8a97ca49097b6d604c4b4f3a09325e",
+      "size": 22060
+    },
+    "assets/fs/sysroot/avr/include/avr/iomx8.h": {
+      "sha256": "9436c39f0bba0220dbf1e4e456e58964ae340f75f9b358f677bf301bcaf02326",
+      "size": 19000
+    },
+    "assets/fs/sysroot/avr/include/avr/iomxx0_1.h": {
+      "sha256": "00258e30e237a77d290ef0ea7637eba38160cdfad74e89b077180fbb31e59110",
+      "size": 37563
+    },
+    "assets/fs/sysroot/avr/include/avr/iomxx4.h": {
+      "sha256": "ab1e55d301bc092b28b776f8dd908a94f5247f05dd64cc6518440d48cca88c63",
+      "size": 20606
+    },
+    "assets/fs/sysroot/avr/include/avr/iomxxhva.h": {
+      "sha256": "f7496f17a177d4547ba0c3721d1d7d2a52a3ff5e18fb14c28711fd58dcfbecbe",
+      "size": 12182
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn10.h": {
+      "sha256": "064acbdb90092401a5d50c4350dbb3184d38c32c73f2f5048aeabde1591c0a6a",
+      "size": 11251
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn102.h": {
+      "sha256": "e3de737e42993cad5b2a0046d6ee3a3fbaeec9eac3c69b887ef2bb084c697b2d",
+      "size": 11144
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn104.h": {
+      "sha256": "5d9db078c6f22d08022a93fc1764e686b93485abe46b5238f0c9c6c74273e4d4",
+      "size": 11144
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn11.h": {
+      "sha256": "018a852023355cea688eaf1c201e89a5a675d41349de207ec18da18f753e558d",
+      "size": 5936
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn12.h": {
+      "sha256": "f33c4a1c4fb863184562f35857e17a08ff19ec069294aaa780f435c339829f85",
+      "size": 6779
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn13.h": {
+      "sha256": "9d2b5359f1bf0626a8a0676a602b51c0ea91158c890368eec72d2ff83098b5b8",
+      "size": 12569
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn13a.h": {
+      "sha256": "f3b400920aa5b6a65329a27f8757993ac7b4e56fc77ebfd8741c771700ceae13",
+      "size": 9414
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn15.h": {
+      "sha256": "511ccb1b6bdb797ade7f763c7c065c2ed11202725740ca427c9b8e43e8bf5d37",
+      "size": 8209
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn1604.h": {
+      "sha256": "c743c3ac540c81cf6f304e399859b6b3e1301843bfcc82518316a4fac90e1788",
+      "size": 223531
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn1606.h": {
+      "sha256": "b15c6b4335d23ab6a053da5cebd11cf3d279adec988492f43daecca8102b277f",
+      "size": 223531
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn1607.h": {
+      "sha256": "f8d56202be09b1f90a187258d7f09c6edd8acaa05efd4c7f03bd57786789b0e3",
+      "size": 223531
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn1614.h": {
+      "sha256": "1e9f92e651ccb015542843eb9579a43169670c8175b3e9c964604d7b05d778ef",
+      "size": 270460
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn1616.h": {
+      "sha256": "e1b941d3ac9465ce589daecd703cb47963fbc0b0659a057f2049b0928aaa52c9",
+      "size": 271397
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn1617.h": {
+      "sha256": "5407d305ec869a1cee81a1e27c99c52d665c898d9f4f517e0a29e3c8b4f64790",
+      "size": 271397
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn1624.h": {
+      "sha256": "8dad0a74017f9728a648387c041937aaba871fbddffe2a0e588d924b3e48ee09",
+      "size": 256377
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn1626.h": {
+      "sha256": "922956dc0e06090889710015930f47eec6cb56d2e42a0f4c401b154dd7fbdde6",
+      "size": 256377
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn1627.h": {
+      "sha256": "47203f6ef2c7e4046343513d97ae6784ba89fd4292032d77c9aab4d7b0bb9649",
+      "size": 256377
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn1634.h": {
+      "sha256": "a4af934a5b4e4b9f733d620069aefb61102892eb5677fa801ea1458584ce792a",
+      "size": 21628
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn167.h": {
+      "sha256": "14456e2e2afbcdd3dc07f615f47c8af8ddc428ff7350f29e980e330881645f2d",
+      "size": 18685
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn20.h": {
+      "sha256": "cb27264e6d9896f89728c391942fb9b46c9316f2d6738805ee5ff3ab72129ea5",
+      "size": 16551
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn202.h": {
+      "sha256": "c0cd5663bb398afdec8ecff240577e76117603d5b819a0749cc0089ea45567b0",
+      "size": 219678
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn204.h": {
+      "sha256": "0bea5592848c1607eeb64c0432454372e76b2e826590e82482e7bc2b7c736cf1",
+      "size": 223662
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn212.h": {
+      "sha256": "bf5eb18802df0e5c150abde6a68ec537acea359f1adf048ee191ef67b2e26b3c",
+      "size": 255098
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn214.h": {
+      "sha256": "6ea48bf8c5cd89d96466b0f9c6662a0443cdf6a39d8378b8bfaf869019ed14cf",
+      "size": 257153
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn22.h": {
+      "sha256": "f69e87265d147968273884d15814193172cdc7ca8b0e4b96b05a2219c84d708f",
+      "size": 5556
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn2313.h": {
+      "sha256": "4009163161adbb92617768c87ae9bb35015d601afb3956a20afe4e8f25f5d1fc",
+      "size": 18555
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn2313a.h": {
+      "sha256": "93f5090de1bed18ea8936db29d35ad2aaf9c8bb08081182a3ab231059fff4f8f",
+      "size": 18483
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn24.h": {
+      "sha256": "60949b0ec92a71997a6a08c0ccb14be6932049092fcbaf875df5ef547889366d",
+      "size": 3400
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn24a.h": {
+      "sha256": "5068359ae3dc027665b45f2043f37b06ddbe213c534053ff18f619bdfc76b224",
+      "size": 18799
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn25.h": {
+      "sha256": "0927da359f3d9a1a48b480c60f58bfbe9deb02eb4fc9b39ccdcb1f5839e030ac",
+      "size": 3359
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn26.h": {
+      "sha256": "2c0eedc1ae10b1fd71aa4a295648c6a58c76da1b28b0d765886abbd6ca004d10",
+      "size": 10015
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn261.h": {
+      "sha256": "076bd4a18f5d4c1649f21de7c46cedf80f849b13e42bb7c05816c7b572e9907d",
+      "size": 3405
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn261a.h": {
+      "sha256": "2d600e0a39d66e96cfc62d2ce02bc6167bbed2a020b90c5bd691121243005a84",
+      "size": 22155
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn28.h": {
+      "sha256": "f5577c5ac89bd0677e3560fb73dd84a7b7afcbaee47ade09f4f900c1338369d4",
+      "size": 6361
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn3216.h": {
+      "sha256": "a06cfc14b9907b6765eaa2a2e82424457533fba9d76bb9286b8c3d68bbfeefc4",
+      "size": 273708
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn3217.h": {
+      "sha256": "3ef10d48a9fd7c9a4d61fd3146ae20ddb0283ae403b7cafea0d1f27ba1dd0033",
+      "size": 273708
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn4.h": {
+      "sha256": "e11f9ba52613d1b66c93c18d9f6455fc97eb576d61aa14ec8e2cb35b186a935c",
+      "size": 10612
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn40.h": {
+      "sha256": "c9e8926b602c31477f10b1dfd1c94707db64fccac7f71bacf67e8de1709ada0e",
+      "size": 16490
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn402.h": {
+      "sha256": "1222a6e418b9c07a615eebcb106ce9159212ac6d04092821afb532daa6aedc51",
+      "size": 219680
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn404.h": {
+      "sha256": "8147cf5a1d6cc9c81a1afdac13a2202c64ce3889a80d9eca4d95ad1e299d9d9c",
+      "size": 223664
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn406.h": {
+      "sha256": "d98785076f3c0ab580e6fbc9169f29ca64d46fa890f6f903d4378ff3cec5189b",
+      "size": 222434
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn412.h": {
+      "sha256": "8d283e7f45899e8fb309f2ea5410f55e8ad4f24fbafa27d870a81c53003e6522",
+      "size": 255100
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn414.h": {
+      "sha256": "b7677ca5ce41db5ecaefef5ef0c6b900fe357dbe798e2cc8b5ca7739b6d08d1f",
+      "size": 257155
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn416.h": {
+      "sha256": "e197f47e313c348acd49206c46a60895576b6a76f3c02fd8a983c46b2b352b93",
+      "size": 258206
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn417.h": {
+      "sha256": "c639d3a02b137979cef889473a3e62bed7f96328f5178a1ed655e885df2ab29c",
+      "size": 257992
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn4313.h": {
+      "sha256": "6eb48be91f704720681f1bfb6c2f607e8b9cb83c28e82a568b207c7e566319df",
+      "size": 18462
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn43u.h": {
+      "sha256": "038da81d9c75d22c0f50be5325442d1a6ecfe4d810d66047a751e42f868f349d",
+      "size": 12998
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn44.h": {
+      "sha256": "9a4f19db474c900279dea1cf72e0f3fcf9b4a2f6d184be470a144d010e4a051a",
+      "size": 3416
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn441.h": {
+      "sha256": "c5e2b8d2073c1660c7ce91c2d74e48006d3e6a6117dad75fab4d251adaa7f408",
+      "size": 20712
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn44a.h": {
+      "sha256": "e90f64f73e1d78b2a7d4c17d4f7bbfcb180f6ed4726faefa62f93741b8980f72",
+      "size": 18724
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn45.h": {
+      "sha256": "5aa21987d559bdf5b43d0581ef929e5edc4678a82badd0aa7de113ba2687ebd3",
+      "size": 3375
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn461.h": {
+      "sha256": "af9ee84f7670d29c9c310a7a62751b6b97b4ada4603e62753596cf24c01c2330",
+      "size": 3423
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn461a.h": {
+      "sha256": "0a9fa5a35aa6052dd47ff9787b40fa31eb4c5cc46c879310592121ced6b842d6",
+      "size": 22155
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn48.h": {
+      "sha256": "8c8185e336743c656536d6edf2ed8c4883e9518bcd20c3c437f324301a55d09c",
+      "size": 16736
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn5.h": {
+      "sha256": "bb0be58769f5ddfc36999262a8e0af48f3b20dc2a6e1626aea541e179a50964a",
+      "size": 11244
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn804.h": {
+      "sha256": "7665a88cefe4b9528d0ad584a4e38ba473a5584bcdcedb5417e2045109c2676b",
+      "size": 223521
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn806.h": {
+      "sha256": "07e244ec92da789c83f879b621069aaed4000e87f9fcb50a2dc2b8893b9d4d45",
+      "size": 223521
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn807.h": {
+      "sha256": "956a4c36b671eca484e8a0c65e3e662771e9b64d6b16c1134a31cb9b1496a381",
+      "size": 223521
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn814.h": {
+      "sha256": "5996e8dbdc70e4fc94449b6754d1b35dfca192cdb23dc58e2c2a656c230fc2f2",
+      "size": 257055
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn816.h": {
+      "sha256": "120a58e15aa73a94344b40996db8b127a476d540291435852e62bf8b18e360dc",
+      "size": 257992
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn817.h": {
+      "sha256": "09f2e986b1479133166ce2546dcb352a7a2a9f91f3781ebe1724a1e48112be5f",
+      "size": 257992
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn828.h": {
+      "sha256": "6b17c75a5bf51fa6ae820a976ac97b5ff76158f43a56a2a56bdb0c8115f6a93b",
+      "size": 20870
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn84.h": {
+      "sha256": "c17cf3469601c8bef770f29e78b67ee277675e1b0fd612d82539fcf959b986fb",
+      "size": 3424
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn841.h": {
+      "sha256": "3822c5ce790556f0b9826b2203395b0b64ea547249d0c99ed3edf2f4341b6e21",
+      "size": 20712
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn84a.h": {
+      "sha256": "3be361c500978df0e46d4e8d0981d453e1a81116af891ea75c5822e759a31fbd",
+      "size": 18745
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn85.h": {
+      "sha256": "5f024480df4e9e3d5acaedbf9707b9b31e592adcac2d832c37bea8f8f0296bdf",
+      "size": 3377
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn861.h": {
+      "sha256": "a685a721332701cd8bfb558f97cc0e77a401d2972ab9837ee368d81aaaf36a84",
+      "size": 3425
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn861a.h": {
+      "sha256": "1fa7e6057c0902af7efb76e97f69c87505046bcfc04abf6336f3b8e1e3ff3cc8",
+      "size": 22174
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn87.h": {
+      "sha256": "c527b978fe125e9e3420a491d59081b5befbccf876628a3e2ee2dee86331a04d",
+      "size": 18565
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn88.h": {
+      "sha256": "dfff659f6f4fefdad96c1fd18188d8eb063c00bf1ca4b6e93fd03eb4f1ababa2",
+      "size": 16667
+    },
+    "assets/fs/sysroot/avr/include/avr/iotn9.h": {
+      "sha256": "900df24f4d6594087a62b1ba71fe843ed522d330443814fb2c5cf7444219f8c2",
+      "size": 10612
+    },
+    "assets/fs/sysroot/avr/include/avr/iotnx4.h": {
+      "sha256": "cd923db7687a1270c3da212db6e735d4d57f2b29388008a699e2e5a88eb5d681",
+      "size": 11318
+    },
+    "assets/fs/sysroot/avr/include/avr/iotnx5.h": {
+      "sha256": "1981b9f331af6cfb3141c52b5e0a5b09ecc13e85f2cb377712f983d224592726",
+      "size": 10371
+    },
+    "assets/fs/sysroot/avr/include/avr/iotnx61.h": {
+      "sha256": "fb0a4cee963e9fafd6477bb33c0e8526c419c60dee31fc7968039c13d6e9768f",
+      "size": 12332
+    },
+    "assets/fs/sysroot/avr/include/avr/iousb1286.h": {
+      "sha256": "df05c968c93ba959dbb780068f1fed8bffe52c9f3ff9cca025d2004f905300b2",
+      "size": 3816
+    },
+    "assets/fs/sysroot/avr/include/avr/iousb1287.h": {
+      "sha256": "275b246e3bccfcd02e65925fc8b6f03b670c517e5b52ca7ded58270132114fdc",
+      "size": 3816
+    },
+    "assets/fs/sysroot/avr/include/avr/iousb162.h": {
+      "sha256": "a559ebf564d84f4dcbd10c7d4797ff4c71e55fed57f265d7fca0d03638480654",
+      "size": 3787
+    },
+    "assets/fs/sysroot/avr/include/avr/iousb646.h": {
+      "sha256": "2627b519aac1969a00dafe3cd20f198d53ab9b8b9cc421e5c9d5c5edd23f525a",
+      "size": 3849
+    },
+    "assets/fs/sysroot/avr/include/avr/iousb647.h": {
+      "sha256": "5ecc047429df6542fe2b543585e45c229bd87f80da8ca8c9fcc1bd5ef7e2cae3",
+      "size": 3850
+    },
+    "assets/fs/sysroot/avr/include/avr/iousb82.h": {
+      "sha256": "9fcf1e7f590746efcbee60783f3a5778a74a0573597b4b5730c1b2cd69bba4ba",
+      "size": 3682
+    },
+    "assets/fs/sysroot/avr/include/avr/iousbxx2.h": {
+      "sha256": "27bd324be902ba2e04fd384d491ff468c0f5befe345e7d65d044f52f0baed437",
+      "size": 17427
+    },
+    "assets/fs/sysroot/avr/include/avr/iousbxx6_7.h": {
+      "sha256": "0e68f2a82858f372101d023e63441dde44885706de76ed264aebfd2c5aca796f",
+      "size": 27919
+    },
+    "assets/fs/sysroot/avr/include/avr/iox128a1.h": {
+      "sha256": "54cb3aca93d1c0c15bb0cf26b6f0e6978e356830c84b15ffaa1a05babc2c4ed2",
+      "size": 319097
+    },
+    "assets/fs/sysroot/avr/include/avr/iox128a1u.h": {
+      "sha256": "af9f7830ace217a64c5c346b3459aa1c005b727a373ed50afbbc6b06cd9fa430",
+      "size": 380386
+    },
+    "assets/fs/sysroot/avr/include/avr/iox128a3.h": {
+      "sha256": "1508ff390ceda257e411ed60593e41a43dc5b4eb85ff1834a9e10b6971ee5704",
+      "size": 309024
+    },
+    "assets/fs/sysroot/avr/include/avr/iox128a3u.h": {
+      "sha256": "54db2a077d8a615e2bb4ec6c6713fbcfa6bbc9ee98ccaf152a31888d8b87278f",
+      "size": 353316
+    },
+    "assets/fs/sysroot/avr/include/avr/iox128a4u.h": {
+      "sha256": "8e5d12979d5c043737c71b3f51a08e882f8fd852da374a2d43d906b454132f3c",
+      "size": 337167
+    },
+    "assets/fs/sysroot/avr/include/avr/iox128b1.h": {
+      "sha256": "f2754a95d3dc2a28544d9c41661bf0ea031694532c50c6dd934eedbad0a493e8",
+      "size": 314489
+    },
+    "assets/fs/sysroot/avr/include/avr/iox128b3.h": {
+      "sha256": "6024da8a2517ed06f8b49e6d9421fddb4165efa03cf332266d6584dc5e67eba0",
+      "size": 289084
+    },
+    "assets/fs/sysroot/avr/include/avr/iox128c3.h": {
+      "sha256": "bd51d83b11caddf3850ac25d1c64a6dfb561635198061b878e66a00bb2460eb0",
+      "size": 281924
+    },
+    "assets/fs/sysroot/avr/include/avr/iox128d3.h": {
+      "sha256": "5f9f6e78bfda22bfff9f5eb7b52f17d9b6b803c7ed713c6f99d3f2754b40c014",
+      "size": 252186
+    },
+    "assets/fs/sysroot/avr/include/avr/iox128d4.h": {
+      "sha256": "0129696cd65b6f96798aa3280f7cb3d16895a4dd663252c811d69c96f68e029c",
+      "size": 252012
+    },
+    "assets/fs/sysroot/avr/include/avr/iox16a4.h": {
+      "sha256": "a10a1e0063ef61cf41611fa3175e93188762325aa11a4de7dee12fd08fd8d262",
+      "size": 298849
+    },
+    "assets/fs/sysroot/avr/include/avr/iox16a4u.h": {
+      "sha256": "397377c9f02adaed2d27fe02f660c170f7b558fbeb809bcdec3a57c2008e98bc",
+      "size": 337159
+    },
+    "assets/fs/sysroot/avr/include/avr/iox16c4.h": {
+      "sha256": "3a106971ff023faea1b9a9973fc488201a24198ea512c5379d5a93593437bf34",
+      "size": 275099
+    },
+    "assets/fs/sysroot/avr/include/avr/iox16d4.h": {
+      "sha256": "60129c7d76db3ba927365d3ba23ef5caa6395c7f080e8050b91c62df4e801f0b",
+      "size": 249869
+    },
+    "assets/fs/sysroot/avr/include/avr/iox16e5.h": {
+      "sha256": "6d59f900251bbb2d687cc1d4eb08c28dd9ad4969b977f5675d41aee5585e5f71",
+      "size": 383487
+    },
+    "assets/fs/sysroot/avr/include/avr/iox192a3.h": {
+      "sha256": "112842a525f3f0e4717429a6a8ddb4452973f66380a091b127bf437fb9fc7499",
+      "size": 309028
+    },
+    "assets/fs/sysroot/avr/include/avr/iox192a3u.h": {
+      "sha256": "7bc3deab07ddd70fb74a42e077a6cbf37b7556233175dedcafa0ad4a4da836be",
+      "size": 353317
+    },
+    "assets/fs/sysroot/avr/include/avr/iox192c3.h": {
+      "sha256": "106f345b78e2828913cc179a670c40437723e36312317345c38f4e01523813da",
+      "size": 281925
+    },
+    "assets/fs/sysroot/avr/include/avr/iox192d3.h": {
+      "sha256": "3b4dce8fe69cadbef216fdae97e645020586cf99a6c5a859a2e96c0869041502",
+      "size": 252186
+    },
+    "assets/fs/sysroot/avr/include/avr/iox256a3.h": {
+      "sha256": "716dbca9d972d932c262b4fd2ff21a8e577ccefccb5542179e95f4c3118bf01c",
+      "size": 309025
+    },
+    "assets/fs/sysroot/avr/include/avr/iox256a3b.h": {
+      "sha256": "f72d0c59140e088ae5f6830a5712aa4f7206c7e83f0bfc68f6e9badad1a64e8f",
+      "size": 308838
+    },
+    "assets/fs/sysroot/avr/include/avr/iox256a3bu.h": {
+      "sha256": "46c50c2ac97a8ef7088db5b1d0626e28947a3b9fde06d49da4f768193155391e",
+      "size": 353778
+    },
+    "assets/fs/sysroot/avr/include/avr/iox256a3u.h": {
+      "sha256": "3d4fa6ecfd9ffc957a76507f8f3ab2df550e5cfe274809a3e56abc8b2bcaa920",
+      "size": 353317
+    },
+    "assets/fs/sysroot/avr/include/avr/iox256c3.h": {
+      "sha256": "713cf55684614117aa066d1701c464cef89029b7b7ce536915c28f5ae534fd9a",
+      "size": 281925
+    },
+    "assets/fs/sysroot/avr/include/avr/iox256d3.h": {
+      "sha256": "c4afc190ad9f7cbceca1089f8407b6e1a1ac6cb4c68ab43ca1afe2ab4cb20503",
+      "size": 250003
+    },
+    "assets/fs/sysroot/avr/include/avr/iox32a4.h": {
+      "sha256": "3cf5d036de054a99853228c192a1f0ae45f1f4a468a015eeab8fda2de6f4f20c",
+      "size": 298848
+    },
+    "assets/fs/sysroot/avr/include/avr/iox32a4u.h": {
+      "sha256": "0d6ea22301b7292b498b0743c3b6ee17d1b8f3bb17bd55eb69cc2003e80d29a5",
+      "size": 337159
+    },
+    "assets/fs/sysroot/avr/include/avr/iox32c3.h": {
+      "sha256": "252a44b02bb5547b8d0c83fae9e60932b4a25010a7a6146ee29be80e7f28e426",
+      "size": 281916
+    },
+    "assets/fs/sysroot/avr/include/avr/iox32c4.h": {
+      "sha256": "c775a1b02306dad9088bfa3b570c6e7648a672907dee5eac2669ffc9bb79581a",
+      "size": 275099
+    },
+    "assets/fs/sysroot/avr/include/avr/iox32d3.h": {
+      "sha256": "2d0a148d84de9cc2defef23c9180fcb38bfdd588d48e6a864c8fac18b8322b67",
+      "size": 232062
+    },
+    "assets/fs/sysroot/avr/include/avr/iox32d4.h": {
+      "sha256": "596f814f7785162cc3aa29f7015c9167f1ef1dc82f7aee3f394e57f349301cd5",
+      "size": 247985
+    },
+    "assets/fs/sysroot/avr/include/avr/iox32e5.h": {
+      "sha256": "bc7f6ce4c9788b8ac9c85c1858497813f245a0c7921e403dd40c0f3dc16522da",
+      "size": 383489
+    },
+    "assets/fs/sysroot/avr/include/avr/iox384c3.h": {
+      "sha256": "15d2c8a1694cc416a7981d39bc0a620fbd844e096b1f9b9ea5c91fdf950142f7",
+      "size": 310029
+    },
+    "assets/fs/sysroot/avr/include/avr/iox384d3.h": {
+      "sha256": "042467957ba72ab9d6e6ae73010337501f89acfc8ce3bc97e0033a0c99350a12",
+      "size": 264065
+    },
+    "assets/fs/sysroot/avr/include/avr/iox64a1.h": {
+      "sha256": "2ec3c8a9ce77e53847afe2d5d52011b9b13274844575292e36c74e55b7deeb2a",
+      "size": 319085
+    },
+    "assets/fs/sysroot/avr/include/avr/iox64a1u.h": {
+      "sha256": "8f769d57b26595cece84f61a0cb91129f38b600a181d7fda848784b6128d4ad5",
+      "size": 380379
+    },
+    "assets/fs/sysroot/avr/include/avr/iox64a3.h": {
+      "sha256": "bdf4dcf5ae0d44be33ec42e3a166bc584729c44ba18f6335b498369b7f158d98",
+      "size": 309014
+    },
+    "assets/fs/sysroot/avr/include/avr/iox64a3u.h": {
+      "sha256": "d263dfbd96f97221f21abcd47ed0a967951567d6ff71f1805b8634b0a419d31d",
+      "size": 353309
+    },
+    "assets/fs/sysroot/avr/include/avr/iox64a4u.h": {
+      "sha256": "0cb2de1ce8207bb1193acd9b3b0ed9b3a8e1d984201f7397c5561faea6f913c9",
+      "size": 337160
+    },
+    "assets/fs/sysroot/avr/include/avr/iox64b1.h": {
+      "sha256": "8af22f443e52ae94f39eee19d534a6ad1de9d0e6979b3c1090a6f0233c1d2bd9",
+      "size": 295878
+    },
+    "assets/fs/sysroot/avr/include/avr/iox64b3.h": {
+      "sha256": "eab074ab25be1e7ab43dad3796fd8585be60ac4f0b7e7fd581250906274bd3ad",
+      "size": 289077
+    },
+    "assets/fs/sysroot/avr/include/avr/iox64c3.h": {
+      "sha256": "873ec287747657644288cf8c58b03b3684ac99a54eeaa226d3c56824168edd49",
+      "size": 281917
+    },
+    "assets/fs/sysroot/avr/include/avr/iox64d3.h": {
+      "sha256": "c28cc6f90c34427152e6928f8849845cfdf661419f14ee81e1fae19555dc89a9",
+      "size": 252714
+    },
+    "assets/fs/sysroot/avr/include/avr/iox64d4.h": {
+      "sha256": "f3ec8bb1b1b36dc42ca7fa363cbd3ec6b1ef3376f308614e09e8c0043f735f26",
+      "size": 251775
+    },
+    "assets/fs/sysroot/avr/include/avr/iox8e5.h": {
+      "sha256": "fe3041ed716d900887ff97bd7bf5ac6e09a409fff036c7c66cffb6db0a79c1cb",
+      "size": 383481
+    },
+    "assets/fs/sysroot/avr/include/avr/lock.h": {
+      "sha256": "25d50151b6d307018be0cf6307f586a14aea07885f14cafae6d6434b62075c79",
+      "size": 8520
+    },
+    "assets/fs/sysroot/avr/include/avr/parity.h": {
+      "sha256": "949ad776c3d7245bd25f08f0b0b05f9d45dd630fad4a85d44d353f9245e35f55",
+      "size": 1721
+    },
+    "assets/fs/sysroot/avr/include/avr/pgmspace.h": {
+      "sha256": "5e8af74a13ecaf167738a51d5c1179d523d35057fc13d4ac0114e07f41c50f45",
+      "size": 71262
+    },
+    "assets/fs/sysroot/avr/include/avr/portpins.h": {
+      "sha256": "fe68db55c60eff33f91b86bcad41f7c8a181d27c36300d737ddf958125eec5b9",
+      "size": 13854
+    },
+    "assets/fs/sysroot/avr/include/avr/power.h": {
+      "sha256": "8a9f254354578a0b5944768b5932650d7cc5260e0d0293d37edefd8c58ed4f51",
+      "size": 56665
+    },
+    "assets/fs/sysroot/avr/include/avr/sfr_defs.h": {
+      "sha256": "045310c428bf77517300487e9434ecedd4f98f7c879f6c6ae364e6012c5d77f5",
+      "size": 8845
+    },
+    "assets/fs/sysroot/avr/include/avr/signal.h": {
+      "sha256": "e52d5e1542b16fbe726618d4573559e48cd85b89cb36f401081093719e1feede",
+      "size": 1749
+    },
+    "assets/fs/sysroot/avr/include/avr/signature.h": {
+      "sha256": "6fc91bd7d4f455c9e8aef6747c17299c33b7e0da21efa11e82cad3c47ff68076",
+      "size": 3236
+    },
+    "assets/fs/sysroot/avr/include/avr/sleep.h": {
+      "sha256": "e75966d0bb8708ab49734c4ee77bbac8cf137d1a53f757663f6584df53284e41",
+      "size": 10285
+    },
+    "assets/fs/sysroot/avr/include/avr/version.h": {
+      "sha256": "9fdff81acdbb6a5af3598fdc4f23f55f2439e7ab677c26acbfcc8051ea207368",
+      "size": 3699
+    },
+    "assets/fs/sysroot/avr/include/avr/wdt.h": {
+      "sha256": "f4cb48f33f0816959627aa579cebfadb6d30c0c449c60ad94f142ae1e308b38d",
+      "size": 19907
+    },
+    "assets/fs/sysroot/avr/include/avr/xmega.h": {
+      "sha256": "3ec5de6b33e1a42fdb0ee7c525cc445a87431c2d763dc4a8b1cc72e6c92aca6d",
+      "size": 3573
+    },
+    "assets/fs/sysroot/avr/include/compat/deprecated.h": {
+      "sha256": "97fbea4f85850c34ed43ad36f587e0d2da5ead564f6cc75fb7cece9fd842f17c",
+      "size": 6894
+    },
+    "assets/fs/sysroot/avr/include/compat/ina90.h": {
+      "sha256": "8e8dbb71df6b03417d4426369395d4ea72c86180c5debd882c0d5dd7d60934e3",
+      "size": 3554
+    },
+    "assets/fs/sysroot/avr/include/compat/twi.h": {
+      "sha256": "05ff68d53b99fda11f9fcb5e46746449c7b447e67cd9f66d70b941dc82228c56",
+      "size": 1662
+    },
+    "assets/fs/sysroot/avr/include/ctype.h": {
+      "sha256": "0ba6b51629f363c5b63c8ff9c0bed238d9acf93569d17de07430e37073ec87b2",
+      "size": 5309
+    },
+    "assets/fs/sysroot/avr/include/errno.h": {
+      "sha256": "f796806ba25ce440a286ef7c90c7b8d536800aaea721b927862273abca47cf11",
+      "size": 4587
+    },
+    "assets/fs/sysroot/avr/include/fcntl.h": {
+      "sha256": "8a24f02c85926823983e76de0cc875a6f2c42416824a5492b8fea689a68fc52a",
+      "size": 23
+    },
+    "assets/fs/sysroot/avr/include/inttypes.h": {
+      "sha256": "586b6b2a09017f5608c1b78367c04b498aa6fb6a58684368f413d83443a2fcef",
+      "size": 15788
+    },
+    "assets/fs/sysroot/avr/include/locale.h": {
+      "sha256": "5ffda13ad6486707613dafbf5017dc6971321eb976cdf6ed84ceb81f53947d69",
+      "size": 363
+    },
+    "assets/fs/sysroot/avr/include/math.h": {
+      "sha256": "145af47055f005ff3ceaba26f2ed3d80057867ee3edc356edde5e9f460bb3db2",
+      "size": 15620
+    },
+    "assets/fs/sysroot/avr/include/setjmp.h": {
+      "sha256": "2a83c2134a1f24c1c450b2d8403db19d3f2fd96f5d4624f5ee0945fa7d51cc28",
+      "size": 5132
+    },
+    "assets/fs/sysroot/avr/include/signal.h": {
+      "sha256": "1c847646a1fb66729fa246aa78d02067b0ec6e828b81c854f52977c9ca99b177",
+      "size": 611
+    },
+    "assets/fs/sysroot/avr/include/stdfix-avrlibc.h": {
+      "sha256": "3cbe5e2d4253b0a60e79a3e10df53fbd9682a40683a92087952a764164790d24",
+      "size": 2022
+    },
+    "assets/fs/sysroot/avr/include/stdint.h": {
+      "sha256": "495d8aa0957d03e7a4c32781f372b812db43fc7b5b29b20e515c324f5fa2df36",
+      "size": 16717
+    },
+    "assets/fs/sysroot/avr/include/stdio.h": {
+      "sha256": "159624cbb19fe730c6038bbf2c15daa8dc6a8fcbf21e67a44ccda9f22e0201b2",
+      "size": 36387
+    },
+    "assets/fs/sysroot/avr/include/stdlib.h": {
+      "sha256": "fd38050069b9228608a0a4a06d25044d88f4cb3af88db4da1c4cd7af2ca124cd",
+      "size": 25152
+    },
+    "assets/fs/sysroot/avr/include/string.h": {
+      "sha256": "809da1818cbc92ee20946ccb352e2715e66125219261d9139d3ebcb0e49d6a06",
+      "size": 24461
+    },
+    "assets/fs/sysroot/avr/include/sys/types.h": {
+      "sha256": "18987bbc2fe0955be8aad5d71989dec21a3121b81516535789dd187496fb1441",
+      "size": 75
+    },
+    "assets/fs/sysroot/avr/include/time.h": {
+      "sha256": "1a1115b663d7a791a5bd8c5a325b45c5b61e136372f4e27dc512ea2f6518e5c0",
+      "size": 18643
+    },
+    "assets/fs/sysroot/avr/include/unistd.h": {
+      "sha256": "dcda5068fe9299edac8d37d77d4f31b42c88dd0bc1821a9d64a61f830b23fb83",
+      "size": 183
+    },
+    "assets/fs/sysroot/avr/include/util/atomic.h": {
+      "sha256": "7f8086185f093aaeef001a6cfca47bf229c0961a683072bd5dd82caaee8313e9",
+      "size": 9894
+    },
+    "assets/fs/sysroot/avr/include/util/crc16.h": {
+      "sha256": "9d6be7e438a680130e7ad470caf9e2ba4978a2a69754061b0b22ab3e792fa751",
+      "size": 10813
+    },
+    "assets/fs/sysroot/avr/include/util/delay.h": {
+      "sha256": "4d775031781969bd59da91257d758c3176e5095f03901b73518a136a707c6641",
+      "size": 10232
+    },
+    "assets/fs/sysroot/avr/include/util/delay_basic.h": {
+      "sha256": "789bc57aefb5162bc3cd59b8b41f7b9ff211ea375e0624b0714be00230d6c962",
+      "size": 4050
+    },
+    "assets/fs/sysroot/avr/include/util/eu_dst.h": {
+      "sha256": "d18d07bcad83bd1dab76b6f056d838ca9c637c4b6f223d765a26d6359a1d86b8",
+      "size": 4231
+    },
+    "assets/fs/sysroot/avr/include/util/parity.h": {
+      "sha256": "e3f33ac31070d53a36fe0462f51f16de7fd208a8a113897902a73bb732f4dd33",
+      "size": 2440
+    },
+    "assets/fs/sysroot/avr/include/util/setbaud.h": {
+      "sha256": "058f15a12da7ae5ee732eceeeef9985d5b3f1f3bcaf69430096ba37ddb043f8c",
+      "size": 6677
+    },
+    "assets/fs/sysroot/avr/include/util/twi.h": {
+      "sha256": "541dbad4c17019c6a824a57655073abd1021210d291ad1219121b8f3b1596cbb",
+      "size": 6294
+    },
+    "assets/fs/sysroot/avr/include/util/usa_dst.h": {
+      "sha256": "5c7a9ecc8252fcaa1f11a6401844edb526380733ad3234e422bd321fbf4d1e72",
+      "size": 4371
+    },
+    "assets/fs/sysroot/gcc/include/float.h": {
+      "sha256": "a4a7abc2ae5164a888f0842b35fd8fbcb65d278baa8adb218637d45a632f387c",
+      "size": 16917
+    },
+    "assets/fs/sysroot/gcc/include/gcov.h": {
+      "sha256": "499fdfdf330cc632a196631592774c70e11c1cf9ac87b09663cfba6a237cb340",
+      "size": 1389
+    },
+    "assets/fs/sysroot/gcc/include/iso646.h": {
+      "sha256": "7726a4b692d155f6160ea171831cb245c59923993da2e40f60503c4b1c684aaa",
+      "size": 1272
+    },
+    "assets/fs/sysroot/gcc/include/stdalign.h": {
+      "sha256": "f40a898b18c9514c530d6ecfb8276afff36c6d802a2821020a91d3164a1534aa",
+      "size": 1210
+    },
+    "assets/fs/sysroot/gcc/include/stdarg.h": {
+      "sha256": "149b80e9944641e1e30d1dd355c7125376c07a656b125466879072b3c7c96b28",
+      "size": 4072
+    },
+    "assets/fs/sysroot/gcc/include/stdatomic.h": {
+      "sha256": "12cb9624b74bbb95307e2defff8f806ea9c2bed47223272f5cb65f015627eca1",
+      "size": 9321
+    },
+    "assets/fs/sysroot/gcc/include/stdbool.h": {
+      "sha256": "6a41dc8447f1fa7f08ef5e07148a5b09c74e6ea824fab203da01c3a889547953",
+      "size": 1524
+    },
+    "assets/fs/sysroot/gcc/include/stddef.h": {
+      "sha256": "1ec68deac2c5c0f846949de67d8266c02964132fa216165ea2ec4e70c8fcb930",
+      "size": 14140
+    },
+    "assets/fs/sysroot/gcc/include/stdfix-gcc.h": {
+      "sha256": "61727c840a03773ed1f800dbe39ed5a9f165341096c4530bd58291187ac695a6",
+      "size": 6000
+    },
+    "assets/fs/sysroot/gcc/include/stdfix.h": {
+      "sha256": "42be107302599e2e11b18ecb1ec5600421c9f977bb2f242c0ca1b746a622d58d",
+      "size": 6929
+    },
+    "assets/fs/sysroot/gcc/include/stdint-gcc.h": {
+      "sha256": "9f91de7f8568e02ddcf7b2eefca31ec0d5dda9f1842570d7500b8314fe19625c",
+      "size": 9457
+    },
+    "assets/fs/sysroot/gcc/include/stdint.h": {
+      "sha256": "86a7914ab7d6a18465a6fb9a7b54f945cad604fdbf3ca0d10e4e0254e0037911",
+      "size": 328
+    },
+    "assets/fs/sysroot/gcc/include/stdnoreturn.h": {
+      "sha256": "769bfeee670c7ee31fdebb1f6713758a5ebb75a1a90d934fbc686ddb039148a6",
+      "size": 1136
+    },
+    "assets/fs/sysroot/gcc/include/unwind.h": {
+      "sha256": "13efc0392fb71d92c46adf0407967bed67d670ee880af581522385d27751977f",
+      "size": 10717
+    },
+    "assets/fs/sysroot/gcc/include/varargs.h": {
+      "sha256": "f9acb21973be5764aa2fd689c941ad963c1ecdd133f3a6529f279803135f8268",
+      "size": 139
+    },
+    "assets/ldscripts/avr5.xn": {
+      "sha256": "064840f4b889a33edc9f525681f83f078d07e514dd5a6089dcac9e9fd71ad954",
+      "size": 8270
+    },
+    "assets/libs/crtatmega328p.o": {
+      "sha256": "0b539a5729bdaafb268d618235a5ec23fbbab41a3bc80f762cb46fe14035b935",
+      "size": 7336
+    },
+    "assets/libs/libc.a": {
+      "sha256": "f4e9bdaa567959659f6974d75aeef8acb7ea17fbfac4bc3f85b8f8640af4f1e8",
+      "size": 291914
+    },
+    "assets/libs/libgcc.a": {
+      "sha256": "ae9fe520d9fc64dd40b8f952b0ad951eb1720ad4dc8c7962be6e5962954ed783",
+      "size": 5976098
+    },
+    "assets/libs/libm.a": {
+      "sha256": "fea6b4ee36c2829bc7f777284a7520e3b44bf6ed96e13cde25a769bae152fd50",
+      "size": 65952
+    },
+    "assets/objects/core_abi.o": {
+      "sha256": "65fbdeb06fcd785345416bfe880e808754f97ea7cfe17ab456d41fa312c1bbbd",
+      "size": 4048
+    },
+    "assets/objects/core_HardwareSerial.o": {
+      "sha256": "7000725533eb5c30536e88c00787bce6e299cf4a709fefb7e7055b46310d6995",
+      "size": 33020
+    },
+    "assets/objects/core_HardwareSerial0.o": {
+      "sha256": "18010bd3f28fdd9bbbabab2996735f498b59b363f3f4b2a9bd8ef169c1fb1e37",
+      "size": 24864
+    },
+    "assets/objects/core_hooks.o": {
+      "sha256": "0ed20fd0910217a00aaaacc1833cb5a567f96f4640c3379cc52048f88354022c",
+      "size": 2364
+    },
+    "assets/objects/core_main.o": {
+      "sha256": "6c273ae470dc5b5a04c271a49cfbe7f0658bf5666290226fecb6a81b3b7f9824",
+      "size": 6784
+    },
+    "assets/objects/core_new.o": {
+      "sha256": "ab2e9579133113cc18dd4f15a9d49c4d59350614d41477fc6ee0444d021d155b",
+      "size": 10484
+    },
+    "assets/objects/core_Print.o": {
+      "sha256": "cdb1cb99eda7afa2e1ee08cac31d681bc9a48ca17a7ecdafd288f6a555f53c11",
+      "size": 61236
+    },
+    "assets/objects/core_Stream.o": {
+      "sha256": "e9a50147d5406cde87d9052bd8184b0675e12c1d1d7b73d453da8db55f6bcd76",
+      "size": 51048
+    },
+    "assets/objects/core_Tone.o": {
+      "sha256": "09b5a4db0500e1a9a13439cb1d36c72a88f2faf10e010e923347eedb167ec3c9",
+      "size": 25004
+    },
+    "assets/objects/core_wiring.o": {
+      "sha256": "f00c3bb8ba6b9d71a6899bdd15a82df2d274df3b337e0b743b3da0ff265dabd0",
+      "size": 11144
+    },
+    "assets/objects/core_wiring_analog.o": {
+      "sha256": "df381b16f49b1743b084af9a78a15e89f9b2a7a842c3fdb787faf7e7bc33cf79",
+      "size": 8128
+    },
+    "assets/objects/core_wiring_digital.o": {
+      "sha256": "f118c47337d3c8c815999298d4019efa74c84acdcb455039982e5947d2e71431",
+      "size": 15400
+    },
+    "assets/objects/core_wiring_pulse.o": {
+      "sha256": "e371aad82a28df30a868a0f425ace95dd32572dbd3a50cf1e53c8f721e54674b",
+      "size": 10820
+    },
+    "assets/objects/core_wiring_pulse_asm.o": {
+      "sha256": "4024f7fd0c3ab7930687e731a2cfe793a78c64da47edce323120831d99cd1769",
+      "size": 2928
+    },
+    "assets/objects/core_wiring_shift.o": {
+      "sha256": "d2992eb5885dfce0cc45e29bd5676de5c5257394de56507f8caed7995adfe784",
+      "size": 8972
+    },
+    "assets/objects/core_WMath.o": {
+      "sha256": "7a1819e56c53e7794b7c3cc93572a80346edeb8e8c34c525c42f16ae35ed2e7f",
+      "size": 8808
+    },
+    "assets/objects/core_WString.o": {
+      "sha256": "3ff3e865aa87248c7ffd3818202dfd81855685c727f20baed13be1b966ff02e9",
+      "size": 130068
+    },
+    "assets/objects/lib_Adafruit_APDS9960_Adafruit_APDS9960.o": {
+      "sha256": "e8e34cab393bce5634c78bf5fee38937f59968a7143f666903881c1bb90a1b84",
+      "size": 17468
+    },
+    "assets/objects/lib_Adafruit_HMC5883_U_Adafruit_HMC5883_U.o": {
+      "sha256": "5d996489d205e6ba494ecf4648dc4e3a1244d243bc6eae4f62cbd615b560f339",
+      "size": 7620
+    },
+    "assets/objects/lib_Adafruit_NeoPixel.o": {
+      "sha256": "11d3106ae11ac3e233c491243625e044716e67aba17c98c8bbe50d5a43aa7aea",
+      "size": 10936
+    },
+    "assets/objects/lib_Adafruit_PWMServoDriver_Adafruit_PWMServoDriver.o": {
+      "sha256": "18c309ae4dca28ae231b22fa6d91ae1291a8d46b672b333d2d3f6533a1475d2d",
+      "size": 7876
+    },
+    "assets/objects/lib_Adafruit_SH1106.o": {
+      "sha256": "c19ae554bb95fe9966d3e097cb1cd9dbbec5b437eee251350f2aec5c7543bc7d",
+      "size": 17976
+    },
+    "assets/objects/lib_Adafruit_SPITFT.o": {
+      "sha256": "6335fc08466eca9e5ff117e4a2f70de6c0c64c8d99a09d65f342238a0ee5ba43",
+      "size": 28140
+    },
+    "assets/objects/lib_Adafruit_ST7735.o": {
+      "sha256": "ccf132c978d6366b2a724907f2edc095e98dc12f459e9368a654bf2a62689d4b",
+      "size": 7576
+    },
+    "assets/objects/lib_Adafruit_ST77xx.o": {
+      "sha256": "1d4fac7f4a7feab2377b291732c9730f08ed2bcd8bb999007b19bdb67fd9f548",
+      "size": 6984
+    },
+    "assets/objects/lib_Adafruit_TCS34725_Adafruit_TCS34725.o": {
+      "sha256": "0aa4b43054c811ccb2f0fdd4ae044340534e8f49d0c1c02395af0d0cefe27e0e",
+      "size": 10832
+    },
+    "assets/objects/lib_AFMotor.o": {
+      "sha256": "38b6d7f7645b217ee4408049cd1634fda5b3b4fe286a5b3aa83bd29912c0236d",
+      "size": 10944
+    },
+    "assets/objects/lib_BME280_BME280.o": {
+      "sha256": "754c140237ee775075346608a988d06d1c5cd40592995cf2efe8ee46760d9d4c",
+      "size": 11052
+    },
+    "assets/objects/lib_BMP085.o": {
+      "sha256": "9cadfcdfef2d08bba64f501f3f90f4b41037d6927e91e299a38d47bdfa28b649",
+      "size": 30780
+    },
+    "assets/objects/lib_BusIO_Register.o": {
+      "sha256": "46ac88f008f002a0f364e16f47e9c55cc6c47e14c3c2baee829e6534fdd0e33e",
+      "size": 57676
+    },
+    "assets/objects/lib_DHT.o": {
+      "sha256": "0aec10a8ffc2fa5f1d34852fd93cb87339115d60a022cd145b93ac7e513d9066",
+      "size": 31116
+    },
+    "assets/objects/lib_eeprom_avr.o": {
+      "sha256": "0ee9e5d256ce21efb1a63dd56a234123eb99020618ae7d7347d7bfa08d3855c9",
+      "size": 1096
+    },
+    "assets/objects/lib_Encoder_Encoder.o": {
+      "sha256": "45d63d692ffbea85921e2a562ead21574fd6e9a59790b44b36255f8f0346058c",
+      "size": 2304
+    },
+    "assets/objects/lib_Firmata.o": {
+      "sha256": "209de06461f8af07c8413c02061f07aaa94fca9003eb0075c15a4ec6dcae4ea6",
+      "size": 85528
+    },
+    "assets/objects/lib_FirmataMarshaller.o": {
+      "sha256": "ca8ae7e16e48d936f4a7d4784d3633eefa4c7b0e00ab346004678ab46fe34bf4",
+      "size": 58208
+    },
+    "assets/objects/lib_FirmataParser.o": {
+      "sha256": "bd9c8e7bd8321557d1aed564261a186d543673e371a18fe0089859559e913687",
+      "size": 31024
+    },
+    "assets/objects/lib_GFX.o": {
+      "sha256": "320aa7967f8ec6e97301228be0234e1efd557617eafd5a75df54246e3d5a54d4",
+      "size": 318628
+    },
+    "assets/objects/lib_I2Cdev.o": {
+      "sha256": "7519c508b1df9224c1837c435516b53c2d30efde3c0558e3ce8f52cc7a23c89f",
+      "size": 9852
+    },
+    "assets/objects/lib_I2CDevice.o": {
+      "sha256": "1056022bd56c6e7d20c9a93b400a28fb0c4f6a566a511e17cb317770f93aa1db",
+      "size": 24984
+    },
+    "assets/objects/lib_IRremote_irPronto.o": {
+      "sha256": "6ffbc892646ce62644eb3ee1d624c628c3a1ed14ea4a3f8fb61db8b656590b18",
+      "size": 5520
+    },
+    "assets/objects/lib_IRremote_irReceive.o": {
+      "sha256": "978270f67d1b374a479cad3c11d3ed161c70b33c4305beeba6b9243a87a29d2c",
+      "size": 15740
+    },
+    "assets/objects/lib_IRremote_IRremote.o": {
+      "sha256": "c7248b60553e01e519a5771102b3015febfafa14c3b93ae557bcf274056aa947",
+      "size": 3288
+    },
+    "assets/objects/lib_IRremote_irSend.o": {
+      "sha256": "f0cb55b21acac895935d683dec02e7b06c30f7f3bdb00ee860b9aef2aeb6a8aa",
+      "size": 4428
+    },
+    "assets/objects/lib_IRremote_ir_BoseWave.o": {
+      "sha256": "d5cffd96eed292b15375b6b36fe46ef46553193ad61767d41d1006062f56ad3f",
+      "size": 3372
+    },
+    "assets/objects/lib_IRremote_ir_Denon.o": {
+      "sha256": "8704bf0bac80ede1ca716e58c99ffdae3d6fe74d7c7a7994be3368ff9ea1f6c3",
+      "size": 2164
+    },
+    "assets/objects/lib_IRremote_ir_Dish.o": {
+      "sha256": "8d376cd6607d9880224df824ca544a7e90cb0fd4db096c5b4f39fb78ef55e877",
+      "size": 1224
+    },
+    "assets/objects/lib_IRremote_ir_JVC.o": {
+      "sha256": "7aa859572f29963daf2cd0f947a4ef2ea50d4b79337034437f47e430e41f0a09",
+      "size": 2376
+    },
+    "assets/objects/lib_IRremote_ir_Lego_PF.o": {
+      "sha256": "3eb1a85e5db27b62b631c3f70fb063e02d9a523d3ad8575b15b43b0d3b592491",
+      "size": 3528
+    },
+    "assets/objects/lib_IRremote_ir_LG.o": {
+      "sha256": "693250b78f18b3381021784e69abbb965d43b874fa30543bbdf67e308c51a0a4",
+      "size": 2196
+    },
+    "assets/objects/lib_IRremote_ir_MagiQuest.o": {
+      "sha256": "774600b936634c4d0147b7ac8b40bdef8dc20a783a482d029b9708746aca1386",
+      "size": 2700
+    },
+    "assets/objects/lib_IRremote_ir_NEC.o": {
+      "sha256": "02784c1ac24f080c3936bddc1a5ebc23cd4c508e353fd9dcdd4c99c09b929226",
+      "size": 3552
+    },
+    "assets/objects/lib_IRremote_ir_Panasonic.o": {
+      "sha256": "afa8da364d5032d5b14624d028fef97bfce214c13a207dd1f3ac3a3966bfede3",
+      "size": 2216
+    },
+    "assets/objects/lib_IRremote_ir_RC5_RC6.o": {
+      "sha256": "1dd8b4f2123b9e652a612d97a8fc0ed7f936be9543d5f6e898c873fa0ae3be25",
+      "size": 8536
+    },
+    "assets/objects/lib_IRremote_ir_Samsung.o": {
+      "sha256": "3cb1a4b3308df62967d1f920cb0e71072388ddc062132f51a77f480793c8884a",
+      "size": 2448
+    },
+    "assets/objects/lib_IRremote_ir_Sanyo.o": {
+      "sha256": "0f76307e23a7e6a1b8e15cde3cc70a04911f09c3147b169a3ecd70467bfe6a87",
+      "size": 2064
+    },
+    "assets/objects/lib_IRremote_ir_Sharp.o": {
+      "sha256": "0d14d4fb3266f1d11b04b68cbbaab1756a47dc0b5e221ae6981f5d346abe0b7a",
+      "size": 3096
+    },
+    "assets/objects/lib_IRremote_ir_Sharp_alt.o": {
+      "sha256": "e1890176d25ec0a89495fd0a7f0743f35c969096470c6437e21974540ca79feb",
+      "size": 3064
+    },
+    "assets/objects/lib_IRremote_ir_Sony.o": {
+      "sha256": "a782e127ebd80ebcff2588720fc68ccf53d65987ff1f42b07769daffa5d2c9d3",
+      "size": 2488
+    },
+    "assets/objects/lib_IRremote_ir_Template.o": {
+      "sha256": "8319c6559ac6cb939102d67e0c784b61390ae2b05f371d35635013a8da161e4a",
+      "size": 688
+    },
+    "assets/objects/lib_IRremote_ir_Whynter.o": {
+      "sha256": "92319bfed0a4a0096b8eeabc55b12ee24cbae60b233bbff0db9b9a7b8b055ed7",
+      "size": 2376
+    },
+    "assets/objects/lib_LedControl.o": {
+      "sha256": "fabf564f35e5215a434bdc877da8e5fd2739030fdd66e6411fc6d3ab96a6de4c",
+      "size": 5920
+    },
+    "assets/objects/lib_LiquidCrystal_I2C.o": {
+      "sha256": "83847f8ea58376bf477d9231144f7bb428583ffc7bb1aaac8777a34702c3ec49",
+      "size": 12080
+    },
+    "assets/objects/lib_MFRC522_MFRC522.o": {
+      "sha256": "2e0f9c94d0b24d8b3f5eee0fb6cfd77032335c434108e0885b6db025d7ed566e",
+      "size": 59048
+    },
+    "assets/objects/lib_MFRC522_MFRC522Extended.o": {
+      "sha256": "4c89cd15544bc9db20a8e4f10bd620338ef3eda70b6cdff5bd023b85d4ae5d76",
+      "size": 21064
+    },
+    "assets/objects/lib_MPU6050.o": {
+      "sha256": "aa397030e1df342faaa671df1059c98afa02321706cf1b1d05a0b1ae10f07b72",
+      "size": 87520
+    },
+    "assets/objects/lib_MuVisionSensor_morpx_protocol_analysis.o": {
+      "sha256": "415f3bfc9d87bd13db525816f157ebb5ff43176a5058af91fa3cb3735c410f92",
+      "size": 5700
+    },
+    "assets/objects/lib_MuVisionSensor_MuVisionSensor.o": {
+      "sha256": "62f2b06fb2f6c650da1253a6f78796edac49634aac6bddf6fa1ed8d117f442f9",
+      "size": 24580
+    },
+    "assets/objects/lib_MuVisionSensor_MuVisionSensor3_AT.o": {
+      "sha256": "359b711eb69a9c1ca2caadaf4d14856287daaf3dcd186c881258f353e76fea3b",
+      "size": 16004
+    },
+    "assets/objects/lib_MuVisionSensor_mu_uart_interface.o": {
+      "sha256": "dd71ad4ec2d34b39b9b922141236302e294d0cfc2a8a547af8afbdede40e5a94",
+      "size": 2108
+    },
+    "assets/objects/lib_MuVisionSensor_mu_vision_sensor_i2c_hw_interface.o": {
+      "sha256": "2bd16ce459f6caee6525a00e31a77e73a7e66b601996a9c1a4c9467306b5d858",
+      "size": 3068
+    },
+    "assets/objects/lib_MuVisionSensor_mu_vision_sensor_i2c_interface.o": {
+      "sha256": "2ee352e69a63342a427ca8c9172cb1edacddd4e6d23bcec731b5730ad589e6df",
+      "size": 2780
+    },
+    "assets/objects/lib_MuVisionSensor_mu_vision_sensor_uart_interface.o": {
+      "sha256": "8834d6d82f3da6e01427ab743268c2f9aa10bb0cfc812e72d2019ae16534d90e",
+      "size": 9492
+    },
+    "assets/objects/lib_NDEF_MifareClassic.o": {
+      "sha256": "980f6ab06aaab374947997985d55fd103d93c88dabbec7e3862b5722e2f91c1a",
+      "size": 15676
+    },
+    "assets/objects/lib_NDEF_MifareUltralight.o": {
+      "sha256": "a95939cf8ff778b7db108a74432f0d022c1322352f4405914512b06289a5a26a",
+      "size": 7420
+    },
+    "assets/objects/lib_NDEF_Ndef.o": {
+      "sha256": "d657de72cb55f0eea2af750cc94caa25e8a93a38fa654573041708596d4496de",
+      "size": 3388
+    },
+    "assets/objects/lib_NDEF_NdefMessage.o": {
+      "sha256": "997d00611f223ac4138a94194413c7c35f5c441ff03442083417191a09de9fde",
+      "size": 11272
+    },
+    "assets/objects/lib_NDEF_NdefRecord.o": {
+      "sha256": "4dc84a639102353c3c88634c8aa6c7b7091f7a179b75d9ca538d0174d5b0afe7",
+      "size": 12956
+    },
+    "assets/objects/lib_NDEF_NfcAdapter.o": {
+      "sha256": "e09d5771936d18cb28f01e98a0da09a23442b54a8a31c6b92d02cfc7c5f94613",
+      "size": 7416
+    },
+    "assets/objects/lib_NDEF_NfcTag.o": {
+      "sha256": "bdd52f90b24241bf54c8a9b08f995c9ceb20cc4f128f236f5f8191daa7db9a9e",
+      "size": 7116
+    },
+    "assets/objects/lib_Oscillator.o": {
+      "sha256": "6e633e6d4a329382581f92458e21f65db07a657ef8a1c7c9eab0c092b30d8b24",
+      "size": 3368
+    },
+    "assets/objects/lib_Otto.o": {
+      "sha256": "fc881a5a957a605b23706bf20659d2c30be33931f8bff83ec13c49b2abb596fc",
+      "size": 31344
+    },
+    "assets/objects/lib_Otto_matrix.o": {
+      "sha256": "c0063f4d1fa82c2f180da9d7edbac7c421db45038a7f6de1a41bd026d5bf1335",
+      "size": 8560
+    },
+    "assets/objects/lib_PN532_I2C_PN532_I2C.o": {
+      "sha256": "ba68f7cd5ba2d89a2a8790691f6648562bb6890947bef72f4bd7a11b1db97298",
+      "size": 5892
+    },
+    "assets/objects/lib_PN532_PN532.o": {
+      "sha256": "c0ed5368cb060524f779de0ce97b9493bdba642c9c96a3446d301e9549793db4",
+      "size": 22076
+    },
+    "assets/objects/lib_Quad_Octosnake.o": {
+      "sha256": "b99da7d455cf9b4d022c19cc3e0a1d8966a3dc233bfc955037102f73a820b7ee",
+      "size": 5388
+    },
+    "assets/objects/lib_Quad_Quad.o": {
+      "sha256": "70f6c16d28d8e0b94d97092ce6e36334465b8edc96ef1f813c12acd12d3f7b05",
+      "size": 19620
+    },
+    "assets/objects/lib_RedMP3_RedMP3.o": {
+      "sha256": "5abc4375da5ffd32c0b3a7639a9a0d3d71c8da99ddf4451c36e2e5e9f444ad95",
+      "size": 7648
+    },
+    "assets/objects/lib_RTClib_RTClib.o": {
+      "sha256": "574adb359c54d4344a2986ed768c7b778e105c969fa72b4bcecb0bab69e5bd20",
+      "size": 41776
+    },
+    "assets/objects/lib_SerialCommand.o": {
+      "sha256": "02a2958e1c1f9e84fb23767ff22cf799dc70899d2ddd8f8b1c5479c1acb31793",
+      "size": 4012
+    },
+    "assets/objects/lib_Servo.o": {
+      "sha256": "08f120a37cbe2e5ececee760f671ecdfafb37fa570459a8259e3fe84dc465c3d",
+      "size": 22020
+    },
+    "assets/objects/lib_SoftwareSerial.o": {
+      "sha256": "d0d237c742c3b9c1a0ae18921864b5495273acd081261bc2bd1db10af278ced2",
+      "size": 9052
+    },
+    "assets/objects/lib_SPI.o": {
+      "sha256": "70b36e817dcf142c0cf6bce37f3f082fe9493e994b671dfde1ba47203eca772f",
+      "size": 13704
+    },
+    "assets/objects/lib_SPIDevice.o": {
+      "sha256": "5153d6e0905942aa021ef3c556383f3cad35801d53ec6d97f586f5da740f81f9",
+      "size": 46628
+    },
+    "assets/objects/lib_SSD1306.o": {
+      "sha256": "cfc42332982dafb7a8ccc5cd5629878ad2dbf216fdd4b00a5b1a20a07f197ff3",
+      "size": 107056
+    },
+    "assets/objects/lib_Stepper.o": {
+      "sha256": "8eb8203fdf24a210850a50668784a0660616eb1d4588a15bfac7258ef414b126",
+      "size": 5784
+    },
+    "assets/objects/lib_TEA5767_TEA5767N.o": {
+      "sha256": "61bab5ff408ee903764d26a140b6e4e16cb5a306b2dc5e1aa0e7701303121230",
+      "size": 13440
+    },
+    "assets/objects/lib_TinyGPSPlus_TinyGPSPlus.o": {
+      "sha256": "62e2d60bbb9ad2afe4a4a484a3af366496728dd302899a248ebf9ee7263e992e",
+      "size": 17084
+    },
+    "assets/objects/lib_TM1637Display.o": {
+      "sha256": "f735cf76222c50b6e13b718b30cff22b9d7f75239ef5a6a1086e3e9a4ede34be",
+      "size": 6016
+    },
+    "assets/objects/lib_twi.o": {
+      "sha256": "67e7746212edca8815712fd8d0f823bc1dd8de1201aa0bab6ec4e2a766b02e16",
+      "size": 32664
+    },
+    "assets/objects/lib_VL53L0X.o": {
+      "sha256": "80c0b57028059c5067add9b9d716d0a4d34c51a6bfa823aa07a9a08dff1deecc",
+      "size": 79248
+    },
+    "assets/objects/lib_Wire.o": {
+      "sha256": "f24bd30df5ef0e91d2b07951451c023374428a4c017fd173ed10b0f13140a80f",
+      "size": 54164
+    },
+    "assets/manifest.json": {
+      "sha256": "7a1b6705dc8f92e46d8d2461c35bddf2ac2c28b24e642930876ba66d95e8a9ad",
+      "size": 32486
+    }
+  },
+  "tiers": {
+    "tools": [
+      "tools/avr-as.mjs",
+      "tools/avr-as.wasm",
+      "tools/avr-ld.mjs",
+      "tools/avr-ld.wasm",
+      "tools/avr-objcopy.mjs",
+      "tools/avr-objcopy.wasm",
+      "tools/cc1plus.mjs",
+      "tools/cc1plus.wasm"
+    ],
+    "core": {
+      "manifest": "assets/manifest.json",
+      "glue": [
+        "index.js",
+        "firmware-builder.js",
+        "worker.js"
+      ],
+      "headerPaths": [
+        "/arduino/core/Arduino.h",
+        "/arduino/core/Client.h",
+        "/arduino/core/HardwareSerial.h",
+        "/arduino/core/HardwareSerial_private.h",
+        "/arduino/core/IPAddress.h",
+        "/arduino/core/PluggableUSB.h",
+        "/arduino/core/Print.h",
+        "/arduino/core/Printable.h",
+        "/arduino/core/Server.h",
+        "/arduino/core/Stream.h",
+        "/arduino/core/USBAPI.h",
+        "/arduino/core/USBCore.h",
+        "/arduino/core/USBDesc.h",
+        "/arduino/core/Udp.h",
+        "/arduino/core/WCharacter.h",
+        "/arduino/core/WString.h",
+        "/arduino/core/binary.h",
+        "/arduino/core/new",
+        "/arduino/core/new.h",
+        "/arduino/core/wiring_private.h",
+        "/arduino/libraries/SPI/src/SPI.h",
+        "/arduino/libraries/Wire/src/Wire.h",
+        "/arduino/libraries/Wire/src/utility/twi.h",
+        "/arduino/variant/pins_arduino.h",
+        "/libraries/Adafruit_BMP085_Library/Adafruit_BMP085.h",
+        "/libraries/Adafruit_BusIO/Adafruit_BusIO_Register.h",
+        "/libraries/Adafruit_BusIO/Adafruit_GenericDevice.h",
+        "/libraries/Adafruit_BusIO/Adafruit_I2CDevice.h",
+        "/libraries/Adafruit_BusIO/Adafruit_I2CRegister.h",
+        "/libraries/Adafruit_BusIO/Adafruit_SPIDevice.h",
+        "/libraries/Adafruit_GFX_Library/Adafruit_GFX.h",
+        "/libraries/Adafruit_GFX_Library/Adafruit_GrayOLED.h",
+        "/libraries/Adafruit_GFX_Library/Adafruit_SPITFT.h",
+        "/libraries/Adafruit_GFX_Library/Adafruit_SPITFT_Macros.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMono12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMono18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMono24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMono9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBold12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBold18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBold24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBold9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBoldOblique12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBoldOblique18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBoldOblique24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoBoldOblique9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoOblique12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoOblique18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoOblique24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeMonoOblique9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSans12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSans18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSans24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSans9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansBold12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansBold18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansBold24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansBold9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansBoldOblique12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansBoldOblique18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansBoldOblique24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansBoldOblique9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansOblique12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansOblique18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansOblique24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSansOblique9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerif12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerif18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerif24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerif9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBold12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBold18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBold24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBold9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBoldItalic12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBoldItalic18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBoldItalic24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifBoldItalic9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifItalic12pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifItalic18pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifItalic24pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/FreeSerifItalic9pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/Org_01.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/Picopixel.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/Tiny3x3a2pt7b.h",
+        "/libraries/Adafruit_GFX_Library/Fonts/TomThumb.h",
+        "/libraries/Adafruit_GFX_Library/examples/GFXcanvas/GFXcanvasSerialDemo.h",
+        "/libraries/Adafruit_GFX_Library/gfxfont.h",
+        "/libraries/Adafruit_SSD1306/Adafruit_SSD1306.h",
+        "/libraries/Adafruit_SSD1306/splash.h",
+        "/libraries/Adafruit_Unified_Sensor/Adafruit_Sensor.h",
+        "/libraries/DHT_sensor_library/DHT.h",
+        "/libraries/DHT_sensor_library/DHT_U.h",
+        "/libraries/Firmata/Boards.h",
+        "/libraries/Firmata/Firmata.h",
+        "/libraries/Firmata/FirmataConstants.h",
+        "/libraries/Firmata/FirmataDefines.h",
+        "/libraries/Firmata/FirmataMarshaller.h",
+        "/libraries/Firmata/FirmataParser.h",
+        "/libraries/Firmata/examples/StandardFirmataBLE/bleConfig.h",
+        "/libraries/Firmata/examples/StandardFirmataEthernet/ethernetConfig.h",
+        "/libraries/Firmata/examples/StandardFirmataWiFi/wifiConfig.h",
+        "/libraries/Firmata/utility/ArduinoBLE_UART_Stream.h",
+        "/libraries/Firmata/utility/BLEStream.h",
+        "/libraries/Firmata/utility/BluefruitLE_SPI_Stream.h",
+        "/libraries/Firmata/utility/EthernetClientStream.h",
+        "/libraries/Firmata/utility/EthernetServerStream.h",
+        "/libraries/Firmata/utility/FirmataFeature.h",
+        "/libraries/Firmata/utility/SerialFirmata.h",
+        "/libraries/Firmata/utility/WiFiClientStream.h",
+        "/libraries/Firmata/utility/WiFiServerStream.h",
+        "/libraries/Firmata/utility/WiFiStream.h",
+        "/libraries/Firmata/utility/firmataDebug.h",
+        "/libraries/Servo/src/Servo.h",
+        "/libraries/Servo/src/avr/ServoTimers.h",
+        "/libraries/Servo/src/esp32/ServoTimers.h",
+        "/libraries/Servo/src/mbed/ServoTimers.h",
+        "/libraries/Servo/src/megaavr/ServoTimers.h",
+        "/libraries/Servo/src/nrf52/ServoTimers.h",
+        "/libraries/Servo/src/renesas/ServoTimers.h",
+        "/libraries/Servo/src/sam/ServoTimers.h",
+        "/libraries/Servo/src/samd/ServoTimers.h",
+        "/libraries/Servo/src/stm32f4/ServoTimers.h",
+        "/libraries/Servo/src/xmc/ServoTimers.h",
+        "/libraries/Servo/src/zephyr/ServoTimers.h",
+        "/libraries/VL53L0X/VL53L0X.h",
+        "/sysroot/avr/include/alloca.h",
+        "/sysroot/avr/include/assert.h",
+        "/sysroot/avr/include/avr/boot.h",
+        "/sysroot/avr/include/avr/builtins.h",
+        "/sysroot/avr/include/avr/common.h",
+        "/sysroot/avr/include/avr/cpufunc.h",
+        "/sysroot/avr/include/avr/crc16.h",
+        "/sysroot/avr/include/avr/delay.h",
+        "/sysroot/avr/include/avr/eeprom.h",
+        "/sysroot/avr/include/avr/fuse.h",
+        "/sysroot/avr/include/avr/interrupt.h",
+        "/sysroot/avr/include/avr/io.h",
+        "/sysroot/avr/include/avr/io1200.h",
+        "/sysroot/avr/include/avr/io2313.h",
+        "/sysroot/avr/include/avr/io2323.h",
+        "/sysroot/avr/include/avr/io2333.h",
+        "/sysroot/avr/include/avr/io2343.h",
+        "/sysroot/avr/include/avr/io43u32x.h",
+        "/sysroot/avr/include/avr/io43u35x.h",
+        "/sysroot/avr/include/avr/io4414.h",
+        "/sysroot/avr/include/avr/io4433.h",
+        "/sysroot/avr/include/avr/io4434.h",
+        "/sysroot/avr/include/avr/io76c711.h",
+        "/sysroot/avr/include/avr/io8515.h",
+        "/sysroot/avr/include/avr/io8534.h",
+        "/sysroot/avr/include/avr/io8535.h",
+        "/sysroot/avr/include/avr/io86r401.h",
+        "/sysroot/avr/include/avr/io90pwm1.h",
+        "/sysroot/avr/include/avr/io90pwm161.h",
+        "/sysroot/avr/include/avr/io90pwm216.h",
+        "/sysroot/avr/include/avr/io90pwm2b.h",
+        "/sysroot/avr/include/avr/io90pwm316.h",
+        "/sysroot/avr/include/avr/io90pwm3b.h",
+        "/sysroot/avr/include/avr/io90pwm81.h",
+        "/sysroot/avr/include/avr/io90pwmx.h",
+        "/sysroot/avr/include/avr/io90scr100.h",
+        "/sysroot/avr/include/avr/ioa5272.h",
+        "/sysroot/avr/include/avr/ioa5505.h",
+        "/sysroot/avr/include/avr/ioa5702m322.h",
+        "/sysroot/avr/include/avr/ioa5782.h",
+        "/sysroot/avr/include/avr/ioa5790.h",
+        "/sysroot/avr/include/avr/ioa5790n.h",
+        "/sysroot/avr/include/avr/ioa5791.h",
+        "/sysroot/avr/include/avr/ioa5795.h",
+        "/sysroot/avr/include/avr/ioa5831.h",
+        "/sysroot/avr/include/avr/ioa6285.h",
+        "/sysroot/avr/include/avr/ioa6286.h",
+        "/sysroot/avr/include/avr/ioa6289.h",
+        "/sysroot/avr/include/avr/ioa6612c.h",
+        "/sysroot/avr/include/avr/ioa6613c.h",
+        "/sysroot/avr/include/avr/ioa6614q.h",
+        "/sysroot/avr/include/avr/ioa6616c.h",
+        "/sysroot/avr/include/avr/ioa6617c.h",
+        "/sysroot/avr/include/avr/ioa664251.h",
+        "/sysroot/avr/include/avr/ioa8210.h",
+        "/sysroot/avr/include/avr/ioa8510.h",
+        "/sysroot/avr/include/avr/ioat94k.h",
+        "/sysroot/avr/include/avr/ioavr128da28.h",
+        "/sysroot/avr/include/avr/ioavr128da32.h",
+        "/sysroot/avr/include/avr/ioavr128da48.h",
+        "/sysroot/avr/include/avr/ioavr128da64.h",
+        "/sysroot/avr/include/avr/iocan128.h",
+        "/sysroot/avr/include/avr/iocan32.h",
+        "/sysroot/avr/include/avr/iocan64.h",
+        "/sysroot/avr/include/avr/iocanxx.h",
+        "/sysroot/avr/include/avr/iom103.h",
+        "/sysroot/avr/include/avr/iom128.h",
+        "/sysroot/avr/include/avr/iom1280.h",
+        "/sysroot/avr/include/avr/iom1281.h",
+        "/sysroot/avr/include/avr/iom1284.h",
+        "/sysroot/avr/include/avr/iom1284p.h",
+        "/sysroot/avr/include/avr/iom1284rfr2.h",
+        "/sysroot/avr/include/avr/iom128a.h",
+        "/sysroot/avr/include/avr/iom128rfa1.h",
+        "/sysroot/avr/include/avr/iom128rfr2.h",
+        "/sysroot/avr/include/avr/iom16.h",
+        "/sysroot/avr/include/avr/iom1608.h",
+        "/sysroot/avr/include/avr/iom1609.h",
+        "/sysroot/avr/include/avr/iom161.h",
+        "/sysroot/avr/include/avr/iom162.h",
+        "/sysroot/avr/include/avr/iom163.h",
+        "/sysroot/avr/include/avr/iom164.h",
+        "/sysroot/avr/include/avr/iom164a.h",
+        "/sysroot/avr/include/avr/iom164p.h",
+        "/sysroot/avr/include/avr/iom164pa.h",
+        "/sysroot/avr/include/avr/iom165.h",
+        "/sysroot/avr/include/avr/iom165a.h",
+        "/sysroot/avr/include/avr/iom165p.h",
+        "/sysroot/avr/include/avr/iom165pa.h",
+        "/sysroot/avr/include/avr/iom168.h",
+        "/sysroot/avr/include/avr/iom168a.h",
+        "/sysroot/avr/include/avr/iom168p.h",
+        "/sysroot/avr/include/avr/iom168pa.h",
+        "/sysroot/avr/include/avr/iom168pb.h",
+        "/sysroot/avr/include/avr/iom169.h",
+        "/sysroot/avr/include/avr/iom169a.h",
+        "/sysroot/avr/include/avr/iom169p.h",
+        "/sysroot/avr/include/avr/iom169pa.h",
+        "/sysroot/avr/include/avr/iom16a.h",
+        "/sysroot/avr/include/avr/iom16hva.h",
+        "/sysroot/avr/include/avr/iom16hva2.h",
+        "/sysroot/avr/include/avr/iom16hvb.h",
+        "/sysroot/avr/include/avr/iom16hvbrevb.h",
+        "/sysroot/avr/include/avr/iom16m1.h",
+        "/sysroot/avr/include/avr/iom16u2.h",
+        "/sysroot/avr/include/avr/iom16u4.h",
+        "/sysroot/avr/include/avr/iom2560.h",
+        "/sysroot/avr/include/avr/iom2561.h",
+        "/sysroot/avr/include/avr/iom2564rfr2.h",
+        "/sysroot/avr/include/avr/iom256rfr2.h",
+        "/sysroot/avr/include/avr/iom3000.h",
+        "/sysroot/avr/include/avr/iom32.h",
+        "/sysroot/avr/include/avr/iom3208.h",
+        "/sysroot/avr/include/avr/iom3209.h",
+        "/sysroot/avr/include/avr/iom323.h",
+        "/sysroot/avr/include/avr/iom324a.h",
+        "/sysroot/avr/include/avr/iom324p.h",
+        "/sysroot/avr/include/avr/iom324pa.h",
+        "/sysroot/avr/include/avr/iom324pb.h",
+        "/sysroot/avr/include/avr/iom325.h",
+        "/sysroot/avr/include/avr/iom3250.h",
+        "/sysroot/avr/include/avr/iom3250a.h",
+        "/sysroot/avr/include/avr/iom3250p.h",
+        "/sysroot/avr/include/avr/iom3250pa.h",
+        "/sysroot/avr/include/avr/iom325a.h",
+        "/sysroot/avr/include/avr/iom325p.h",
+        "/sysroot/avr/include/avr/iom325pa.h",
+        "/sysroot/avr/include/avr/iom328.h",
+        "/sysroot/avr/include/avr/iom328p.h",
+        "/sysroot/avr/include/avr/iom328pb.h",
+        "/sysroot/avr/include/avr/iom329.h",
+        "/sysroot/avr/include/avr/iom3290.h",
+        "/sysroot/avr/include/avr/iom3290a.h",
+        "/sysroot/avr/include/avr/iom3290p.h",
+        "/sysroot/avr/include/avr/iom3290pa.h",
+        "/sysroot/avr/include/avr/iom329a.h",
+        "/sysroot/avr/include/avr/iom329p.h",
+        "/sysroot/avr/include/avr/iom329pa.h",
+        "/sysroot/avr/include/avr/iom32a.h",
+        "/sysroot/avr/include/avr/iom32c1.h",
+        "/sysroot/avr/include/avr/iom32hvb.h",
+        "/sysroot/avr/include/avr/iom32hvbrevb.h",
+        "/sysroot/avr/include/avr/iom32m1.h",
+        "/sysroot/avr/include/avr/iom32u2.h",
+        "/sysroot/avr/include/avr/iom32u4.h",
+        "/sysroot/avr/include/avr/iom32u6.h",
+        "/sysroot/avr/include/avr/iom406.h",
+        "/sysroot/avr/include/avr/iom48.h",
+        "/sysroot/avr/include/avr/iom4808.h",
+        "/sysroot/avr/include/avr/iom4809.h",
+        "/sysroot/avr/include/avr/iom48a.h",
+        "/sysroot/avr/include/avr/iom48p.h",
+        "/sysroot/avr/include/avr/iom48pa.h",
+        "/sysroot/avr/include/avr/iom48pb.h",
+        "/sysroot/avr/include/avr/iom64.h",
+        "/sysroot/avr/include/avr/iom640.h",
+        "/sysroot/avr/include/avr/iom644.h",
+        "/sysroot/avr/include/avr/iom644a.h",
+        "/sysroot/avr/include/avr/iom644p.h",
+        "/sysroot/avr/include/avr/iom644pa.h",
+        "/sysroot/avr/include/avr/iom644rfr2.h",
+        "/sysroot/avr/include/avr/iom645.h",
+        "/sysroot/avr/include/avr/iom6450.h",
+        "/sysroot/avr/include/avr/iom6450a.h",
+        "/sysroot/avr/include/avr/iom6450p.h",
+        "/sysroot/avr/include/avr/iom645a.h",
+        "/sysroot/avr/include/avr/iom645p.h",
+        "/sysroot/avr/include/avr/iom649.h",
+        "/sysroot/avr/include/avr/iom6490.h",
+        "/sysroot/avr/include/avr/iom6490a.h",
+        "/sysroot/avr/include/avr/iom6490p.h",
+        "/sysroot/avr/include/avr/iom649a.h",
+        "/sysroot/avr/include/avr/iom649p.h",
+        "/sysroot/avr/include/avr/iom64a.h",
+        "/sysroot/avr/include/avr/iom64c1.h",
+        "/sysroot/avr/include/avr/iom64hve.h",
+        "/sysroot/avr/include/avr/iom64hve2.h",
+        "/sysroot/avr/include/avr/iom64m1.h",
+        "/sysroot/avr/include/avr/iom64rfr2.h",
+        "/sysroot/avr/include/avr/iom8.h",
+        "/sysroot/avr/include/avr/iom808.h",
+        "/sysroot/avr/include/avr/iom809.h",
+        "/sysroot/avr/include/avr/iom8515.h",
+        "/sysroot/avr/include/avr/iom8535.h",
+        "/sysroot/avr/include/avr/iom88.h",
+        "/sysroot/avr/include/avr/iom88a.h",
+        "/sysroot/avr/include/avr/iom88p.h",
+        "/sysroot/avr/include/avr/iom88pa.h",
+        "/sysroot/avr/include/avr/iom88pb.h",
+        "/sysroot/avr/include/avr/iom8a.h",
+        "/sysroot/avr/include/avr/iom8hva.h",
+        "/sysroot/avr/include/avr/iom8u2.h",
+        "/sysroot/avr/include/avr/iomx8.h",
+        "/sysroot/avr/include/avr/iomxx0_1.h",
+        "/sysroot/avr/include/avr/iomxx4.h",
+        "/sysroot/avr/include/avr/iomxxhva.h",
+        "/sysroot/avr/include/avr/iotn10.h",
+        "/sysroot/avr/include/avr/iotn102.h",
+        "/sysroot/avr/include/avr/iotn104.h",
+        "/sysroot/avr/include/avr/iotn11.h",
+        "/sysroot/avr/include/avr/iotn12.h",
+        "/sysroot/avr/include/avr/iotn13.h",
+        "/sysroot/avr/include/avr/iotn13a.h",
+        "/sysroot/avr/include/avr/iotn15.h",
+        "/sysroot/avr/include/avr/iotn1604.h",
+        "/sysroot/avr/include/avr/iotn1606.h",
+        "/sysroot/avr/include/avr/iotn1607.h",
+        "/sysroot/avr/include/avr/iotn1614.h",
+        "/sysroot/avr/include/avr/iotn1616.h",
+        "/sysroot/avr/include/avr/iotn1617.h",
+        "/sysroot/avr/include/avr/iotn1624.h",
+        "/sysroot/avr/include/avr/iotn1626.h",
+        "/sysroot/avr/include/avr/iotn1627.h",
+        "/sysroot/avr/include/avr/iotn1634.h",
+        "/sysroot/avr/include/avr/iotn167.h",
+        "/sysroot/avr/include/avr/iotn20.h",
+        "/sysroot/avr/include/avr/iotn202.h",
+        "/sysroot/avr/include/avr/iotn204.h",
+        "/sysroot/avr/include/avr/iotn212.h",
+        "/sysroot/avr/include/avr/iotn214.h",
+        "/sysroot/avr/include/avr/iotn22.h",
+        "/sysroot/avr/include/avr/iotn2313.h",
+        "/sysroot/avr/include/avr/iotn2313a.h",
+        "/sysroot/avr/include/avr/iotn24.h",
+        "/sysroot/avr/include/avr/iotn24a.h",
+        "/sysroot/avr/include/avr/iotn25.h",
+        "/sysroot/avr/include/avr/iotn26.h",
+        "/sysroot/avr/include/avr/iotn261.h",
+        "/sysroot/avr/include/avr/iotn261a.h",
+        "/sysroot/avr/include/avr/iotn28.h",
+        "/sysroot/avr/include/avr/iotn3216.h",
+        "/sysroot/avr/include/avr/iotn3217.h",
+        "/sysroot/avr/include/avr/iotn4.h",
+        "/sysroot/avr/include/avr/iotn40.h",
+        "/sysroot/avr/include/avr/iotn402.h",
+        "/sysroot/avr/include/avr/iotn404.h",
+        "/sysroot/avr/include/avr/iotn406.h",
+        "/sysroot/avr/include/avr/iotn412.h",
+        "/sysroot/avr/include/avr/iotn414.h",
+        "/sysroot/avr/include/avr/iotn416.h",
+        "/sysroot/avr/include/avr/iotn417.h",
+        "/sysroot/avr/include/avr/iotn4313.h",
+        "/sysroot/avr/include/avr/iotn43u.h",
+        "/sysroot/avr/include/avr/iotn44.h",
+        "/sysroot/avr/include/avr/iotn441.h",
+        "/sysroot/avr/include/avr/iotn44a.h",
+        "/sysroot/avr/include/avr/iotn45.h",
+        "/sysroot/avr/include/avr/iotn461.h",
+        "/sysroot/avr/include/avr/iotn461a.h",
+        "/sysroot/avr/include/avr/iotn48.h",
+        "/sysroot/avr/include/avr/iotn5.h",
+        "/sysroot/avr/include/avr/iotn804.h",
+        "/sysroot/avr/include/avr/iotn806.h",
+        "/sysroot/avr/include/avr/iotn807.h",
+        "/sysroot/avr/include/avr/iotn814.h",
+        "/sysroot/avr/include/avr/iotn816.h",
+        "/sysroot/avr/include/avr/iotn817.h",
+        "/sysroot/avr/include/avr/iotn828.h",
+        "/sysroot/avr/include/avr/iotn84.h",
+        "/sysroot/avr/include/avr/iotn841.h",
+        "/sysroot/avr/include/avr/iotn84a.h",
+        "/sysroot/avr/include/avr/iotn85.h",
+        "/sysroot/avr/include/avr/iotn861.h",
+        "/sysroot/avr/include/avr/iotn861a.h",
+        "/sysroot/avr/include/avr/iotn87.h",
+        "/sysroot/avr/include/avr/iotn88.h",
+        "/sysroot/avr/include/avr/iotn9.h",
+        "/sysroot/avr/include/avr/iotnx4.h",
+        "/sysroot/avr/include/avr/iotnx5.h",
+        "/sysroot/avr/include/avr/iotnx61.h",
+        "/sysroot/avr/include/avr/iousb1286.h",
+        "/sysroot/avr/include/avr/iousb1287.h",
+        "/sysroot/avr/include/avr/iousb162.h",
+        "/sysroot/avr/include/avr/iousb646.h",
+        "/sysroot/avr/include/avr/iousb647.h",
+        "/sysroot/avr/include/avr/iousb82.h",
+        "/sysroot/avr/include/avr/iousbxx2.h",
+        "/sysroot/avr/include/avr/iousbxx6_7.h",
+        "/sysroot/avr/include/avr/iox128a1.h",
+        "/sysroot/avr/include/avr/iox128a1u.h",
+        "/sysroot/avr/include/avr/iox128a3.h",
+        "/sysroot/avr/include/avr/iox128a3u.h",
+        "/sysroot/avr/include/avr/iox128a4u.h",
+        "/sysroot/avr/include/avr/iox128b1.h",
+        "/sysroot/avr/include/avr/iox128b3.h",
+        "/sysroot/avr/include/avr/iox128c3.h",
+        "/sysroot/avr/include/avr/iox128d3.h",
+        "/sysroot/avr/include/avr/iox128d4.h",
+        "/sysroot/avr/include/avr/iox16a4.h",
+        "/sysroot/avr/include/avr/iox16a4u.h",
+        "/sysroot/avr/include/avr/iox16c4.h",
+        "/sysroot/avr/include/avr/iox16d4.h",
+        "/sysroot/avr/include/avr/iox16e5.h",
+        "/sysroot/avr/include/avr/iox192a3.h",
+        "/sysroot/avr/include/avr/iox192a3u.h",
+        "/sysroot/avr/include/avr/iox192c3.h",
+        "/sysroot/avr/include/avr/iox192d3.h",
+        "/sysroot/avr/include/avr/iox256a3.h",
+        "/sysroot/avr/include/avr/iox256a3b.h",
+        "/sysroot/avr/include/avr/iox256a3bu.h",
+        "/sysroot/avr/include/avr/iox256a3u.h",
+        "/sysroot/avr/include/avr/iox256c3.h",
+        "/sysroot/avr/include/avr/iox256d3.h",
+        "/sysroot/avr/include/avr/iox32a4.h",
+        "/sysroot/avr/include/avr/iox32a4u.h",
+        "/sysroot/avr/include/avr/iox32c3.h",
+        "/sysroot/avr/include/avr/iox32c4.h",
+        "/sysroot/avr/include/avr/iox32d3.h",
+        "/sysroot/avr/include/avr/iox32d4.h",
+        "/sysroot/avr/include/avr/iox32e5.h",
+        "/sysroot/avr/include/avr/iox384c3.h",
+        "/sysroot/avr/include/avr/iox384d3.h",
+        "/sysroot/avr/include/avr/iox64a1.h",
+        "/sysroot/avr/include/avr/iox64a1u.h",
+        "/sysroot/avr/include/avr/iox64a3.h",
+        "/sysroot/avr/include/avr/iox64a3u.h",
+        "/sysroot/avr/include/avr/iox64a4u.h",
+        "/sysroot/avr/include/avr/iox64b1.h",
+        "/sysroot/avr/include/avr/iox64b3.h",
+        "/sysroot/avr/include/avr/iox64c3.h",
+        "/sysroot/avr/include/avr/iox64d3.h",
+        "/sysroot/avr/include/avr/iox64d4.h",
+        "/sysroot/avr/include/avr/iox8e5.h",
+        "/sysroot/avr/include/avr/lock.h",
+        "/sysroot/avr/include/avr/parity.h",
+        "/sysroot/avr/include/avr/pgmspace.h",
+        "/sysroot/avr/include/avr/portpins.h",
+        "/sysroot/avr/include/avr/power.h",
+        "/sysroot/avr/include/avr/sfr_defs.h",
+        "/sysroot/avr/include/avr/signal.h",
+        "/sysroot/avr/include/avr/signature.h",
+        "/sysroot/avr/include/avr/sleep.h",
+        "/sysroot/avr/include/avr/version.h",
+        "/sysroot/avr/include/avr/wdt.h",
+        "/sysroot/avr/include/avr/xmega.h",
+        "/sysroot/avr/include/compat/deprecated.h",
+        "/sysroot/avr/include/compat/ina90.h",
+        "/sysroot/avr/include/compat/twi.h",
+        "/sysroot/avr/include/ctype.h",
+        "/sysroot/avr/include/errno.h",
+        "/sysroot/avr/include/fcntl.h",
+        "/sysroot/avr/include/inttypes.h",
+        "/sysroot/avr/include/locale.h",
+        "/sysroot/avr/include/math.h",
+        "/sysroot/avr/include/setjmp.h",
+        "/sysroot/avr/include/signal.h",
+        "/sysroot/avr/include/stdfix-avrlibc.h",
+        "/sysroot/avr/include/stdint.h",
+        "/sysroot/avr/include/stdio.h",
+        "/sysroot/avr/include/stdlib.h",
+        "/sysroot/avr/include/string.h",
+        "/sysroot/avr/include/sys/types.h",
+        "/sysroot/avr/include/time.h",
+        "/sysroot/avr/include/unistd.h",
+        "/sysroot/avr/include/util/atomic.h",
+        "/sysroot/avr/include/util/crc16.h",
+        "/sysroot/avr/include/util/delay.h",
+        "/sysroot/avr/include/util/delay_basic.h",
+        "/sysroot/avr/include/util/eu_dst.h",
+        "/sysroot/avr/include/util/parity.h",
+        "/sysroot/avr/include/util/setbaud.h",
+        "/sysroot/avr/include/util/twi.h",
+        "/sysroot/avr/include/util/usa_dst.h",
+        "/sysroot/gcc/include/float.h",
+        "/sysroot/gcc/include/gcov.h",
+        "/sysroot/gcc/include/iso646.h",
+        "/sysroot/gcc/include/stdalign.h",
+        "/sysroot/gcc/include/stdarg.h",
+        "/sysroot/gcc/include/stdatomic.h",
+        "/sysroot/gcc/include/stdbool.h",
+        "/sysroot/gcc/include/stddef.h",
+        "/sysroot/gcc/include/stdfix-gcc.h",
+        "/sysroot/gcc/include/stdfix.h",
+        "/sysroot/gcc/include/stdint-gcc.h",
+        "/sysroot/gcc/include/stdint.h",
+        "/sysroot/gcc/include/stdnoreturn.h",
+        "/sysroot/gcc/include/unwind.h",
+        "/sysroot/gcc/include/varargs.h"
+      ],
+      "baseObjects": [
+        "/objects/core_HardwareSerial.o",
+        "/objects/core_HardwareSerial0.o",
+        "/objects/core_Print.o",
+        "/objects/core_Stream.o",
+        "/objects/core_Tone.o",
+        "/objects/core_WMath.o",
+        "/objects/core_WString.o",
+        "/objects/core_hooks.o",
+        "/objects/core_main.o",
+        "/objects/core_new.o",
+        "/objects/core_wiring.o",
+        "/objects/core_wiring_analog.o",
+        "/objects/core_wiring_digital.o",
+        "/objects/core_wiring_pulse.o",
+        "/objects/core_wiring_pulse_asm.o",
+        "/objects/core_wiring_shift.o",
+        "/objects/lib_BMP085.o",
+        "/objects/lib_BusIO_Register.o",
+        "/objects/lib_DHT.o",
+        "/objects/lib_Firmata.o",
+        "/objects/lib_FirmataMarshaller.o",
+        "/objects/lib_FirmataParser.o",
+        "/objects/lib_I2CDevice.o",
+        "/objects/lib_SPI.o",
+        "/objects/lib_SPIDevice.o",
+        "/objects/lib_Servo.o",
+        "/objects/lib_Wire.o",
+        "/objects/lib_twi.o"
+      ],
+      "oledObjects": [
+        "/objects/lib_GFX.o",
+        "/objects/lib_SSD1306.o"
+      ],
+      "tofObjects": [
+        "/objects/lib_VL53L0X.o"
+      ],
+      "linkLibs": [
+        "/libs/crtatmega328p.o",
+        "/libs/libc.a",
+        "/libs/libm.a",
+        "/libs/libgcc.a"
+      ],
+      "ldscript": "assets/ldscripts/avr5.xn"
+    },
+    "libraries": {
+      "EEPROM": {
+        "includes": [
+          "EEPROM.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/arduino/libraries/EEPROM/src/EEPROM.h"
+        ],
+        "objects": [
+          "objects/lib_eeprom_avr.o"
+        ]
+      },
+      "Otto": {
+        "includes": [
+          "Otto.h",
+          "Oscillator.h",
+          "Otto_gestures.h",
+          "Otto_mouths.h",
+          "Otto_sounds.h",
+          "Otto_matrix.h"
+        ],
+        "depends": [
+          "EEPROM"
+        ],
+        "headers": [
+          "/libraries/Otto/Otto.h",
+          "/libraries/Otto/Oscillator.h",
+          "/libraries/Otto/Otto_gestures.h",
+          "/libraries/Otto/Otto_mouths.h",
+          "/libraries/Otto/Otto_sounds.h",
+          "/libraries/Otto/Otto_matrix.h"
+        ],
+        "objects": [
+          "objects/lib_Oscillator.o",
+          "objects/lib_Otto_matrix.o",
+          "objects/lib_Otto.o"
+        ]
+      },
+      "SoftwareSerial": {
+        "includes": [
+          "SoftwareSerial.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/arduino/libraries/SoftwareSerial/src/SoftwareSerial.h"
+        ],
+        "objects": [
+          "objects/lib_SoftwareSerial.o"
+        ]
+      },
+      "SerialCommand": {
+        "includes": [
+          "SerialCommand.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/SerialCommand/SerialCommand.h"
+        ],
+        "objects": [
+          "objects/lib_SerialCommand.o"
+        ]
+      },
+      "TM1637": {
+        "includes": [
+          "TM1637Display.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/TM1637/TM1637Display.h"
+        ],
+        "objects": [
+          "objects/lib_TM1637Display.o"
+        ]
+      },
+      "LedControl": {
+        "includes": [
+          "LedControl.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/LedControl/LedControl.h"
+        ],
+        "objects": [
+          "objects/lib_LedControl.o"
+        ]
+      },
+      "LiquidCrystal_I2C": {
+        "includes": [
+          "LiquidCrystal_I2C.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/LiquidCrystal_I2C/LiquidCrystal_I2C.h"
+        ],
+        "objects": [
+          "objects/lib_LiquidCrystal_I2C.o"
+        ]
+      },
+      "Adafruit_NeoPixel": {
+        "includes": [
+          "Adafruit_NeoPixel.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.h"
+        ],
+        "objects": [
+          "objects/lib_Adafruit_NeoPixel.o"
+        ]
+      },
+      "Adafruit_SH1106": {
+        "includes": [
+          "Adafruit_SH1106.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/Adafruit_SH1106/Adafruit_SH1106.h"
+        ],
+        "objects": [
+          "objects/lib_Adafruit_SH1106.o"
+        ]
+      },
+      "Adafruit_SPITFT": {
+        "includes": [],
+        "depends": [],
+        "headers": [],
+        "objects": [
+          "objects/lib_Adafruit_SPITFT.o"
+        ]
+      },
+      "Adafruit_ST7735": {
+        "includes": [
+          "Adafruit_ST77xx.h",
+          "Adafruit_ST7735.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/Adafruit_ST7735/Adafruit_ST77xx.h",
+          "/libraries/Adafruit_ST7735/Adafruit_ST7735.h"
+        ],
+        "objects": [
+          "objects/lib_Adafruit_ST77xx.o",
+          "objects/lib_Adafruit_ST7735.o"
+        ]
+      },
+      "Stepper": {
+        "includes": [
+          "Stepper.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/Stepper/Stepper.h"
+        ],
+        "objects": [
+          "objects/lib_Stepper.o"
+        ]
+      },
+      "AFMotor": {
+        "includes": [
+          "AFMotor.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/AFMotor/AFMotor.h"
+        ],
+        "objects": [
+          "objects/lib_AFMotor.o"
+        ]
+      },
+      "RTClib": {
+        "includes": [
+          "RTClib.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/RTClib/RTClib.h"
+        ],
+        "objects": [
+          "objects/lib_RTClib_RTClib.o"
+        ]
+      },
+      "BME280": {
+        "includes": [
+          "BME280.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/BME280/BME280.h"
+        ],
+        "objects": [
+          "objects/lib_BME280_BME280.o"
+        ]
+      },
+      "Encoder": {
+        "includes": [
+          "Encoder.h",
+          "direct_pin_read.h",
+          "interrupt_config.h",
+          "interrupt_pins.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/Encoder/Encoder.h",
+          "/libraries/Encoder/utility/direct_pin_read.h",
+          "/libraries/Encoder/utility/interrupt_config.h",
+          "/libraries/Encoder/utility/interrupt_pins.h"
+        ],
+        "objects": [
+          "objects/lib_Encoder_Encoder.o"
+        ]
+      },
+      "I2Cdev": {
+        "includes": [
+          "I2Cdev.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/MPU6050/I2Cdev.h"
+        ],
+        "objects": [
+          "objects/lib_I2Cdev.o"
+        ]
+      },
+      "MPU6050": {
+        "includes": [
+          "helper_3dmath.h",
+          "I2Cdev.h",
+          "MPU6050.h",
+          "MPU6050_6Axis_MotionApps20.h",
+          "MPU6050_6Axis_MotionApps_V6_12.h",
+          "MPU6050_9Axis_MotionApps41.h"
+        ],
+        "depends": [
+          "I2Cdev"
+        ],
+        "headers": [
+          "/libraries/MPU6050/helper_3dmath.h",
+          "/libraries/MPU6050/I2Cdev.h",
+          "/libraries/MPU6050/MPU6050.h",
+          "/libraries/MPU6050/MPU6050_6Axis_MotionApps20.h",
+          "/libraries/MPU6050/MPU6050_6Axis_MotionApps_V6_12.h",
+          "/libraries/MPU6050/MPU6050_9Axis_MotionApps41.h"
+        ],
+        "objects": [
+          "objects/lib_MPU6050.o"
+        ]
+      },
+      "IRremote": {
+        "includes": [
+          "IRremote.h",
+          "ir_Lego_PF_BitStreamEncoder.h",
+          "IRremoteBoardDefs.h",
+          "IRremoteInt.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/IRremote/src/IRremote.h",
+          "/libraries/IRremote/src/ir_Lego_PF_BitStreamEncoder.h",
+          "/libraries/IRremote/src/private/IRremoteBoardDefs.h",
+          "/libraries/IRremote/src/private/IRremoteInt.h"
+        ],
+        "objects": [
+          "objects/lib_IRremote_irPronto.o",
+          "objects/lib_IRremote_irReceive.o",
+          "objects/lib_IRremote_IRremote.o",
+          "objects/lib_IRremote_irSend.o",
+          "objects/lib_IRremote_ir_BoseWave.o",
+          "objects/lib_IRremote_ir_Denon.o",
+          "objects/lib_IRremote_ir_Dish.o",
+          "objects/lib_IRremote_ir_JVC.o",
+          "objects/lib_IRremote_ir_Lego_PF.o",
+          "objects/lib_IRremote_ir_LG.o",
+          "objects/lib_IRremote_ir_MagiQuest.o",
+          "objects/lib_IRremote_ir_NEC.o",
+          "objects/lib_IRremote_ir_Panasonic.o",
+          "objects/lib_IRremote_ir_RC5_RC6.o",
+          "objects/lib_IRremote_ir_Samsung.o",
+          "objects/lib_IRremote_ir_Sanyo.o",
+          "objects/lib_IRremote_ir_Sharp.o",
+          "objects/lib_IRremote_ir_Sharp_alt.o",
+          "objects/lib_IRremote_ir_Sony.o",
+          "objects/lib_IRremote_ir_Template.o",
+          "objects/lib_IRremote_ir_Whynter.o"
+        ]
+      },
+      "MuVisionSensor": {
+        "includes": [
+          "morpx_debug_tool.h",
+          "morpx_protocol_analysis.h",
+          "morpx_protocol_types.h",
+          "mu_protocol_analysis.h",
+          "SimpleList.h",
+          "MuVisionSensor.h",
+          "MuVisionSensor3_AT.h",
+          "mu_uart_interface.h",
+          "mu_vision_sensor_i2c_hw_interface.h",
+          "mu_vision_sensor_i2c_interface.h",
+          "mu_vision_sensor_interface.h",
+          "mu_vision_sensor_type.h",
+          "mu_vision_sensor_uart_interface.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/MuVisionSensor/DebugTool/morpx_debug_tool.h",
+          "/libraries/MuVisionSensor/MorpxProtocolAnalysis/morpx_protocol_analysis.h",
+          "/libraries/MuVisionSensor/MorpxProtocolAnalysis/morpx_protocol_types.h",
+          "/libraries/MuVisionSensor/MorpxProtocolAnalysis/mu_protocol_analysis.h",
+          "/libraries/MuVisionSensor/MorpxProtocolAnalysis/SimpleList.h",
+          "/libraries/MuVisionSensor/MuVisionSensor.h",
+          "/libraries/MuVisionSensor/MuVisionSensor3_AT.h",
+          "/libraries/MuVisionSensor/mu_uart_interface.h",
+          "/libraries/MuVisionSensor/mu_vision_sensor_i2c_hw_interface.h",
+          "/libraries/MuVisionSensor/mu_vision_sensor_i2c_interface.h",
+          "/libraries/MuVisionSensor/mu_vision_sensor_interface.h",
+          "/libraries/MuVisionSensor/mu_vision_sensor_type.h",
+          "/libraries/MuVisionSensor/mu_vision_sensor_uart_interface.h"
+        ],
+        "objects": [
+          "objects/lib_MuVisionSensor_morpx_protocol_analysis.o",
+          "objects/lib_MuVisionSensor_MuVisionSensor.o",
+          "objects/lib_MuVisionSensor_MuVisionSensor3_AT.o",
+          "objects/lib_MuVisionSensor_mu_uart_interface.o",
+          "objects/lib_MuVisionSensor_mu_vision_sensor_i2c_hw_interface.o",
+          "objects/lib_MuVisionSensor_mu_vision_sensor_i2c_interface.o",
+          "objects/lib_MuVisionSensor_mu_vision_sensor_uart_interface.o"
+        ]
+      },
+      "NDEF": {
+        "includes": [
+          "Due.h",
+          "MifareClassic.h",
+          "MifareUltralight.h",
+          "Ndef.h",
+          "NdefMessage.h",
+          "NdefRecord.h",
+          "NfcAdapter.h",
+          "NfcDriver.h",
+          "NfcTag.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/NDEF/Due.h",
+          "/libraries/NDEF/MifareClassic.h",
+          "/libraries/NDEF/MifareUltralight.h",
+          "/libraries/NDEF/Ndef.h",
+          "/libraries/NDEF/NdefMessage.h",
+          "/libraries/NDEF/NdefRecord.h",
+          "/libraries/NDEF/NfcAdapter.h",
+          "/libraries/NDEF/NfcDriver.h",
+          "/libraries/NDEF/NfcTag.h"
+        ],
+        "objects": [
+          "objects/lib_NDEF_MifareClassic.o",
+          "objects/lib_NDEF_MifareUltralight.o",
+          "objects/lib_NDEF_Ndef.o",
+          "objects/lib_NDEF_NdefMessage.o",
+          "objects/lib_NDEF_NdefRecord.o",
+          "objects/lib_NDEF_NfcAdapter.o",
+          "objects/lib_NDEF_NfcTag.o"
+        ]
+      },
+      "MFRC522": {
+        "includes": [
+          "deprecated.h",
+          "MFRC522.h",
+          "MFRC522Extended.h",
+          "require_cpp11.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/MFRC522/deprecated.h",
+          "/libraries/MFRC522/MFRC522.h",
+          "/libraries/MFRC522/MFRC522Extended.h",
+          "/libraries/MFRC522/require_cpp11.h"
+        ],
+        "objects": [
+          "objects/lib_MFRC522_MFRC522.o",
+          "objects/lib_MFRC522_MFRC522Extended.o"
+        ]
+      },
+      "TinyGPSPlus": {
+        "includes": [
+          "TinyGPSPlus.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/TinyGPSPlus/TinyGPSPlus.h"
+        ],
+        "objects": [
+          "objects/lib_TinyGPSPlus_TinyGPSPlus.o"
+        ]
+      },
+      "Adafruit_TCS34725": {
+        "includes": [
+          "Adafruit_TCS34725.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/Adafruit_TCS34725/Adafruit_TCS34725.h"
+        ],
+        "objects": [
+          "objects/lib_Adafruit_TCS34725_Adafruit_TCS34725.o"
+        ]
+      },
+      "Adafruit_HMC5883_U": {
+        "includes": [
+          "Adafruit_HMC5883_U.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/Adafruit_HMC5883_Unified/Adafruit_HMC5883_U.h"
+        ],
+        "objects": [
+          "objects/lib_Adafruit_HMC5883_U_Adafruit_HMC5883_U.o"
+        ]
+      },
+      "Adafruit_APDS9960": {
+        "includes": [
+          "Adafruit_APDS9960.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/Adafruit_APDS9960/Adafruit_APDS9960.h"
+        ],
+        "objects": [
+          "objects/lib_Adafruit_APDS9960_Adafruit_APDS9960.o"
+        ]
+      },
+      "Adafruit_PWMServoDriver": {
+        "includes": [
+          "Adafruit_PWMServoDriver.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/Adafruit_PWMServoDriver/Adafruit_PWMServoDriver.h"
+        ],
+        "objects": [
+          "objects/lib_Adafruit_PWMServoDriver_Adafruit_PWMServoDriver.o"
+        ]
+      },
+      "PN532": {
+        "includes": [
+          "PN532.h",
+          "PN532Interface.h",
+          "PN532_debug.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/PN532/PN532.h",
+          "/libraries/PN532/PN532Interface.h",
+          "/libraries/PN532/PN532_debug.h"
+        ],
+        "objects": [
+          "objects/lib_PN532_PN532.o"
+        ]
+      },
+      "PN532_I2C": {
+        "includes": [
+          "PN532_I2C.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/PN532_I2C/PN532_I2C.h"
+        ],
+        "objects": [
+          "objects/lib_PN532_I2C_PN532_I2C.o"
+        ]
+      },
+      "PlayRtttl": {
+        "includes": [
+          "PlayRtttl.h",
+          "PlayRtttl.hpp",
+          "pitches.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/PlayRtttl/PlayRtttl.h",
+          "/libraries/PlayRtttl/PlayRtttl.hpp",
+          "/libraries/PlayRtttl/pitches.h"
+        ],
+        "objects": []
+      },
+      "RedMP3": {
+        "includes": [
+          "RedMP3.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/RedMP3/RedMP3.h"
+        ],
+        "objects": [
+          "objects/lib_RedMP3_RedMP3.o"
+        ]
+      },
+      "TEA5767": {
+        "includes": [
+          "TEA5767N.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/TEA5767/TEA5767N.h"
+        ],
+        "objects": [
+          "objects/lib_TEA5767_TEA5767N.o"
+        ]
+      },
+      "Quad": {
+        "includes": [
+          "Quad.h",
+          "Octosnake.h"
+        ],
+        "depends": [
+          "EEPROM"
+        ],
+        "headers": [
+          "/libraries/Quad/Quad.h",
+          "/libraries/Quad/Octosnake.h"
+        ],
+        "objects": [
+          "objects/lib_Quad_Octosnake.o",
+          "objects/lib_Quad_Quad.o"
+        ]
+      }
+    }
+  }
+}

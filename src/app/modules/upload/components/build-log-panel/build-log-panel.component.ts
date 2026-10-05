@@ -14,6 +14,8 @@ import { BuildLogPanelService } from '../../services/build-log-panel.service';
 import { UploadManagerService } from '../../services/upload-manager.service';
 
 const CLOSE_ICON = "url('assets/icons/header/close.svg')";
+const COPY_ICON = "url('assets/icons/header/copy.svg')";
+const HEX_ICON = "url('assets/icons/header/hex.svg')";
 const COPY_FEEDBACK_MS = 2000;
 
 @Component({
@@ -35,6 +37,8 @@ export class BuildLogPanelComponent implements OnInit, OnDestroy {
   private readonly uploadManager = inject(UploadManagerService);
 
   readonly closeIcon = CLOSE_ICON;
+  readonly copyIcon = COPY_ICON;
+  readonly hexIcon = HEX_ICON;
 
   isOpen = this.buildLogPanelService.isPanelOpen();
   panelHeight = this.buildLogPanelService.getPanelHeight();

@@ -65,10 +65,11 @@ async function loadHeaders(fs, manifest) {
   await Promise.all(Array.from({ length: concurrency }, () => worker()));
 }
 
-function compileArgs(includePaths) {
+function compileArgs(includePaths, extraDefines = []) {
   return [
     '-quiet',
     '-imultilib', MULTILIB,
+    ...extraDefines.flatMap((define) => ['-D', define]),
     '-D__AVR_ATmega328P__',
     '-D__AVR_DEVICE_NAME__=atmega328p',
     '-DF_CPU=16000000L',
@@ -84,6 +85,15 @@ function compileArgs(includePaths) {
     '-I', '/arduino/libraries/Wire/src/utility',
     '-I', '/libraries/Servo/src',
     '-I', '/libraries/Servo/src/avr',
+    '-I', '/libraries/Firmata',
+    '-I', '/libraries/Firmata/utility',
+    '-I', '/libraries/Adafruit_BMP085_Library',
+    '-I', '/libraries/DHT_sensor_library',
+    '-I', '/libraries/Adafruit_GFX_Library',
+    '-I', '/libraries/Adafruit_SSD1306',
+    '-I', '/libraries/VL53L0X',
+    '-I', '/libraries/Adafruit_BusIO',
+    '-I', '/libraries/Adafruit_Unified_Sensor',
     ...includePaths.flatMap((p) => ['-I', p]),
     '/build/Library.cpp',
     '-mn-flash=1',
@@ -137,7 +147,7 @@ async function runTool(toolName, factory, args, setup, outputPath, stderr) {
   }
 }
 
-export async function compileLibraryObject({ source, manifest, includePaths }) {
+export async function compileLibraryObject({ source, manifest, includePaths, extraDefines }) {
   if (!assetsBase) {
     throw new Error('setCompileAssetsBase() first');
   }
@@ -146,7 +156,7 @@ export async function compileLibraryObject({ source, manifest, includePaths }) {
   const assembly = await runTool(
     'cc1plus',
     createCc1plus,
-    compileArgs(includePaths),
+    compileArgs(includePaths, extraDefines),
     async (fs) => {
       await loadHeaders(fs, manifest);
       writeFile(fs, '/build/Library.cpp', source);

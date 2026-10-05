@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, of } from 'rxjs';
 import { ICompiler } from '@core/interfaces';
-import { CompileOptions, CompileResult } from '@core/models';
+import { CompileOptions, CompileProgressUpdate, CompileResult } from '@core/models';
+import { createProgressSimulator } from '@core/utils/compile-progress.util';
 import {
+  detectWasmSensors,
   formatWasmCompileLog,
   isAvr328pFqbn,
+  isBybyteWasmManifest,
   prepareSketchForWasm,
   resolveWasmAssetsBase,
   WASM_AVR_UNSUPPORTED_MESSAGE,
@@ -45,6 +48,14 @@ export class WebAvrWasmCompilerService implements ICompiler {
       if (!response.ok) {
         return { ok: false, detail: `${response.status} ${manifestUrl}` };
       }
+      const manifest = await response.json();
+      if (!isBybyteWasmManifest(manifest)) {
+        return {
+          ok: false,
+          detail:
+            'stock npm manifest (missing ByByte waves). Run npm run prepare:wasm-avr and restart ng serve',
+        };
+      }
       return { ok: true, detail: manifestUrl };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
@@ -54,6 +65,10 @@ export class WebAvrWasmCompilerService implements ICompiler {
 
   installCore(_core: string): Observable<string> {
     return of('AVR WASM assets are bundled; core install is not required on web.');
+  }
+
+  private reportProgress(options: CompileOptions, update: CompileProgressUpdate): void {
+    options.onProgress?.(update);
   }
 
   private async compileAsync(options: CompileOptions): Promise<CompileResult> {
@@ -68,6 +83,7 @@ export class WebAvrWasmCompilerService implements ICompiler {
       };
     }
 
+    this.reportProgress(options, { percent: 8, message: 'ui.compile_progress_checking_tools' });
     const tools = await this.probeTools();
     if (!tools.ok) {
       const error =
@@ -81,6 +97,7 @@ export class WebAvrWasmCompilerService implements ICompiler {
       };
     }
 
+    this.reportProgress(options, { percent: 18, message: 'ui.compile_progress_preparing' });
     const source = prepareSketchForWasm(options.code || '');
     if (!source) {
       return {
@@ -91,13 +108,26 @@ export class WebAvrWasmCompilerService implements ICompiler {
       };
     }
 
+    let progressSimulator: ReturnType<typeof createProgressSimulator> | null = null;
+
     try {
+      this.reportProgress(options, { percent: 28, message: 'ui.compile_progress_loading' });
       const compile = await this.loadCompileFn();
+
+      this.reportProgress(options, { percent: 35, message: 'ui.compile_progress_compiling' });
+      progressSimulator = createProgressSimulator((percent) => {
+        this.reportProgress(options, { percent, message: 'ui.compile_progress_compiling' });
+      });
+
       const wasmResult = await compile({
         source,
-        sensors: [],
+        sensors: detectWasmSensors(source),
         assetsBase: resolveWasmAssetsBase(),
       });
+
+      progressSimulator.stop();
+      progressSimulator = null;
+      this.reportProgress(options, { percent: 95, message: 'ui.compile_progress_finishing' });
 
       const output = formatWasmCompileLog(wasmResult);
 
@@ -116,6 +146,7 @@ export class WebAvrWasmCompilerService implements ICompiler {
         },
       };
     } catch (error: unknown) {
+      progressSimulator?.stop();
       const message = error instanceof Error ? error.message : String(error);
       return {
         success: false,

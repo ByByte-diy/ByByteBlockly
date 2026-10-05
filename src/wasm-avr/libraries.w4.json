@@ -1,0 +1,28 @@
+{
+  "wave": "W4",
+  "description": "Motors: Arduino Stepper + Adafruit Motor Shield (AFMotor)",
+  "libraries": [
+    {
+      "id": "Stepper",
+      "root": "src/wasm-avr/libraries/Stepper",
+      "headers": [
+        { "from": "Stepper.h", "virtual": "/libraries/Stepper/Stepper.h" }
+      ],
+      "includePaths": ["/libraries/Stepper"],
+      "sources": [
+        { "from": "Stepper.cpp", "object": "/objects/lib_Stepper.o" }
+      ]
+    },
+    {
+      "id": "AFMotor",
+      "root": "src/wasm-avr/libraries/AFMotor",
+      "headers": [
+        { "from": "AFMotor.h", "virtual": "/libraries/AFMotor/AFMotor.h" }
+      ],
+      "includePaths": ["/libraries/AFMotor"],
+      "sources": [
+        { "from": "AFMotor.cpp", "object": "/objects/lib_AFMotor.o" }
+      ]
+    }
+  ]
+}

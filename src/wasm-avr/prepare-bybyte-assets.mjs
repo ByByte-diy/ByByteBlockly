@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Overlay ByByte W1 libraries onto src/assets/wasm-avr:
+ * Overlay ByByte library waves (W1, W2, …) onto src/assets/wasm-avr:
  * headers + prebuilt .o (via WASM avr-gcc) + patched firmware-builder.js.
  */
 import http from 'node:http';
@@ -8,7 +8,12 @@ import { createReadStream, existsSync, statSync } from 'node:fs';
 import { access, cp, lstat, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { flattenWaveCatalog, mergeBybyteManifest, resolveCatalogFile } from './merge-manifest.mjs';
+import {
+  flattenWaveCatalog,
+  mergeBybyteManifest,
+  mergeWaveCatalogs,
+  resolveCatalogFile,
+} from './merge-manifest.mjs';
 import { patchFirmwareBuilderSource } from './patch-firmware-builder.mjs';
 import { compileLibraryObject, setCompileAssetsBase } from './compile-library-object.mjs';
 
@@ -16,7 +21,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '../..');
 const PKG = join(ROOT, 'node_modules/@horang-corp/avr-gcc-wasm');
 const DEST = join(ROOT, 'src/assets/wasm-avr');
-const CATALOG_PATH = join(__dirname, 'libraries.w1.json');
+const CATALOG_FILES = [
+  'libraries.w1.json',
+  'libraries.w2.json',
+  'libraries.w3.json',
+  'libraries.w4.json',
+  'libraries.w5.json',
+  'libraries.w6.json',
+  'libraries.w7.json',
+];
 const PORT = 4175;
 const MIME = {
   '.wasm': 'application/wasm',
@@ -111,14 +124,22 @@ async function compileSources(catalog, manifest) {
   for (const source of flat.sources) {
     const cpp = await readFile(source.from, 'utf8');
     console.log(`Compiling ${source.id}: ${source.from} → ${source.object}`);
+    const extraDefines =
+      source.id === 'IRremote' ? ['BYBYTE_WASM_STUB_ISR'] : [];
     const { object, stderr } = await compileLibraryObject({
       source: cpp,
       manifest,
       includePaths: flat.includePaths,
+      extraDefines,
     });
     const dest = virtualToAssetPath(source.object);
     await mkdir(dirname(dest), { recursive: true });
     await writeFile(dest, object);
+    if (stderr.some((line) => /fatal error:|compilation terminated/.test(line))) {
+      throw new Error(
+        `Failed to compile ${source.id} (${source.from}):\n${stderr.slice(-10).join('\n')}`,
+      );
+    }
     compiled.push(source.object);
     if (stderr.length) {
       console.log(`  stderr: ${stderr.slice(-2).join(' | ')}`);
@@ -135,8 +156,15 @@ async function overlayFirmwareBuilder() {
   await writeFile(builderPath, patchFirmwareBuilderSource(stock));
 }
 
+async function loadCatalog() {
+  const catalogs = await Promise.all(
+    CATALOG_FILES.map((file) => readFile(join(__dirname, file), 'utf8').then(JSON.parse)),
+  );
+  return mergeWaveCatalogs(catalogs);
+}
+
 async function main() {
-  const catalog = JSON.parse(await readFile(CATALOG_PATH, 'utf8'));
+  const catalog = await loadCatalog();
   await ensureBaseAssets();
 
   const headerFiles = await copyHeaders(catalog);

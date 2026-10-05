@@ -1,8 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import {
+  detectWasmSensors,
   formatWasmCompileLog,
   isAvr328pFqbn,
+  isBybyteWasmManifest,
   prepareSketchForWasm,
+  WASM_SENSOR_OLED,
   resolveWasmAssetsBase,
 } from '@platform/web/services/web-avr-wasm.util';
 
@@ -26,8 +29,44 @@ describe('web-avr-wasm.util', () => {
   });
 
   it('does not duplicate Arduino.h', () => {
-    const source = '#include <Arduino.h>\nvoid setup() {}';
+    const source = '#include <Arduino.h>\nvoid setup() {}\nvoid loop() {}';
     expect(prepareSketchForWasm(source)).toBe(source);
+  });
+
+  it('adds empty setup/loop when missing', () => {
+    const prepared = prepareSketchForWasm('#include <SoftwareSerial.h>\nSoftwareSerial s(2, 3);');
+    expect(prepared).toContain('void setup()');
+    expect(prepared).toContain('void loop()');
+  });
+
+  it('injects forward declarations for helper functions', () => {
+    const source = `#include <Arduino.h>
+
+void setup() {
+  helper(1);
+}
+
+void loop() {}
+
+int helper(int value) {
+  return value + 1;
+}
+`;
+    const prepared = prepareSketchForWasm(source);
+    expect(prepared).toContain('int helper(int value);');
+    expect(prepared.indexOf('int helper(int value);')).toBeLessThan(
+      prepared.indexOf('void setup() {'),
+    );
+  });
+
+  it('detects prepared ByByte manifest', () => {
+    expect(isBybyteWasmManifest({ bybyte: { wave: 'W1+W2+W3' } })).toBe(true);
+    expect(isBybyteWasmManifest({ headerFiles: ['/arduino/core/Arduino.h'] })).toBe(false);
+  });
+
+  it('detects OLED sensor flag for GFX-based displays', () => {
+    expect(detectWasmSensors('#include <Adafruit_SH1106.h>')).toEqual([WASM_SENSOR_OLED]);
+    expect(detectWasmSensors('#include <TM1637Display.h>')).toEqual([]);
   });
 
   it('resolves assets next to the document base', () => {

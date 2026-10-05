@@ -28,6 +28,13 @@ export interface UploadResult {
   error?: string;
 }
 
+/** Progress update during compile (0–100). */
+export interface CompileProgressUpdate {
+  percent: number;
+  /** Plain text or i18n key (ui.compile_progress_*). */
+  message?: string;
+}
+
 /**
  * Compile options
  */
@@ -37,6 +44,7 @@ export interface CompileOptions {
   libraries?: string[];
   warnings?: 'none' | 'default' | 'more' | 'all';
   verbose?: boolean;
+  onProgress?: (update: CompileProgressUpdate) => void;
 }
 
 /**

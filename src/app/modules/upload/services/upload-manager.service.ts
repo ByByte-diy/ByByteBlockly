@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { ICompiler, IUploader } from '@core/interfaces';
 import { CompileResult, UploadResult } from '@core/models';
 import { DeviceManagerService } from '../../device/services/device-manager.service';
 import { CodeEditorService } from '../../code-editor/services/code-editor.service';
+import { formatBuildLog } from '../utils/build-log.util';
+import { clampProgressPercent } from '@core/utils/compile-progress.util';
 
 /**
  * Status of the upload process
@@ -34,7 +36,10 @@ export interface UploadProgress {
 export class UploadManagerService {
   private statusSubject = new BehaviorSubject<UploadStatus>(UploadStatus.IDLE);
   private progressSubject = new Subject<UploadProgress>();
+  private buildLogSubject = new BehaviorSubject<string>('');
+  private compileResultSubject = new BehaviorSubject<CompileResult | null>(null);
   private lastCompileResult: CompileResult | null = null;
+  private lastProgressPercent = 0;
 
   /**
    * Observable of the upload status
@@ -46,11 +51,18 @@ export class UploadManagerService {
    */
   public progress$ = this.progressSubject.asObservable();
 
+  /** Full compile log for the build log panel. */
+  public buildLog$ = this.buildLogSubject.asObservable();
+
+  /** Last compile result (success or failure). */
+  public compileResult$ = this.compileResultSubject.asObservable();
+
   constructor(
     private compiler: ICompiler,
     private uploader: IUploader,
     private deviceManager: DeviceManagerService,
     private codeEditorService: CodeEditorService,
+    private ngZone: NgZone,
   ) {}
 
   /**
@@ -148,43 +160,61 @@ export class UploadManagerService {
    * Executes the compilation
    */
   private async executeCompile(): Promise<CompileResult> {
+    try {
+      return await this.runCompile();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      this.publishBuildLog({
+        success: false,
+        output: '',
+        error: message,
+      });
+      this.updateProgress(UploadStatus.ERROR, 'ui.compile_error_short', this.lastProgressPercent);
+      throw err;
+    }
+  }
+
+  private async runCompile(): Promise<CompileResult> {
     // Get the selected board (always available, defaults to Arduino Uno)
     const board = this.deviceManager.getSelectedBoard();
 
-    this.updateProgress(UploadStatus.COMPILING, 'Генерація Arduino коду...');
-    
-    // Small delay for update
-    await new Promise(resolve => setTimeout(resolve, 100));
+    this.lastProgressPercent = 0;
+    this.updateProgress(UploadStatus.COMPILING, 'ui.compile_progress_generating', 3);
 
     const code = this.codeEditorService.getEffectiveCode();
     if (!code) {
       throw new Error('Code is empty or not generated');
     }
 
-    this.updateProgress(UploadStatus.COMPILING, 'Compilation of code...');
-
     // Compile
     return new Promise((resolve, reject) => {
       this.compiler.compile({
         board: board.fqbn,
         code: code,
-        verbose: true
+        verbose: true,
+        onProgress: (update) => {
+          this.updateProgress(
+            UploadStatus.COMPILING,
+            update.message ?? 'ui.compile_progress_compiling',
+            update.percent,
+          );
+        },
       }).subscribe({
         next: (result) => {
           this.lastCompileResult = result;
-          
+          this.publishBuildLog(result);
+
           if (result.success) {
-            this.updateProgress(UploadStatus.SUCCESS, 'Compilation successful!');
+            this.updateProgress(UploadStatus.SUCCESS, 'ui.compile_success', 100);
           } else {
-            this.updateProgress(UploadStatus.ERROR, `Compilation error:\n${result.error || result.output}`);
+            this.updateProgress(UploadStatus.ERROR, 'ui.compile_error_short', this.lastProgressPercent);
           }
-          
+
           resolve(result);
         },
         error: (err) => {
-          this.updateProgress(UploadStatus.ERROR, `Compilation error: ${err.message}`);
           reject(err);
-        }
+        },
       });
     });
   }
@@ -201,7 +231,7 @@ export class UploadManagerService {
       throw new Error('Port not selected');
     }
 
-    this.updateProgress(UploadStatus.UPLOADING, 'Uploading to the device...');
+    this.updateProgress(UploadStatus.UPLOADING, 'ui.upload_progress_uploading', 10);
 
     return new Promise((resolve, reject) => {
       this.uploader.upload({
@@ -212,7 +242,7 @@ export class UploadManagerService {
       }).subscribe({
         next: (result) => {
           if (result.success) {
-            this.updateProgress(UploadStatus.SUCCESS, 'Upload successful!');
+            this.updateProgress(UploadStatus.SUCCESS, 'ui.upload_success', 100);
           } else {
             this.updateProgress(UploadStatus.ERROR, `Upload error:\n${result.error || result.output}`);
           }
@@ -231,11 +261,33 @@ export class UploadManagerService {
    * Updates the status and progress
    */
   private updateProgress(status: UploadStatus, message: string, progress?: number): void {
-    this.statusSubject.next(status);
-    this.progressSubject.next({
-      status,
-      message,
-      progress
+    this.runInAngularZone(() => {
+      const clamped = clampProgressPercent(progress);
+      if (clamped != null) {
+        this.lastProgressPercent = clamped;
+      }
+      this.statusSubject.next(status);
+      this.progressSubject.next({
+        status,
+        message,
+        progress: clamped,
+      });
     });
+  }
+
+  private publishBuildLog(result: CompileResult): void {
+    this.runInAngularZone(() => {
+      this.compileResultSubject.next(result);
+      this.buildLogSubject.next(formatBuildLog(result));
+    });
+  }
+
+  private runInAngularZone(action: () => void): void {
+    if (NgZone.isInAngularZone()) {
+      action();
+      return;
+    }
+
+    this.ngZone.run(action);
   }
 }

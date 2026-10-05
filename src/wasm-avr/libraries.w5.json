@@ -1,0 +1,588 @@
+{
+  "wave": "W5",
+  "description": "Sensing: RTC, IR, env, motion, color, compass, RFID/NFC, encoder, APDS9960, PCA9685, GPS, MuVision",
+  "libraries": [
+    {
+      "id": "RTClib",
+      "root": "src/wasm-avr/libraries/RTClib",
+      "headers": [
+        {
+          "from": "RTClib.h",
+          "virtual": "/libraries/RTClib/RTClib.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/RTClib"
+      ],
+      "sources": [
+        {
+          "from": "RTClib.cpp",
+          "object": "/objects/lib_RTClib_RTClib.o"
+        }
+      ]
+    },
+    {
+      "id": "BME280",
+      "root": "src/wasm-avr/libraries/BME280",
+      "headers": [
+        {
+          "from": "BME280.h",
+          "virtual": "/libraries/BME280/BME280.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/BME280"
+      ],
+      "sources": [
+        {
+          "from": "BME280.cpp",
+          "object": "/objects/lib_BME280_BME280.o"
+        }
+      ]
+    },
+    {
+      "id": "Encoder",
+      "root": "src/wasm-avr/libraries/Encoder",
+      "headers": [
+        {
+          "from": "Encoder.h",
+          "virtual": "/libraries/Encoder/Encoder.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/Encoder/utility/direct_pin_read.h",
+          "virtual": "/libraries/Encoder/utility/direct_pin_read.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/Encoder/utility/interrupt_config.h",
+          "virtual": "/libraries/Encoder/utility/interrupt_config.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/Encoder/utility/interrupt_pins.h",
+          "virtual": "/libraries/Encoder/utility/interrupt_pins.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/Encoder"
+      ],
+      "sources": [
+        {
+          "from": "Encoder.cpp",
+          "object": "/objects/lib_Encoder_Encoder.o"
+        }
+      ]
+    },
+    {
+      "id": "I2Cdev",
+      "root": "src/wasm-avr/libraries/MPU6050",
+      "headers": [
+        {
+          "from": "src/wasm-avr/libraries/MPU6050/I2Cdev.h",
+          "virtual": "/libraries/MPU6050/I2Cdev.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/MPU6050"
+      ],
+      "sources": [
+        {
+          "from": "I2Cdev.cpp",
+          "object": "/objects/lib_I2Cdev.o"
+        }
+      ]
+    },
+    {
+      "id": "MPU6050",
+      "root": "src/wasm-avr/libraries/MPU6050",
+      "headers": [
+        {
+          "from": "src/wasm-avr/libraries/MPU6050/helper_3dmath.h",
+          "virtual": "/libraries/MPU6050/helper_3dmath.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MPU6050/I2Cdev.h",
+          "virtual": "/libraries/MPU6050/I2Cdev.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MPU6050/MPU6050.h",
+          "virtual": "/libraries/MPU6050/MPU6050.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MPU6050/MPU6050_6Axis_MotionApps20.h",
+          "virtual": "/libraries/MPU6050/MPU6050_6Axis_MotionApps20.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MPU6050/MPU6050_6Axis_MotionApps_V6_12.h",
+          "virtual": "/libraries/MPU6050/MPU6050_6Axis_MotionApps_V6_12.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MPU6050/MPU6050_9Axis_MotionApps41.h",
+          "virtual": "/libraries/MPU6050/MPU6050_9Axis_MotionApps41.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/MPU6050"
+      ],
+      "sources": [
+        {
+          "from": "MPU6050.cpp",
+          "object": "/objects/lib_MPU6050.o"
+        }
+      ]
+    },
+    {
+      "id": "IRremote",
+      "root": "src/wasm-avr/libraries/IRremote/src",
+      "headers": [
+        {
+          "from": "src/wasm-avr/libraries/IRremote/src/IRremote.h",
+          "virtual": "/libraries/IRremote/src/IRremote.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/IRremote/src/ir_Lego_PF_BitStreamEncoder.h",
+          "virtual": "/libraries/IRremote/src/ir_Lego_PF_BitStreamEncoder.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/IRremote/src/private/IRremoteBoardDefs.h",
+          "virtual": "/libraries/IRremote/src/private/IRremoteBoardDefs.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/IRremote/src/private/IRremoteInt.h",
+          "virtual": "/libraries/IRremote/src/private/IRremoteInt.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/IRremote/src"
+      ],
+      "sources": [
+        {
+          "from": "irPronto.cpp",
+          "object": "/objects/lib_IRremote_irPronto.o"
+        },
+        {
+          "from": "irReceive.cpp",
+          "object": "/objects/lib_IRremote_irReceive.o"
+        },
+        {
+          "from": "IRremote.cpp",
+          "object": "/objects/lib_IRremote_IRremote.o"
+        },
+        {
+          "from": "irSend.cpp",
+          "object": "/objects/lib_IRremote_irSend.o"
+        },
+        {
+          "from": "ir_BoseWave.cpp",
+          "object": "/objects/lib_IRremote_ir_BoseWave.o"
+        },
+        {
+          "from": "ir_Denon.cpp",
+          "object": "/objects/lib_IRremote_ir_Denon.o"
+        },
+        {
+          "from": "ir_Dish.cpp",
+          "object": "/objects/lib_IRremote_ir_Dish.o"
+        },
+        {
+          "from": "ir_JVC.cpp",
+          "object": "/objects/lib_IRremote_ir_JVC.o"
+        },
+        {
+          "from": "ir_Lego_PF.cpp",
+          "object": "/objects/lib_IRremote_ir_Lego_PF.o"
+        },
+        {
+          "from": "ir_LG.cpp",
+          "object": "/objects/lib_IRremote_ir_LG.o"
+        },
+        {
+          "from": "ir_MagiQuest.cpp",
+          "object": "/objects/lib_IRremote_ir_MagiQuest.o"
+        },
+        {
+          "from": "ir_NEC.cpp",
+          "object": "/objects/lib_IRremote_ir_NEC.o"
+        },
+        {
+          "from": "ir_Panasonic.cpp",
+          "object": "/objects/lib_IRremote_ir_Panasonic.o"
+        },
+        {
+          "from": "ir_RC5_RC6.cpp",
+          "object": "/objects/lib_IRremote_ir_RC5_RC6.o"
+        },
+        {
+          "from": "ir_Samsung.cpp",
+          "object": "/objects/lib_IRremote_ir_Samsung.o"
+        },
+        {
+          "from": "ir_Sanyo.cpp",
+          "object": "/objects/lib_IRremote_ir_Sanyo.o"
+        },
+        {
+          "from": "ir_Sharp.cpp",
+          "object": "/objects/lib_IRremote_ir_Sharp.o"
+        },
+        {
+          "from": "ir_Sharp_alt.cpp",
+          "object": "/objects/lib_IRremote_ir_Sharp_alt.o"
+        },
+        {
+          "from": "ir_Sony.cpp",
+          "object": "/objects/lib_IRremote_ir_Sony.o"
+        },
+        {
+          "from": "ir_Template.cpp",
+          "object": "/objects/lib_IRremote_ir_Template.o"
+        },
+        {
+          "from": "ir_Whynter.cpp",
+          "object": "/objects/lib_IRremote_ir_Whynter.o"
+        }
+      ]
+    },
+    {
+      "id": "MuVisionSensor",
+      "root": "src/wasm-avr/libraries/MuVisionSensor",
+      "headers": [
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/DebugTool/morpx_debug_tool.h",
+          "virtual": "/libraries/MuVisionSensor/DebugTool/morpx_debug_tool.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/MorpxProtocolAnalysis/morpx_protocol_analysis.h",
+          "virtual": "/libraries/MuVisionSensor/MorpxProtocolAnalysis/morpx_protocol_analysis.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/MorpxProtocolAnalysis/morpx_protocol_types.h",
+          "virtual": "/libraries/MuVisionSensor/MorpxProtocolAnalysis/morpx_protocol_types.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/MorpxProtocolAnalysis/mu_protocol_analysis.h",
+          "virtual": "/libraries/MuVisionSensor/MorpxProtocolAnalysis/mu_protocol_analysis.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/MorpxProtocolAnalysis/SimpleList.h",
+          "virtual": "/libraries/MuVisionSensor/MorpxProtocolAnalysis/SimpleList.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/MuVisionSensor.h",
+          "virtual": "/libraries/MuVisionSensor/MuVisionSensor.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/MuVisionSensor3_AT.h",
+          "virtual": "/libraries/MuVisionSensor/MuVisionSensor3_AT.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/mu_uart_interface.h",
+          "virtual": "/libraries/MuVisionSensor/mu_uart_interface.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/mu_vision_sensor_i2c_hw_interface.h",
+          "virtual": "/libraries/MuVisionSensor/mu_vision_sensor_i2c_hw_interface.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/mu_vision_sensor_i2c_interface.h",
+          "virtual": "/libraries/MuVisionSensor/mu_vision_sensor_i2c_interface.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/mu_vision_sensor_interface.h",
+          "virtual": "/libraries/MuVisionSensor/mu_vision_sensor_interface.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/mu_vision_sensor_type.h",
+          "virtual": "/libraries/MuVisionSensor/mu_vision_sensor_type.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MuVisionSensor/mu_vision_sensor_uart_interface.h",
+          "virtual": "/libraries/MuVisionSensor/mu_vision_sensor_uart_interface.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/MuVisionSensor",
+        "/libraries/MuVisionSensor/MorpxProtocolAnalysis",
+        "/libraries/MuVisionSensor/DebugTool"
+      ],
+      "sources": [
+        {
+          "from": "MorpxProtocolAnalysis/morpx_protocol_analysis.cpp",
+          "object": "/objects/lib_MuVisionSensor_morpx_protocol_analysis.o"
+        },
+        {
+          "from": "MuVisionSensor.cpp",
+          "object": "/objects/lib_MuVisionSensor_MuVisionSensor.o"
+        },
+        {
+          "from": "MuVisionSensor3_AT.cpp",
+          "object": "/objects/lib_MuVisionSensor_MuVisionSensor3_AT.o"
+        },
+        {
+          "from": "mu_uart_interface.cpp",
+          "object": "/objects/lib_MuVisionSensor_mu_uart_interface.o"
+        },
+        {
+          "from": "mu_vision_sensor_i2c_hw_interface.cpp",
+          "object": "/objects/lib_MuVisionSensor_mu_vision_sensor_i2c_hw_interface.o"
+        },
+        {
+          "from": "mu_vision_sensor_i2c_interface.cpp",
+          "object": "/objects/lib_MuVisionSensor_mu_vision_sensor_i2c_interface.o"
+        },
+        {
+          "from": "mu_vision_sensor_uart_interface.cpp",
+          "object": "/objects/lib_MuVisionSensor_mu_vision_sensor_uart_interface.o"
+        }
+      ]
+    },
+    {
+      "id": "NDEF",
+      "root": "src/wasm-avr/libraries/NDEF",
+      "headers": [
+        {
+          "from": "src/wasm-avr/libraries/NDEF/Due.h",
+          "virtual": "/libraries/NDEF/Due.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/NDEF/MifareClassic.h",
+          "virtual": "/libraries/NDEF/MifareClassic.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/NDEF/MifareUltralight.h",
+          "virtual": "/libraries/NDEF/MifareUltralight.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/NDEF/Ndef.h",
+          "virtual": "/libraries/NDEF/Ndef.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/NDEF/NdefMessage.h",
+          "virtual": "/libraries/NDEF/NdefMessage.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/NDEF/NdefRecord.h",
+          "virtual": "/libraries/NDEF/NdefRecord.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/NDEF/NfcAdapter.h",
+          "virtual": "/libraries/NDEF/NfcAdapter.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/NDEF/NfcDriver.h",
+          "virtual": "/libraries/NDEF/NfcDriver.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/NDEF/NfcTag.h",
+          "virtual": "/libraries/NDEF/NfcTag.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/NDEF"
+      ],
+      "sources": [
+        {
+          "from": "MifareClassic.cpp",
+          "object": "/objects/lib_NDEF_MifareClassic.o"
+        },
+        {
+          "from": "MifareUltralight.cpp",
+          "object": "/objects/lib_NDEF_MifareUltralight.o"
+        },
+        {
+          "from": "Ndef.cpp",
+          "object": "/objects/lib_NDEF_Ndef.o"
+        },
+        {
+          "from": "NdefMessage.cpp",
+          "object": "/objects/lib_NDEF_NdefMessage.o"
+        },
+        {
+          "from": "NdefRecord.cpp",
+          "object": "/objects/lib_NDEF_NdefRecord.o"
+        },
+        {
+          "from": "NfcAdapter.cpp",
+          "object": "/objects/lib_NDEF_NfcAdapter.o"
+        },
+        {
+          "from": "NfcTag.cpp",
+          "object": "/objects/lib_NDEF_NfcTag.o"
+        }
+      ]
+    },
+    {
+      "id": "MFRC522",
+      "root": "src/wasm-avr/libraries/MFRC522",
+      "headers": [
+        {
+          "from": "src/wasm-avr/libraries/MFRC522/deprecated.h",
+          "virtual": "/libraries/MFRC522/deprecated.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MFRC522/MFRC522.h",
+          "virtual": "/libraries/MFRC522/MFRC522.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MFRC522/MFRC522Extended.h",
+          "virtual": "/libraries/MFRC522/MFRC522Extended.h"
+        },
+        {
+          "from": "src/wasm-avr/libraries/MFRC522/require_cpp11.h",
+          "virtual": "/libraries/MFRC522/require_cpp11.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/MFRC522"
+      ],
+      "sources": [
+        {
+          "from": "MFRC522.cpp",
+          "object": "/objects/lib_MFRC522_MFRC522.o"
+        },
+        {
+          "from": "MFRC522Extended.cpp",
+          "object": "/objects/lib_MFRC522_MFRC522Extended.o"
+        }
+      ]
+    },
+    {
+      "id": "TinyGPSPlus",
+      "root": "src/wasm-avr/libraries/TinyGPSPlus",
+      "headers": [
+        {
+          "from": "TinyGPSPlus.h",
+          "virtual": "/libraries/TinyGPSPlus/TinyGPSPlus.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/TinyGPSPlus"
+      ],
+      "sources": [
+        {
+          "from": "TinyGPSPlus.cpp",
+          "object": "/objects/lib_TinyGPSPlus_TinyGPSPlus.o"
+        }
+      ]
+    },
+    {
+      "id": "Adafruit_TCS34725",
+      "root": "src/wasm-avr/libraries/Adafruit_TCS34725",
+      "headers": [
+        {
+          "from": "Adafruit_TCS34725.h",
+          "virtual": "/libraries/Adafruit_TCS34725/Adafruit_TCS34725.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/Adafruit_TCS34725"
+      ],
+      "sources": [
+        {
+          "from": "Adafruit_TCS34725.cpp",
+          "object": "/objects/lib_Adafruit_TCS34725_Adafruit_TCS34725.o"
+        }
+      ]
+    },
+    {
+      "id": "Adafruit_HMC5883_U",
+      "root": "src/wasm-avr/libraries/Adafruit_HMC5883_Unified",
+      "headers": [
+        {
+          "from": "Adafruit_HMC5883_U.h",
+          "virtual": "/libraries/Adafruit_HMC5883_Unified/Adafruit_HMC5883_U.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/Adafruit_HMC5883_Unified"
+      ],
+      "sources": [
+        {
+          "from": "Adafruit_HMC5883_U.cpp",
+          "object": "/objects/lib_Adafruit_HMC5883_U_Adafruit_HMC5883_U.o"
+        }
+      ]
+    },
+    {
+      "id": "Adafruit_APDS9960",
+      "root": "src/wasm-avr/libraries/Adafruit_APDS9960",
+      "headers": [
+        {
+          "from": "Adafruit_APDS9960.h",
+          "virtual": "/libraries/Adafruit_APDS9960/Adafruit_APDS9960.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/Adafruit_APDS9960"
+      ],
+      "sources": [
+        {
+          "from": "Adafruit_APDS9960.cpp",
+          "object": "/objects/lib_Adafruit_APDS9960_Adafruit_APDS9960.o"
+        }
+      ]
+    },
+    {
+      "id": "Adafruit_PWMServoDriver",
+      "root": "src/wasm-avr/libraries/Adafruit_PWMServoDriver",
+      "headers": [
+        {
+          "from": "Adafruit_PWMServoDriver.h",
+          "virtual": "/libraries/Adafruit_PWMServoDriver/Adafruit_PWMServoDriver.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/Adafruit_PWMServoDriver"
+      ],
+      "sources": [
+        {
+          "from": "Adafruit_PWMServoDriver.cpp",
+          "object": "/objects/lib_Adafruit_PWMServoDriver_Adafruit_PWMServoDriver.o"
+        }
+      ]
+    },
+    {
+      "id": "PN532",
+      "root": "src/wasm-avr/libraries/PN532",
+      "headers": [
+        {
+          "from": "PN532.h",
+          "virtual": "/libraries/PN532/PN532.h"
+        },
+        {
+          "from": "PN532Interface.h",
+          "virtual": "/libraries/PN532/PN532Interface.h"
+        },
+        {
+          "from": "PN532_debug.h",
+          "virtual": "/libraries/PN532/PN532_debug.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/PN532"
+      ],
+      "sources": [
+        {
+          "from": "PN532.cpp",
+          "object": "/objects/lib_PN532_PN532.o"
+        }
+      ]
+    },
+    {
+      "id": "PN532_I2C",
+      "root": "src/wasm-avr/libraries/PN532_I2C",
+      "headers": [
+        {
+          "from": "PN532_I2C.h",
+          "virtual": "/libraries/PN532_I2C/PN532_I2C.h"
+        }
+      ],
+      "includePaths": [
+        "/libraries/PN532_I2C"
+      ],
+      "sources": [
+        {
+          "from": "PN532_I2C.cpp",
+          "object": "/objects/lib_PN532_I2C_PN532_I2C.o"
+        }
+      ]
+    }
+  ]
+}

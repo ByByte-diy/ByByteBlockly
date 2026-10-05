@@ -1,0 +1,61 @@
+<aside class="build-log-panel" [attr.aria-hidden]="!isOpen">
+  <div
+    #resizeHandle
+    class="build-log-panel__resize-handle"
+    role="separator"
+    aria-orientation="horizontal"
+    [attr.aria-label]="'ui.build_log_resize' | translate"
+    (pointerdown)="onResizeStart($event)"
+  ></div>
+
+  <div class="build-log-panel__content">
+    <header class="build-log-panel__header">
+      <h2 class="build-log-panel__title">{{ 'ui.build_log_title' | translate }}</h2>
+      <div class="build-log-panel__actions">
+        @if (lastCompileResult?.hexContent) {
+          <button
+            type="button"
+            class="build-log-panel__btn build-log-panel__btn--text"
+            (click)="downloadHex($event)"
+          >
+            {{ 'ui.build_log_download_hex' | translate }}
+          </button>
+        }
+        <button
+          type="button"
+          class="build-log-panel__btn build-log-panel__btn--text"
+          (click)="copyBuildLog($event)"
+          [disabled]="!buildLog"
+        >
+          {{ copyFeedback ? ('ui.build_log_copied' | translate) : ('ui.build_log_copy' | translate) }}
+        </button>
+        <button
+          type="button"
+          class="build-log-panel__btn build-log-panel__btn--icon"
+          [title]="'ui.btn_close' | translate"
+          [attr.aria-label]="'ui.btn_close' | translate"
+          (click)="onClose($event)"
+        >
+          <span class="build-log-panel__icon" [style.--icon]="closeIcon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="build-log-panel__body" role="log" aria-live="polite">
+      @if (buildLogLines.length) {
+        @for (line of buildLogLines; track $index) {
+          <div
+            class="build-log-panel__line"
+            [class.build-log-panel__line--error]="line.kind === 'error'"
+            [class.build-log-panel__line--warning]="line.kind === 'warning'"
+            [class.build-log-panel__line--note]="line.kind === 'note'"
+          >
+            {{ line.text }}
+          </div>
+        }
+      } @else {
+        <p class="build-log-panel__empty">{{ 'ui.build_log_empty' | translate }}</p>
+      }
+    </div>
+  </div>
+</aside>

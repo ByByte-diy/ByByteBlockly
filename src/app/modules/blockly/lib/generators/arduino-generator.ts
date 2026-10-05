@@ -186,10 +186,12 @@ export function initializeArduinoGenerator() {
     delete arduinoGenerator.sketchFlags_;
     arduinoGenerator.nameDB_.reset();
 
+    // Legacy BlocklyDuino order: variables before definitions so instance
+    // declarations (variables_) precede helpers that reference them (definitions_).
     const allDefs =
       joinSketchSection("Libraries (#include)", includes) +
-      joinSketchSection("Constants and helper functions", definitions) +
       joinSketchSection("Global variables", variables) +
+      joinSketchSection("Constants and helper functions", definitions) +
       joinSketchSection("Functions", functions);
 
     const setupBody = [...setups, userSetupCode]

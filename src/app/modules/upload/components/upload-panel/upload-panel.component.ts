@@ -6,11 +6,13 @@ import {
   HostListener,
   ChangeDetectorRef,
   inject,
+  isDevMode,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CompileResult } from '@core/models';
 import { UploadManagerService, UploadStatus } from '../../services/upload-manager.service';
 import { DeviceManagerService } from '../../../device/services/device-manager.service';
+import { BuildLogPanelService } from '../../services/build-log-panel.service';
 
 const UPLOAD_ICON = "url('assets/icons/header/upload.svg')";
 
@@ -20,12 +22,16 @@ const UPLOAD_ICON = "url('assets/icons/header/upload.svg')";
   styleUrls: ['./upload-panel.component.scss'],
 })
 export class UploadPanelComponent implements OnInit, OnDestroy {
+  readonly UploadStatus = UploadStatus;
   readonly uploadIcon = UPLOAD_ICON;
   open = false;
 
   status: UploadStatus = UploadStatus.IDLE;
-  message = 'Ready to upload';
+  message = 'ui.compile_ready';
   isProcessing = false;
+  progressValue = 0;
+  progressIndeterminate = false;
+  showProgressBar = false;
   isDeviceReady = false;
 
   private subscriptions: Subscription[] = [];
@@ -33,6 +39,7 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
   readonly uploadManager = inject(UploadManagerService);
   private readonly deviceManager = inject(DeviceManagerService);
+  private readonly buildLogPanelService = inject(BuildLogPanelService);
 
   toggle(event: MouseEvent): void {
     event.stopPropagation();
@@ -69,6 +76,8 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.uploadManager.progress$.subscribe((progress) => {
         this.message = progress.message;
+        this.syncProgressBar(progress.status, progress.progress);
+        this.cdr.detectChanges();
       }),
     );
 
@@ -97,25 +106,29 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.open = true;
     this.uploadManager.compileAndUpload().subscribe({
-      error: (err) => {
-        alert(`Error: ${err.message}`);
-      },
+      error: (err) => this.logCompileError(err),
     });
   }
 
   onCompileOnly(): void {
+    this.open = true;
     this.uploadManager.compileOnly().subscribe({
       next: (result) => this.logCompileResult(result),
-      error: (err) => {
-        console.group('[Compile]');
-        console.error(err);
-        console.groupEnd();
-      },
+      error: (err) => this.logCompileError(err),
     });
   }
 
+  openBuildLog(): void {
+    this.buildLogPanelService.openPanel();
+  }
+
   private logCompileResult(result: CompileResult): void {
+    if (!isDevMode()) {
+      return;
+    }
+
     console.group('[Compile]');
     console.log(result.output);
     if (result.error) {
@@ -125,6 +138,43 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
       console.log('HEX length:', result.hexContent.length, 'flash:', result.flashBytes);
     }
     console.groupEnd();
+  }
+
+  private logCompileError(error: unknown): void {
+    if (!isDevMode()) {
+      return;
+    }
+
+    console.group('[Compile]');
+    console.error(error);
+    console.groupEnd();
+  }
+
+  private syncProgressBar(status: UploadStatus, progress?: number): void {
+    const active = status === UploadStatus.COMPILING || status === UploadStatus.UPLOADING;
+    this.showProgressBar = active;
+
+    if (!active) {
+      if (
+        (status === UploadStatus.SUCCESS || status === UploadStatus.ERROR) &&
+        progress != null
+      ) {
+        this.showProgressBar = true;
+        this.progressValue = progress;
+        this.progressIndeterminate = false;
+        return;
+      }
+      this.progressIndeterminate = false;
+      return;
+    }
+
+    if (progress == null) {
+      this.progressIndeterminate = true;
+      return;
+    }
+
+    this.progressIndeterminate = false;
+    this.progressValue = progress;
   }
 
   getStatusDotClass(): string {

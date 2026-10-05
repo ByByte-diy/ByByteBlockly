@@ -1,5 +1,6 @@
 import { of, throwError } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
+import { NgZone } from '@angular/core';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { ICompiler } from '@core/interfaces';
 import { IUploader } from '@core/interfaces';
@@ -38,11 +39,13 @@ describe('UploadManagerService', () => {
       getEffectiveCode: vi.fn().mockReturnValue('void setup() { /* edited */ }'),
     };
 
+    const ngZone = { run: (fn: () => void) => fn() } as NgZone;
     service = new UploadManagerService(
       compiler as unknown as ICompiler,
       uploader as unknown as IUploader,
       deviceManager as unknown as DeviceManagerService,
       codeEditorService as unknown as CodeEditorService,
+      ngZone,
     );
   });
 
@@ -51,16 +54,32 @@ describe('UploadManagerService', () => {
   });
 
   it('compiles effective code from the editor, not generated Blockly code', async () => {
-    const compilePromise = firstValueFrom(service.compileOnly());
-    await vi.advanceTimersByTimeAsync(100);
-    const result = await compilePromise;
+    compiler.compile.mockImplementation((opts) => {
+      opts.onProgress?.({ percent: 55, message: 'ui.compile_progress_compiling' });
+      return of(compileResult);
+    });
+
+    const progressEvents: number[] = [];
+    service.progress$.subscribe((event) => {
+      if (event.progress != null) {
+        progressEvents.push(event.progress);
+      }
+    });
+
+    const result = await firstValueFrom(service.compileOnly());
 
     expect(result.success).toBe(true);
-    expect(compiler.compile).toHaveBeenCalledWith({
-      board: 'arduino:avr:uno',
-      code: 'void setup() { /* edited */ }',
-      verbose: true,
-    });
+    expect(compiler.compile).toHaveBeenCalledWith(
+      expect.objectContaining({
+        board: 'arduino:avr:uno',
+        code: 'void setup() { /* edited */ }',
+        verbose: true,
+        onProgress: expect.any(Function),
+      }),
+    );
+    expect(progressEvents).toContain(55);
+    expect(progressEvents).toContain(100);
+    expect(await firstValueFrom(service.buildLog$)).toBe('ok');
   });
 
   it('fails when effective code is empty', async () => {
@@ -68,7 +87,6 @@ describe('UploadManagerService', () => {
 
     const compilePromise = firstValueFrom(service.compileOnly());
     const expectation = expect(compilePromise).rejects.toThrow('Code is empty or not generated');
-    await vi.advanceTimersByTimeAsync(100);
     await expectation;
     expect(compiler.compile).not.toHaveBeenCalled();
   });
@@ -78,8 +96,23 @@ describe('UploadManagerService', () => {
 
     const compilePromise = firstValueFrom(service.compileOnly());
     const expectation = expect(compilePromise).rejects.toThrow('arduino-cli failed');
-    await vi.advanceTimersByTimeAsync(100);
     await expectation;
     expect(service.getStatus()).toBe(UploadStatus.ERROR);
+    expect(await firstValueFrom(service.buildLog$)).toBe('arduino-cli failed');
+  });
+
+  it('publishes build log when compile returns failure', async () => {
+    compiler.compile.mockReturnValue(
+      of({
+        success: false,
+        output: '[cc1plus] note: bad',
+        error: 'compilation failed',
+      }),
+    );
+
+    const result = await firstValueFrom(service.compileOnly());
+
+    expect(result.success).toBe(false);
+    expect(await firstValueFrom(service.buildLog$)).toContain('[cc1plus] note: bad');
   });
 });

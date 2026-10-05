@@ -59,7 +59,7 @@ function buildOttoQuadConfiguration() {
           `#define BRH ${brh} // BACK_LEFT_HIP pin, servo[5]\n` +
           `#define BRL ${brl} // BACK_RIGHT_LEG pin, servo[6]\n` +
           `#define BLL ${bll} // BACK_LEFT_LEG pin, servo[7]\n` +
-          "void pause(int period) { long timeout = millis() + period;  do   {  Quad.refresh(); } \n" +
+          'extern "C" void pause(int period) { long timeout = millis() + period;  do   {  Quad.refresh(); } \n' +
           " while (millis() <= timeout); }",
         "Otto Quad servo pin definitions and pause helper."
       );

@@ -33,8 +33,7 @@
     "ng": "ng",
     "start:web": "npm run prepare:wasm-avr && ng serve",
     "build:web": "npm run prepare:wasm-avr && ng build --configuration production",
-    "prepare:wasm-avr": "node src/wasm-avr/prepare-bybyte-assets.mjs",
-    "verify:wasm-avr-w1": "node src/wasm-avr/verify-w1.mjs",
+    "prepare:wasm-avr": "node src/wasm-avr/wasm-avr.mjs",
     "start:electron": "npm run build:electron:dev && electron .",
     "build:electron:dev": "ng run bybyte-blockly:build-electron:development",
     "build:electron:prod": "ng run bybyte-blockly:build-electron:production",
@@ -54,8 +53,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:blockly": "vitest run src/app/modules/blockly/__tests__",
-    "test:blockly:watch": "vitest src/app/modules/blockly/__tests__",
-    "spike:wasm-avr": "node src/wasm-avr/spike/run-spike.mjs"
+    "test:blockly:watch": "vitest src/app/modules/blockly/__tests__"
   },
   "build": {
     "appId": "com.electron.bybyteblockly",

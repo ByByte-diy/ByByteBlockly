@@ -41,6 +41,19 @@ describe('Arduino generator golden (canary blocks)', () => {
     expect(generateBlockCode(ctx)).toMatchSnapshot();
   });
 
+  it('otto_quad_configuration declares Quad instance before pause helper', () => {
+    const ctx = createGoldenBlock('otto_quad_configuration');
+    generateBlockCode(ctx);
+    const sketch = ctx.generator.finish('');
+
+    const quadInstance = sketch.indexOf('Quad Quad;');
+    const pauseHelper = sketch.indexOf('extern "C" void pause(int period)');
+    expect(quadInstance).toBeGreaterThanOrEqual(0);
+    expect(pauseHelper).toBeGreaterThanOrEqual(0);
+    expect(quadInstance).toBeLessThan(pauseHelper);
+    expect(sketch).toContain('void setup()');
+  });
+
   it('paragraph HTML block with empty content', () => {
     const ctx = createGoldenBlock('paragraph');
 

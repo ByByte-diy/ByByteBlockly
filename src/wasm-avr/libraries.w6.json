@@ -1,0 +1,60 @@
+{
+  "wave": "W6",
+  "description": "Audio: PlayRtttl (RTTTL), OpenSmart RedMP3, TEA5767 FM radio",
+  "libraries": [
+    {
+      "id": "PlayRtttl",
+      "root": "src/wasm-avr/libraries/PlayRtttl",
+      "headers": [
+        {
+          "from": "PlayRtttl.h",
+          "virtual": "/libraries/PlayRtttl/PlayRtttl.h"
+        },
+        {
+          "from": "PlayRtttl.hpp",
+          "virtual": "/libraries/PlayRtttl/PlayRtttl.hpp"
+        },
+        {
+          "from": "pitches.h",
+          "virtual": "/libraries/PlayRtttl/pitches.h"
+        }
+      ],
+      "includePaths": ["/libraries/PlayRtttl"],
+      "sources": []
+    },
+    {
+      "id": "RedMP3",
+      "root": "src/wasm-avr/libraries/RedMP3",
+      "headers": [
+        {
+          "from": "RedMP3.h",
+          "virtual": "/libraries/RedMP3/RedMP3.h"
+        }
+      ],
+      "includePaths": ["/libraries/RedMP3"],
+      "sources": [
+        {
+          "from": "RedMP3.cpp",
+          "object": "/objects/lib_RedMP3_RedMP3.o"
+        }
+      ]
+    },
+    {
+      "id": "TEA5767",
+      "root": "src/wasm-avr/libraries/TEA5767",
+      "headers": [
+        {
+          "from": "TEA5767N.h",
+          "virtual": "/libraries/TEA5767/TEA5767N.h"
+        }
+      ],
+      "includePaths": ["/libraries/TEA5767"],
+      "sources": [
+        {
+          "from": "TEA5767N.cpp",
+          "object": "/objects/lib_TEA5767_TEA5767N.o"
+        }
+      ]
+    }
+  ]
+}

@@ -86,6 +86,17 @@ export function resolveCatalogFile(catalog, lib, entry, resolveFrom) {
   };
 }
 
+export function mergeWaveCatalogs(catalogs) {
+  if (!catalogs?.length) {
+    throw new Error('mergeWaveCatalogs: at least one catalog required');
+  }
+  return {
+    wave: catalogs.map((catalog) => catalog.wave).join('+'),
+    description: catalogs.map((catalog) => catalog.description).filter(Boolean).join('; '),
+    libraries: catalogs.flatMap((catalog) => catalog.libraries || []),
+  };
+}
+
 function unique(values) {
   return [...new Set(values)];
 }

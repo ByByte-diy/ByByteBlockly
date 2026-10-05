@@ -1,12 +1,19 @@
 import {
   Component,
   ElementRef,
-  HostListener,
   ChangeDetectorRef,
+  AfterViewInit,
+  OnDestroy,
+  OnInit,
   inject,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectActionsService } from '@app/modules/blockly/services/project-actions.service';
+import {
+  HEADER_POPOVER_IDS,
+  HeaderPopoverService,
+} from '@core/services/header-popover.service';
 
 const FOLDER_ICON = "url('assets/icons/header/folder.svg')";
 
@@ -42,7 +49,7 @@ const FOLDER_ICON = "url('assets/icons/header/folder.svg')";
     </div>
   `,
 })
-export class FileMenuComponent {
+export class FileMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly folderIcon = FOLDER_ICON;
   open = false;
 
@@ -50,28 +57,33 @@ export class FileMenuComponent {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly projectActions = inject(ProjectActionsService);
   private readonly translate = inject(TranslateService);
+  private readonly headerPopover = inject(HeaderPopoverService);
+  private readonly popoverId = HEADER_POPOVER_IDS.file;
+  private popoverSubscription?: Subscription;
+
+  ngOnInit(): void {
+    this.popoverSubscription = this.headerPopover.activeId$.subscribe((id) => {
+      this.open = id === this.popoverId;
+      this.cdr.detectChanges();
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.headerPopover.registerRoot(this.popoverId, this.elementRef.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    this.headerPopover.unregisterRoot(this.popoverId);
+    this.popoverSubscription?.unsubscribe();
+  }
 
   toggle(event: MouseEvent): void {
     event.stopPropagation();
-    this.open = !this.open;
-    this.cdr.detectChanges();
+    this.headerPopover.toggle(this.popoverId);
   }
 
   close(): void {
-    this.open = false;
-    this.cdr.detectChanges();
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (this.open && !this.elementRef.nativeElement.contains(event.target as Node)) {
-      this.close();
-    }
-  }
-
-  @HostListener('document:keydown.escape')
-  onEscape(): void {
-    this.close();
+    this.headerPopover.close(this.popoverId);
   }
 
   async onNew(): Promise<void> {

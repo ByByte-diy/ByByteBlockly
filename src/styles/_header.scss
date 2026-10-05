@@ -235,6 +235,13 @@
   flex-wrap: wrap;
 }
 
+.header-action-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
 .header-btn {
   display: inline-flex;
   align-items: center;
@@ -249,6 +256,25 @@
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
+
+  &--block {
+    width: 100%;
+    justify-content: flex-start;
+    white-space: normal;
+    text-align: left;
+  }
+
+  &__icon {
+    width: var(--app-header-icon-size-sm, 18px);
+    height: var(--app-header-icon-size-sm, 18px);
+    flex-shrink: 0;
+  }
+
+  &__label {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.3;
+  }
 
   &:hover:not(:disabled) {
     background: var(--app-header-btn-hover);

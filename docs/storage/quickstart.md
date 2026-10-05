@@ -238,7 +238,7 @@ if (!result.compatible) {
 
 ## 📚 Документація
 
-- **[STORAGE_ARCHITECTURE.md](./STORAGE_ARCHITECTURE.md)** - Повна архітектура
+- **[architecture.md](./architecture.md)** - Повна архітектура
 - **Inline коментарі** - Докладні пояснення в коді
 
 ## 🎯 Наступні кроки

@@ -43,7 +43,17 @@ only the English part after = in between the quotes "" in visual studio is the t
 
 This project has been migrated to Angular 17 with a clean architecture supporting both Web and Electron platforms!
 
-See [ANGULAR_MIGRATION.md](ANGULAR_MIGRATION.md) for detailed migration information.
+See [docs/history/angular-migration.md](docs/history/angular-migration.md) for migration details.
+
+## Documentation
+
+All developer and AI documentation is in **[docs/](docs/README.md)**:
+
+- [Getting started](docs/getting-started/README.md)
+- [Architecture](docs/architecture/README.md)
+- [Compile & Upload](docs/compile-upload/README.md) — WASM compilation and Web Serial upload
+- [Web Serial](docs/web-serial/README.md)
+- [Harness for AI](docs/harness/README.md) · [docs/AGENTS.md](docs/AGENTS.md)
 
 ## How to run project
 

@@ -25,9 +25,28 @@
   }
 }
 
+.device-selector__connect-btn {
+  flex: 1;
+}
+
+.device-selector__secondary-actions {
+  margin-top: 8px;
+}
+
 .device-selector__hint {
   margin: 8px 0 0;
   font-size: var(--app-header-font-sm);
   color: var(--app-text-muted);
+  line-height: 1.4;
+
+  &--emphasis {
+    color: var(--app-text);
+  }
+}
+
+.device-selector__error {
+  margin: 8px 0 0;
+  font-size: var(--app-header-font-sm);
+  color: var(--app-status-error);
   line-height: 1.4;
 }

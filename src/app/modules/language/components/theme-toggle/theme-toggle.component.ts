@@ -1,18 +1,26 @@
 import {
   Component,
   ElementRef,
-  HostListener,
   ChangeDetectorRef,
+  AfterViewInit,
+  OnDestroy,
+  OnInit,
   inject,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ThemeService, AppTheme } from '../../../../core/services/theme.service';
+import {
+  HEADER_POPOVER_IDS,
+  HeaderPopoverService,
+} from '@core/services/header-popover.service';
 
 const THEME_ICON_SUN = "url('assets/icons/theme/sun.svg')";
 const THEME_ICON_MOON = "url('assets/icons/theme/moon.svg')";
+const THEME_ICON_SYSTEM = "url('assets/icons/theme/system.svg')";
 
 interface ThemeOption {
   id: AppTheme;
-  label: string;
+  labelKey: string;
 }
 
 @Component({
@@ -22,8 +30,8 @@ interface ThemeOption {
       <button
         type="button"
         class="header-icon-btn"
-        [title]="currentLabel"
-        aria-label="Theme"
+        [title]="currentLabelKey | translate"
+        [attr.aria-label]="'ui.theme_panel' | translate"
         (click)="toggle($event)"
       >
         @if (theme === 'light') {
@@ -31,14 +39,11 @@ interface ThemeOption {
         } @else if (theme === 'dark') {
           <span class="header-icon-mask" [style.--icon]="moonIcon" aria-hidden="true"></span>
         } @else {
-          <span class="icon-split" aria-hidden="true">
-            <span class="header-icon-mask icon-split__left" [style.--icon]="sunIcon"></span>
-            <span class="header-icon-mask icon-split__right" [style.--icon]="moonIcon"></span>
-          </span>
+          <span class="header-icon-mask" [style.--icon]="systemIcon" aria-hidden="true"></span>
         }
       </button>
       @if (open) {
-        <div class="header-dropdown__menu header-dropdown__menu--align-right" role="menu" aria-label="Theme">
+        <div class="header-dropdown__menu header-dropdown__menu--align-right" role="menu" [attr.aria-label]="'ui.theme_panel' | translate">
           @for (option of options; track option.id) {
             <button
               type="button"
@@ -52,12 +57,9 @@ interface ThemeOption {
               } @else if (option.id === 'dark') {
                 <span class="header-icon-mask menu-icon" [style.--icon]="moonIcon" aria-hidden="true"></span>
               } @else {
-                <span class="icon-split menu-icon" aria-hidden="true">
-                  <span class="header-icon-mask icon-split__left" [style.--icon]="sunIcon"></span>
-                  <span class="header-icon-mask icon-split__right" [style.--icon]="moonIcon"></span>
-                </span>
+                <span class="header-icon-mask menu-icon" [style.--icon]="systemIcon" aria-hidden="true"></span>
               }
-              <span>{{ option.label }}</span>
+              <span>{{ option.labelKey | translate }}</span>
             </button>
           }
         </div>
@@ -66,32 +68,6 @@ interface ThemeOption {
   `,
   styles: [
     `
-      .icon-split {
-        display: inline-flex;
-        width: var(--app-header-icon-size);
-        height: var(--app-header-icon-size);
-        overflow: hidden;
-      }
-
-      .icon-split__left,
-      .icon-split__right {
-        width: calc(var(--app-header-icon-size) / 2);
-        height: var(--app-header-icon-size);
-        flex: 0 0 calc(var(--app-header-icon-size) / 2);
-        -webkit-mask-size: var(--app-header-icon-size) var(--app-header-icon-size);
-        mask-size: var(--app-header-icon-size) var(--app-header-icon-size);
-      }
-
-      .icon-split__left {
-        -webkit-mask-position: 0 center;
-        mask-position: 0 center;
-      }
-
-      .icon-split__right {
-        -webkit-mask-position: calc(var(--app-header-icon-size) / -2) center;
-        mask-position: calc(var(--app-header-icon-size) / -2) center;
-      }
-
       .menu-icon {
         width: var(--app-header-icon-size-sm);
         height: var(--app-header-icon-size-sm);
@@ -99,15 +75,16 @@ interface ThemeOption {
     `,
   ],
 })
-export class ThemeToggleComponent {
+export class ThemeToggleComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly sunIcon = THEME_ICON_SUN;
   readonly moonIcon = THEME_ICON_MOON;
+  readonly systemIcon = THEME_ICON_SYSTEM;
   open = false;
 
   readonly options: ThemeOption[] = [
-    { id: 'light', label: 'Light' },
-    { id: 'system', label: 'System' },
-    { id: 'dark', label: 'Dark' },
+    { id: 'light', labelKey: 'ui.theme_light' },
+    { id: 'system', labelKey: 'ui.theme_system' },
+    { id: 'dark', labelKey: 'ui.theme_dark' },
   ];
 
   theme: AppTheme = 'system';
@@ -115,36 +92,41 @@ export class ThemeToggleComponent {
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly themeService = inject(ThemeService);
+  private readonly headerPopover = inject(HeaderPopoverService);
+  private readonly popoverId = HEADER_POPOVER_IDS.theme;
+  private popoverSubscription?: Subscription;
 
   constructor() {
     this.theme = this.themeService.preference;
   }
 
+  ngOnInit(): void {
+    this.popoverSubscription = this.headerPopover.activeId$.subscribe((id) => {
+      this.open = id === this.popoverId;
+      this.cdr.detectChanges();
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.headerPopover.registerRoot(this.popoverId, this.elementRef.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    this.headerPopover.unregisterRoot(this.popoverId);
+    this.popoverSubscription?.unsubscribe();
+  }
+
   toggle(event: MouseEvent): void {
     event.stopPropagation();
-    this.open = !this.open;
-    this.cdr.detectChanges();
+    this.headerPopover.toggle(this.popoverId);
   }
 
   close(): void {
-    this.open = false;
-    this.cdr.detectChanges();
+    this.headerPopover.close(this.popoverId);
   }
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (this.open && !this.elementRef.nativeElement.contains(event.target as Node)) {
-      this.close();
-    }
-  }
-
-  @HostListener('document:keydown.escape')
-  onEscape(): void {
-    this.close();
-  }
-
-  get currentLabel(): string {
-    return this.options.find((o) => o.id === this.theme)?.label || 'Theme';
+  get currentLabelKey(): string {
+    return this.options.find((o) => o.id === this.theme)?.labelKey ?? 'ui.theme_panel';
   }
 
   setTheme(theme: AppTheme): void {

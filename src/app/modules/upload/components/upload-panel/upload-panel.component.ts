@@ -2,8 +2,8 @@ import {
   Component,
   OnInit,
   OnDestroy,
+  AfterViewInit,
   ElementRef,
-  HostListener,
   ChangeDetectorRef,
   inject,
   isDevMode,
@@ -13,17 +13,27 @@ import { CompileResult } from '@core/models';
 import { UploadManagerService, UploadStatus } from '../../services/upload-manager.service';
 import { DeviceManagerService } from '../../../device/services/device-manager.service';
 import { BuildLogPanelService } from '../../services/build-log-panel.service';
+import { isValidDevicePortPath } from '@platform/web/constants/web-serial-paths.const';
+import { getWebSerialSupport } from '@platform/web/utils/web-serial-support.util';
+import {
+  HEADER_POPOVER_IDS,
+  HeaderPopoverService,
+} from '@core/services/header-popover.service';
 
 const UPLOAD_ICON = "url('assets/icons/header/upload.svg')";
+const UPLOAD_ONLY_ICON = "url('assets/icons/header/upload-only.svg')";
+const COMPILE_ICON = "url('assets/icons/header/compile.svg')";
 
 @Component({
   selector: 'app-upload-panel',
   templateUrl: './upload-panel.component.html',
   styleUrls: ['./upload-panel.component.scss'],
 })
-export class UploadPanelComponent implements OnInit, OnDestroy {
+export class UploadPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly UploadStatus = UploadStatus;
   readonly uploadIcon = UPLOAD_ICON;
+  readonly uploadOnlyIcon = UPLOAD_ONLY_ICON;
+  readonly compileIcon = COMPILE_ICON;
   open = false;
 
   status: UploadStatus = UploadStatus.IDLE;
@@ -33,6 +43,8 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
   progressIndeterminate = false;
   showProgressBar = false;
   isDeviceReady = false;
+  canUploadOnly = false;
+  readonly webSerialSupported = getWebSerialSupport().supported;
 
   private subscriptions: Subscription[] = [];
   private readonly elementRef = inject(ElementRef<HTMLElement>);
@@ -40,31 +52,30 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
   readonly uploadManager = inject(UploadManagerService);
   private readonly deviceManager = inject(DeviceManagerService);
   private readonly buildLogPanelService = inject(BuildLogPanelService);
+  private readonly headerPopover = inject(HeaderPopoverService);
+  private readonly popoverId = HEADER_POPOVER_IDS.upload;
 
   toggle(event: MouseEvent): void {
     event.stopPropagation();
-    this.open = !this.open;
-    this.cdr.detectChanges();
+    this.headerPopover.toggle(this.popoverId);
   }
 
   close(): void {
-    this.open = false;
-    this.cdr.detectChanges();
+    this.headerPopover.close(this.popoverId);
   }
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (this.open && !this.elementRef.nativeElement.contains(event.target as Node)) {
-      this.close();
-    }
-  }
-
-  @HostListener('document:keydown.escape')
-  onEscape(): void {
-    this.close();
+  ngAfterViewInit(): void {
+    this.headerPopover.registerRoot(this.popoverId, this.elementRef.nativeElement);
   }
 
   ngOnInit(): void {
+    this.subscriptions.push(
+      this.headerPopover.activeId$.subscribe((id) => {
+        this.open = id === this.popoverId;
+        this.cdr.detectChanges();
+      }),
+    );
+
     this.subscriptions.push(
       this.uploadManager.status$.subscribe((status) => {
         this.status = status;
@@ -85,35 +96,96 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       this.deviceManager.selectedBoard$.subscribe(() => {
-        this.isDeviceReady = this.deviceManager.isDeviceReady();
+        this.syncDeviceReady();
       }),
     );
 
     this.subscriptions.push(
       this.deviceManager.selectedPort$.subscribe(() => {
-        this.isDeviceReady = this.deviceManager.isDeviceReady();
+        this.syncDeviceReady();
       }),
     );
+
+    this.subscriptions.push(
+      this.uploadManager.compileResult$.subscribe((result) => {
+        this.canUploadOnly = !!(result?.success && result.hexContent);
+        this.cdr.detectChanges();
+      }),
+    );
+
+    const lastResult = this.uploadManager.getLastCompileResult();
+    this.canUploadOnly = !!(lastResult?.success && lastResult.hexContent);
   }
 
   ngOnDestroy(): void {
+    this.headerPopover.unregisterRoot(this.popoverId);
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   onCompileAndUpload(): void {
-    if (!this.isDeviceReady) {
-      alert('Please select a board and port');
+    if (!this.isUploadReady) {
+      this.showUploadBlockedFeedback();
       return;
     }
 
-    this.open = true;
+    this.headerPopover.open(this.popoverId);
     this.uploadManager.compileAndUpload().subscribe({
       error: (err) => this.logCompileError(err),
     });
   }
 
+  onUploadOnly(): void {
+    if (!this.isUploadReady) {
+      this.showUploadBlockedFeedback();
+      return;
+    }
+    if (!this.canUploadOnly) {
+      return;
+    }
+
+    this.headerPopover.open(this.popoverId);
+    this.uploadManager.uploadOnly().subscribe({
+      error: (err) => this.logCompileError(err),
+    });
+  }
+
+  get isUploadReady(): boolean {
+    const port = this.deviceManager.getSelectedPort();
+    return (
+      this.webSerialSupported &&
+      this.isDeviceReady &&
+      isValidDevicePortPath(port?.path)
+    );
+  }
+
+  private syncDeviceReady(): void {
+    this.isDeviceReady = this.deviceManager.isDeviceReady();
+    this.cdr.detectChanges();
+  }
+
+  /** Inline hint when upload is blocked (Web Serial or board/port). */
+  get panelHintKey(): string {
+    return this.resolveUploadBlockedKey();
+  }
+
+  private showUploadBlockedFeedback(): void {
+    this.headerPopover.open(this.popoverId);
+    this.message = this.resolveUploadBlockedKey();
+    this.cdr.detectChanges();
+  }
+
+  private resolveUploadBlockedKey(): string {
+    const support = getWebSerialSupport();
+    if (!support.supported) {
+      return support.reason === 'insecure_context'
+        ? 'ui.web_serial_insecure_context'
+        : 'ui.web_serial_not_supported';
+    }
+    return 'ui.upload_select_board_port';
+  }
+
   onCompileOnly(): void {
-    this.open = true;
+    this.headerPopover.open(this.popoverId);
     this.uploadManager.compileOnly().subscribe({
       next: (result) => this.logCompileResult(result),
       error: (err) => this.logCompileError(err),
@@ -122,6 +194,10 @@ export class UploadPanelComponent implements OnInit, OnDestroy {
 
   openBuildLog(): void {
     this.buildLogPanelService.openPanel();
+  }
+
+  isI18nKey(value: string): boolean {
+    return value.startsWith('ui.');
   }
 
   private logCompileResult(result: CompileResult): void {

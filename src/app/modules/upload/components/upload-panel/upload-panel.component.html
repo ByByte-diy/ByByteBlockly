@@ -15,26 +15,46 @@
       [attr.aria-label]="'ui.upload_panel' | translate"
     >
       <div class="upload-panel__panel-scroll">
-        <div class="header-action-row">
+        <div class="header-action-stack">
           <button
             type="button"
-            class="header-btn header-btn--primary"
+            class="header-btn header-btn--primary header-btn--block"
             (click)="onCompileAndUpload()"
-            [disabled]="isProcessing || !isDeviceReady"
+            [disabled]="isProcessing"
           >
-            {{ 'ui.btn_upload' | translate }}
+            <span class="header-icon-mask header-btn__icon" [style.--icon]="uploadIcon" aria-hidden="true"></span>
+            <span class="header-btn__label">{{ 'ui.btn_upload' | translate }}</span>
           </button>
           <button
             type="button"
-            class="header-btn header-btn--secondary"
+            class="header-btn header-btn--secondary header-btn--block"
+            (click)="onUploadOnly()"
+            [disabled]="isProcessing || !canUploadOnly"
+          >
+            <span class="header-icon-mask header-btn__icon" [style.--icon]="uploadOnlyIcon" aria-hidden="true"></span>
+            <span class="header-btn__label">{{ 'ui.btn_upload_only' | translate }}</span>
+          </button>
+          <button
+            type="button"
+            class="header-btn header-btn--secondary header-btn--block"
             (click)="onCompileOnly()"
             [disabled]="isProcessing"
           >
-            {{ 'ui.btn_compile' | translate }}
+            <span class="header-icon-mask header-btn__icon" [style.--icon]="compileIcon" aria-hidden="true"></span>
+            <span class="header-btn__label">{{ 'ui.btn_compile' | translate }}</span>
           </button>
         </div>
+        @if (panelHintKey && !isUploadReady) {
+          <p class="upload-panel__hint">{{ panelHintKey | translate }}</p>
+        }
         <div class="header-status-bar" [ngClass]="getStatusBarClass()">
-          <span class="header-status-bar__message">{{ message | translate }}</span>
+          <span class="header-status-bar__message">
+            @if (isI18nKey(message)) {
+              {{ message | translate }}
+            } @else {
+              {{ message }}
+            }
+          </span>
         </div>
         @if (status === UploadStatus.ERROR) {
           <button type="button" class="upload-panel__open-log" (click)="openBuildLog()">

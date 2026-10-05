@@ -7,7 +7,7 @@ import { IUploader } from '@core/interfaces';
 import { CompileResult } from '@core/models';
 import { DeviceManagerService } from '@modules/device/services/device-manager.service';
 import { CodeEditorService } from '@modules/code-editor/services/code-editor.service';
-import { UploadManagerService, UploadStatus } from '../services/upload-manager.service';
+import { UploadManagerService, UploadProgress, UploadStatus } from '../services/upload-manager.service';
 
 describe('UploadManagerService', () => {
   let service: UploadManagerService;
@@ -99,6 +99,18 @@ describe('UploadManagerService', () => {
     await expectation;
     expect(service.getStatus()).toBe(UploadStatus.ERROR);
     expect(await firstValueFrom(service.buildLog$)).toBe('arduino-cli failed');
+  });
+
+  it('requires a successful compile before upload-only', async () => {
+    let lastProgress: UploadProgress | undefined;
+    service.progress$.subscribe((event) => {
+      lastProgress = event;
+    });
+
+    await expect(firstValueFrom(service.uploadOnly())).rejects.toThrow('ui.upload_compile_first');
+    expect(lastProgress?.status).toBe(UploadStatus.ERROR);
+    expect(lastProgress?.message).toBe('ui.upload_compile_first');
+    expect(uploader.upload).not.toHaveBeenCalled();
   });
 
   it('publishes build log when compile returns failure', async () => {

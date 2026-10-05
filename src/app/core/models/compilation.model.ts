@@ -35,6 +35,13 @@ export interface CompileProgressUpdate {
   message?: string;
 }
 
+/** Progress update during firmware upload (0–100). */
+export interface UploadProgressUpdate {
+  percent: number;
+  /** Plain text or i18n key (ui.upload_progress_*). */
+  message?: string;
+}
+
 /**
  * Compile options
  */
@@ -52,9 +59,14 @@ export interface CompileOptions {
  */
 export interface UploadOptions {
   board: string;
+  /** Catalog board id (e.g. uno, nano) for upload profile resolution. */
+  boardId?: string;
   port: string;
   hexPath?: string;
+  /** In-memory Intel HEX from WASM compile (web). */
+  hexContent?: string;
   programmer?: string;
   verbose?: boolean;
+  onProgress?: (update: UploadProgressUpdate) => void;
 }
 

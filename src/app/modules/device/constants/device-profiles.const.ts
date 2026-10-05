@@ -65,6 +65,28 @@ const CORE_BOARD_PROFILES: Record<string, IBoardProfile> = {
     inout: "20"
   },
   
+  nano_new: {
+    id: 'nano_new',
+    description: "Arduino Nano (New Bootloader)",
+    BUILTIN_LED: 13,
+    picture: "media/nano_optiboot.jpg",
+    dropdownAllPins: [["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"], ["A6", "A6"], ["A7", "A7"]],
+    dropdownDigital: [["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"]],
+    dropdownPWM: [["3", "3"], ["5", "5"], ["6", "6"], ["9", "9"], ["10", "10"], ["11", "11"]],
+    dropdownAnalog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"], ["A6", "A6"], ["A7", "A7"]],
+    interrupt: [["2", "2"], ["3", "3"]],
+    serial: [...STANDARD_SERIAL_SPEEDS],
+    serialPin: [...STANDARD_SERIAL_PIN],
+    build: "nanooptiboot",
+    upload_arg: "arduino:avr:nano:cpu=atmega328",
+    cpu: "atmega328p",
+    speed: "115200",
+    prog: "arduino",
+    usb: "mini USB",
+    voltage: "5V",
+    inout: "20"
+  },
+
   nanooptiboot: {
     id: 'nanooptiboot',
     description: "Arduino Nano",

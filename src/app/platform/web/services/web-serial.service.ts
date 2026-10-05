@@ -2,6 +2,28 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { ISerial } from '@core/interfaces';
 import { ISerialPortInfo, ISerialPortOptions, ISerialConnectionStatus } from '@core/models';
+import {
+  WEB_SERIAL_REQUEST_NEW_PATH,
+  WEB_SERIAL_SELECTED_PATH,
+} from '../constants/web-serial-paths.const';
+import { ARDUINO_USB_VENDOR_IDS } from 'webserial-flasher';
+import {
+  WebSerialPortHandle,
+  WebSerialPortRegistry,
+} from './web-serial-port-registry.service';
+import {
+  WebSerialRequestError,
+  mapWebSerialRequestError,
+} from '../utils/web-serial-request-error.util';
+import { isSecureContextForWebSerial } from '../utils/web-serial-support.util';
+
+/** Subset of `navigator.serial` used by this service (DOM lib may omit Web Serial types). */
+interface NavigatorSerialApi {
+  getPorts(): Promise<WebSerialPortHandle[]>;
+  requestPort(options?: {
+    filters?: Array<{ usbVendorId?: number; usbProductId?: number }>;
+  }): Promise<WebSerialPortHandle>;
+}
 
 /**
  * Web implementation of the serial port service
@@ -9,47 +31,39 @@ import { ISerialPortInfo, ISerialPortOptions, ISerialConnectionStatus } from '@c
  */
 @Injectable()
 export class WebSerialService implements ISerial {
-  private port: any = null;
-  private reader: any = null;
+  private port: WebSerialPortHandle | null = null;
+  private activePath: string | null = null;
+  private reader: ReadableStreamDefaultReader<Uint8Array> | null = null;
   private dataSubject = new Subject<string>();
   private statusSubject = new BehaviorSubject<ISerialConnectionStatus>(ISerialConnectionStatus.DISCONNECTED);
-  
+
+  constructor(private readonly portRegistry: WebSerialPortRegistry) {}
+
   /**
    * Get list of available serial ports
    * Web Serial API returns only previously authorized ports
-   * @returns Promise with the list of ports
    */
   listPorts(): Promise<ISerialPortInfo[]> {
     return new Promise(async (resolve, reject) => {
-      // Check if Web Serial API is supported
-      if (!('serial' in navigator)) {
+      if (!this.hasWebSerialApi()) {
         reject(new Error('Web Serial API not supported in this browser. Use Chrome, Edge, or Opera.'));
         return;
       }
 
       try {
-        // getPorts() returns only previously authorized ports
-        const ports = await (navigator as any).serial.getPorts();
-        
-        const portInfos: ISerialPortInfo[] = ports.map((port: any, index: number) => {
-          // Try to get port info if available
-          const info = port.getInfo ? port.getInfo() : {};
-          return {
-            path: `web-serial-${index}`,
-            friendlyName: info.usbProductId 
-              ? `USB Device (${info.usbVendorId}:${info.usbProductId})`
-              : `Web Serial Device ${index + 1}`
-          };
-        });
-        
-        // If no ports found, add a prompt to request port
+        const ports = await this.getNavigatorSerial().getPorts();
+        const portInfos = this.portRegistry.syncAuthorizedPorts(ports);
+
         if (portInfos.length === 0) {
-          portInfos.push({
-            path: 'request-new-port',
-            friendlyName: 'Click "Connect" to select a device...'
-          });
+          resolve([
+            {
+              path: WEB_SERIAL_REQUEST_NEW_PATH,
+              friendlyName: 'Click "Connect" to select a device...',
+            },
+          ]);
+          return;
         }
-        
+
         resolve(portInfos);
       } catch (err) {
         reject(err);
@@ -58,40 +72,80 @@ export class WebSerialService implements ISerial {
   }
 
   /**
-   * Request user to select a serial port
-   * This requires user interaction (button click)
-   * @returns Promise with selected port info
+   * Starts port selection synchronously inside a click handler (preserves user gesture).
+   * Do not `await` anything before calling this method.
    */
+  beginPortSelection(): Promise<ISerialPortInfo> {
+    this.assertWebSerialReady();
+
+    const selectionPromise = this.getNavigatorSerial().requestPort({
+      filters: this.buildPortFilters(),
+    });
+
+    return this.completePortSelection(selectionPromise);
+  }
+
+  /** @deprecated Prefer {@link beginPortSelection} from a direct click handler. */
   async requestPort(): Promise<ISerialPortInfo> {
-    if (!('serial' in navigator)) {
-      throw new Error('Web Serial API not supported');
+    return this.beginPortSelection();
+  }
+
+  private assertWebSerialReady(): void {
+    if (!this.hasWebSerialApi()) {
+      throw new WebSerialRequestError(
+        'not_supported',
+        'ui.web_serial_not_supported',
+        'Web Serial API not supported',
+      );
     }
 
-    try {
-      const port = await (navigator as any).serial.requestPort();
-      const info = port.getInfo ? port.getInfo() : {};
-      
-      return {
-        path: 'web-serial-selected',
-        friendlyName: info.usbProductId 
-          ? `USB Device (${info.usbVendorId}:${info.usbProductId})`
-          : 'Web Serial Device'
-      };
-    } catch (err) {
-      throw new Error('User cancelled port selection or no port available');
+    if (!isSecureContextForWebSerial()) {
+      throw new WebSerialRequestError(
+        'insecure_context',
+        'ui.web_serial_insecure_context',
+        'Web Serial requires HTTPS or localhost',
+      );
     }
   }
 
+  private buildPortFilters(): Array<{ usbVendorId: number }> {
+    return ARDUINO_USB_VENDOR_IDS.map((usbVendorId) => ({ usbVendorId }));
+  }
+
+  private async completePortSelection(
+    selectionPromise: Promise<WebSerialPortHandle>,
+  ): Promise<ISerialPortInfo> {
+    try {
+      const port = await selectionPromise;
+      this.portRegistry.register(WEB_SERIAL_SELECTED_PATH, port);
+
+      const authorized = await this.getNavigatorSerial().getPorts();
+      this.portRegistry.syncAuthorizedPorts(authorized);
+
+      return this.toPortInfo(port);
+    } catch (err) {
+      throw mapWebSerialRequestError(err);
+    }
+  }
+
+  private toPortInfo(port: WebSerialPortHandle): ISerialPortInfo {
+    const info = port.getInfo?.() ?? {};
+    return {
+      path: WEB_SERIAL_SELECTED_PATH,
+      friendlyName: info.usbProductId
+        ? `USB Device (${info.usbVendorId}:${info.usbProductId})`
+        : 'Web Serial Device',
+      vendorId: info.usbVendorId != null ? String(info.usbVendorId) : undefined,
+      productId: info.usbProductId != null ? String(info.usbProductId) : undefined,
+    };
+  }
+
   /**
-   * Connect to the serial port
-   * For Web Serial API, this will prompt user to select a device
-   * @param path Path to the port (ignored in web, user selects device)
-   * @param options Connection options
-   * @returns Promise with the result of the connection
+   * Connect to the serial port for the serial monitor.
    */
   connect(path: string, options?: ISerialPortOptions): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      if (!('serial' in navigator)) {
+      if (!this.hasWebSerialApi()) {
         reject(new Error('Web Serial API not supported. Please use Chrome, Edge, or Opera browser.'));
         return;
       }
@@ -99,91 +153,60 @@ export class WebSerialService implements ISerial {
       try {
         this.statusSubject.next(ISerialConnectionStatus.CONNECTING);
 
-        // If no port selected or path is 'request-new-port', request port from user
-        if (!this.port || path === 'request-new-port') {
-          // This requires user interaction (button click)
-          this.port = await (navigator as any).serial.requestPort({
-            // Optional: filter by vendor/product ID
-            // filters: [
-            //   { usbVendorId: 0x2341 } // Arduino
-            // ]
-          });
-        } else {
-          // Try to use existing port from getPorts()
-          const ports = await (navigator as any).serial.getPorts();
-          if (ports.length > 0) {
-            this.port = ports[0]; // Use first available port
-          } else {
-            // No authorized ports, request new one
-            this.port = await (navigator as any).serial.requestPort();
-          }
+        const port = await this.resolvePortForPath(path);
+        if (!port) {
+          reject(new Error('No serial port selected. Please connect a device and try again.'));
+          return;
         }
 
-        // Open the port with specified options
-        await this.port.open({
-          baudRate: options?.baudRate || 9600,
-          dataBits: options?.dataBits || 8,
-          stopBits: options?.stopBits || 1,
-          parity: options?.parity || 'none'
-        });
+        await this.openPort(port, options);
+
+        this.port = port;
+        this.activePath =
+          path === WEB_SERIAL_REQUEST_NEW_PATH ? WEB_SERIAL_SELECTED_PATH : path;
+        this.portRegistry.register(this.activePath, port);
 
         this.statusSubject.next(ISerialConnectionStatus.CONNECTED);
-
-        // Start reading data
         this.startReading();
-
         resolve(true);
-      } catch (err: any) {
+      } catch (err: unknown) {
         this.statusSubject.next(ISerialConnectionStatus.ERROR);
-        
-        // Provide user-friendly error messages
-        if (err.name === 'NotFoundError') {
-          reject(new Error('No serial port selected. Please connect a device and try again.'));
-        } else if (err.name === 'InvalidStateError') {
-          reject(new Error('Port is already open or in use by another application.'));
-        } else if (err.name === 'NetworkError') {
-          reject(new Error('Failed to open port. Device may be disconnected.'));
-        } else {
-          reject(err);
-        }
+        reject(this.toConnectError(err));
       }
     });
   }
 
-  /**
-   * Disconnect from the serial port
-   * @returns Promise with the result of the disconnection
-   */
   disconnect(): Promise<boolean> {
-    return new Promise(async (resolve) => {
-      try {
-        if (this.reader) {
-          await this.reader.cancel();
-          this.reader = null;
-        }
-
-        if (this.port) {
-          await this.port.close();
-          this.port = null;
-        }
-
-        this.statusSubject.next(ISerialConnectionStatus.DISCONNECTED);
-        resolve(true);
-      } catch (err) {
-        console.error('Error disconnecting:', err);
-        resolve(false);
-      }
-    });
+    return this.closeActivePort();
   }
 
   /**
-   * Send data to the serial port
-   * @param data Data to send
-   * @returns Promise with the result of the write operation
+   * Closes the monitor session but keeps authorized port handles in the registry for upload.
    */
+  async releaseForUpload(): Promise<boolean> {
+    return this.closeActivePort();
+  }
+
+  isConnected(): boolean {
+    return this.statusSubject.value === ISerialConnectionStatus.CONNECTED;
+  }
+
+  /** Returns the registry path currently used by the monitor, if any. */
+  getActivePortPath(): string | null {
+    return this.activePath;
+  }
+
+  /**
+   * Resolves a SerialPort handle for firmware upload.
+   * Does not require the monitor to be connected.
+   */
+  getPortHandle(path: string): WebSerialPortHandle | undefined {
+    return this.portRegistry.resolve(path);
+  }
+
   write(data: string | Buffer): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      if (!this.port) {
+      if (!this.port?.writable) {
         reject(new Error('Port not open'));
         return;
       }
@@ -191,8 +214,8 @@ export class WebSerialService implements ISerial {
       try {
         const writer = this.port.writable.getWriter();
         const encoder = new TextEncoder();
-        const buffer = typeof data === 'string' ? encoder.encode(data) : data;
-        
+        const buffer = typeof data === 'string' ? encoder.encode(data) : new Uint8Array(data);
+
         await writer.write(buffer);
         writer.releaseLock();
         resolve(true);
@@ -202,45 +225,92 @@ export class WebSerialService implements ISerial {
     });
   }
 
-  /**
-   * Observable for getting data from the serial port
-   * @returns Observable with the data
-   */
   onData(): Observable<string> {
     return this.dataSubject.asObservable();
   }
 
-  /**
-   * Observable for getting the connection status
-   * @returns Observable with the connection status
-   */
   onStatusChange(): Observable<ISerialConnectionStatus> {
     return this.statusSubject.asObservable();
   }
 
-  /**
-   * Get current connection status
-   * @returns Current connection status
-   */
   getStatus(): ISerialConnectionStatus {
     return this.statusSubject.value;
   }
 
-  /**
-   * Flush the serial port buffer
-   * @returns Promise with the result of the flush operation
-   */
   flush(): Promise<boolean> {
-    // Web Serial API не має методу flush
     return Promise.resolve(true);
   }
 
-  /**
-   * Start reading data from the serial port
-   * @returns Promise with the result of the reading
-   */
+  private async resolvePortForPath(path: string): Promise<WebSerialPortHandle | null> {
+    if (path === WEB_SERIAL_REQUEST_NEW_PATH || !path) {
+      const port = await this.getNavigatorSerial().requestPort();
+      this.portRegistry.register(WEB_SERIAL_SELECTED_PATH, port);
+      const authorized = await this.getNavigatorSerial().getPorts();
+      this.portRegistry.syncAuthorizedPorts(authorized);
+      return port;
+    }
+
+    let port = this.portRegistry.resolve(path);
+    if (port) {
+      return port;
+    }
+
+    const authorized = await this.getNavigatorSerial().getPorts();
+    this.portRegistry.syncAuthorizedPorts(authorized);
+    port = this.portRegistry.resolve(path);
+
+    if (port) {
+      return port;
+    }
+
+    if (path === WEB_SERIAL_SELECTED_PATH) {
+      const requested = await this.getNavigatorSerial().requestPort();
+      this.portRegistry.register(WEB_SERIAL_SELECTED_PATH, requested);
+      this.portRegistry.syncAuthorizedPorts(await this.getNavigatorSerial().getPorts());
+      return requested;
+    }
+
+    return null;
+  }
+
+  private async openPort(port: WebSerialPortHandle, options?: ISerialPortOptions): Promise<void> {
+    if (port.readable || port.writable) {
+      await port.close().catch(() => undefined);
+    }
+
+    await port.open({
+      baudRate: options?.baudRate || 9600,
+      dataBits: options?.dataBits || 8,
+      stopBits: options?.stopBits || 1,
+      parity: options?.parity || 'none',
+    });
+  }
+
+  private async closeActivePort(): Promise<boolean> {
+    try {
+      if (this.reader) {
+        await this.reader.cancel();
+        this.reader = null;
+      }
+
+      if (this.port) {
+        if (this.port.readable || this.port.writable) {
+          await this.port.close().catch(() => undefined);
+        }
+        this.port = null;
+      }
+
+      this.activePath = null;
+      this.statusSubject.next(ISerialConnectionStatus.DISCONNECTED);
+      return true;
+    } catch (err) {
+      console.error('Error disconnecting:', err);
+      return false;
+    }
+  }
+
   private async startReading(): Promise<void> {
-    if (!this.port || !this.port.readable) {
+    if (!this.port?.readable) {
       return;
     }
 
@@ -250,14 +320,13 @@ export class WebSerialService implements ISerial {
 
       while (true) {
         const { value, done } = await this.reader.read();
-        
+
         if (done) {
           break;
         }
 
         if (value) {
-          const text = decoder.decode(value);
-          this.dataSubject.next(text);
+          this.dataSubject.next(decoder.decode(value));
         }
       }
     } catch (err) {
@@ -270,5 +339,29 @@ export class WebSerialService implements ISerial {
       }
     }
   }
-}
 
+  private hasWebSerialApi(): boolean {
+    return 'serial' in navigator;
+  }
+
+  private getNavigatorSerial(): NavigatorSerialApi {
+    return (navigator as Navigator & { serial: NavigatorSerialApi }).serial;
+  }
+
+  private toConnectError(err: unknown): Error {
+    if (err instanceof Error) {
+      if (err.name === 'NotFoundError') {
+        return new Error('No serial port selected. Please connect a device and try again.');
+      }
+      if (err.name === 'InvalidStateError') {
+        return new Error('Port is already open or in use by another application.');
+      }
+      if (err.name === 'NetworkError') {
+        return new Error('Failed to open port. Device may be disconnected.');
+      }
+      return err;
+    }
+
+    return new Error(String(err));
+  }
+}

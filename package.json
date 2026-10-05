@@ -201,6 +201,7 @@
     "tableify": "^1.1.1",
     "tslib": "^2.8.1",
     "virtual-serialport": "^4.0.1",
+    "webserial-flasher": "^1.0.1",
     "zone.js": "^0.14.10"
   },
   "optionalDependencies": {

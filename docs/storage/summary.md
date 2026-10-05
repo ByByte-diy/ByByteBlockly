@@ -51,10 +51,10 @@ src/app/modules/blockly/services/storage/
     └── electron-filesystem.adapter.ts    # ✅ Electron
 
 docs/
-├── STORAGE_ARCHITECTURE.md               # ✅ Повна документація
-├── STORAGE_QUICKSTART.md                 # ✅ Швидкий старт
-├── STORAGE_SUMMARY.md                    # ✅ Цей файл
-└── CHANGELOG_STORAGE.md                  # ✅ Список змін
+├── architecture.md                       # ✅ Повна документація
+├── quickstart.md                         # ✅ Швидкий старт
+├── summary.md                            # ✅ Цей файл
+└── changelog.md                          # ✅ Список змін
 ```
 
 ## 🌍 Підтримувані платформи
@@ -221,9 +221,9 @@ this.storage.saveWorkspace(workspace, false); // ❌ (якщо часто)
 
 ## 📚 Документація
 
-- **[STORAGE_ARCHITECTURE.md](./STORAGE_ARCHITECTURE.md)** - Детальна архітектура з діаграмами
-- **[STORAGE_QUICKSTART.md](./STORAGE_QUICKSTART.md)** - Швидкий старт для початківців
-- **[CHANGELOG_STORAGE.md](../CHANGELOG_STORAGE.md)** - Повний список змін
+- **[architecture.md](./architecture.md)** - Детальна архітектура з діаграмами
+- **[quickstart.md](./quickstart.md)** - Швидкий старт для початківців
+- **[changelog.md](./changelog.md)** - Повний список змін
 
 ## 🚀 Наступні кроки
 
@@ -249,9 +249,9 @@ this.storage.saveWorkspace(workspace, false); // ❌ (якщо часто)
 
 ## 🔗 Швидкі посилання
 
-- [Швидкий старт](./STORAGE_QUICKSTART.md)
-- [Архітектура](./STORAGE_ARCHITECTURE.md)
-- [Changelog](../CHANGELOG_STORAGE.md)
+- [Швидкий старт](./quickstart.md)
+- [Архітектура](./architecture.md)
+- [Changelog](./changelog.md)
 - [Код](../src/app/modules/blockly/services/storage/)
 
 ---

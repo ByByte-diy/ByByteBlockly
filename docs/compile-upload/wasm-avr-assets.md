@@ -57,3 +57,8 @@ Verify fixture links (`w1`–`w6` or `all`):
 Sync vendored sources from `userlibs`: `sync w5`, `sync w6`, or `sync w7`.
 
 Sketches with `Adafruit_GFX` / SSD1306 / SH1106 / ST7735 need the **OLED** sensor flag at link time (`lib_GFX.o` from npm). The web compiler sets this automatically from `#include` lines.
+
+## Related
+
+- [web-compilation.md](./web-compilation.md) — Angular compiler service
+- Source tree: `src/wasm-avr/`

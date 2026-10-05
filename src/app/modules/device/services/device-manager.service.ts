@@ -5,6 +5,11 @@ import { IBoard } from '@app/modules/device/types/device-board.type';
 import { BOARDS } from '@app/modules/device/constants/device-boards.const';
 import { BOARD_PROFILES } from '@app/modules/device/constants/device-profiles.const';
 import { ISerialPortInfo } from '@app/core/models/serial-port.model';
+import {
+  WEB_SERIAL_REQUEST_NEW_PATH,
+  isConnectableWebSerialPath,
+  isValidDevicePortPath,
+} from '@platform/web/constants/web-serial-paths.const';
 import { BlocksLoaderService } from '@app/modules/blockly/services/blocks-loader.service';
 
 /** Legacy alias IDs kept for block/XML compatibility but hidden from the board picker. */
@@ -144,19 +149,24 @@ export class DeviceManagerService {
       // If saved port exists, try to find it
       const savedPort = this.getSelectedPort();
       if (savedPort) {
-        const foundPort = ports.find(p => p.path === savedPort.path);
-        if (foundPort) {
-          this.selectedPortSubject.next(foundPort);
-        } else {
-          // Port is no longer available
+        if (!isValidDevicePortPath(savedPort.path)) {
           this.selectedPortSubject.next(null);
+        } else {
+          const foundPort =
+            ports.find((p) => p.path === savedPort.path) ??
+            ports.find((p) => isConnectableWebSerialPath(p.path));
+          if (foundPort) {
+            this.selectedPortSubject.next(foundPort);
+          } else {
+            this.selectedPortSubject.next(null);
+          }
         }
       }
 
       // If port is not selected and there are available ports, select the first one
       if (!this.getSelectedPort() && ports.length > 0) {
         // Do not automatically select 'request-new-port'
-        if (ports[0].path !== 'request-new-port') {
+        if (ports[0].path !== WEB_SERIAL_REQUEST_NEW_PATH) {
           this.selectPort(ports[0]);
         }
       }
@@ -175,12 +185,16 @@ export class DeviceManagerService {
       // Check if this is Web Serial Service with requestPort method
       if (typeof (this.serialService as any).requestPort === 'function') {
         const portInfo = await (this.serialService as any).requestPort();
-        
-        // Update list of ports
+
         await this.refreshPorts();
-        
-        // Select new port
-        this.selectPort(portInfo);
+
+        const ports = this.availablePortsSubject.value;
+        const resolvedPort =
+          ports.find((p) => p.path === portInfo.path) ??
+          ports.find((p) => isConnectableWebSerialPath(p.path)) ??
+          portInfo;
+
+        this.selectPort(resolvedPort);
       } else {
         // For Electron just update the list
         await this.refreshPorts();
@@ -195,8 +209,12 @@ export class DeviceManagerService {
    * Check if board and port are selected
    */
   isDeviceReady(): boolean {
-    return this.selectedBoardSubject.value !== null && 
-           this.selectedPortSubject.value !== null;
+    const port = this.selectedPortSubject.value;
+    return (
+      this.selectedBoardSubject.value !== null &&
+      port !== null &&
+      isValidDevicePortPath(port.path)
+    );
   }
 
   /**

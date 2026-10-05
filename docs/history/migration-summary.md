@@ -139,10 +139,10 @@ npm run build:web
 
 ## 📖 Документація
 
-- `ARCHITECTURE.md` - опис архітектури проекту
-- `ANGULAR_MIGRATION.md` - деталі міграції на Angular
-- `FIXES.md` - виправлені помилки
-- `TESTING.md` - інструкції з тестування
+- [architecture/overview.md](../architecture/overview.md) — архітектура
+- [angular-migration.md](./angular-migration.md) — міграція на Angular
+- [fixes.md](./fixes.md) — виправлені помилки
+- [testing/manual-checklist.md](../testing/manual-checklist.md) — manual QA
 - `README.md` - загальна інформація
 
 ## 🚀 Що далі

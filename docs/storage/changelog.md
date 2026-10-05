@@ -285,8 +285,8 @@ describe('WorkspaceStorageService', () => {
 
 ### 📚 Документація
 
-- **[STORAGE_ARCHITECTURE.md](./docs/STORAGE_ARCHITECTURE.md)** - Повна архітектура
-- **[STORAGE_QUICKSTART.md](./docs/STORAGE_QUICKSTART.md)** - Швидкий старт
+- **[architecture.md](./architecture.md)** - Повна архітектура
+- **[quickstart.md](./quickstart.md)** - Швидкий старт
 
 ### 🔮 Майбутні покращення
 

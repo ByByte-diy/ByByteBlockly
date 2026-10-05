@@ -12,9 +12,16 @@ const CORE_BOARDS: Record<string, IBoard> = {
   nano: {
     id: "nano",
     name: "Arduino Nano (Old Bootloader)",
-    fqbn: "arduino:avr:nano",
+    fqbn: "arduino:avr:nano:cpu=atmega328old",
     core: "arduino:avr",
     uploadSpeed: 57600,
+  },
+  nano_new: {
+    id: "nano_new",
+    name: "Arduino Nano (New Bootloader)",
+    fqbn: "arduino:avr:nano:cpu=atmega328",
+    core: "arduino:avr",
+    uploadSpeed: 115200,
   },
   mega: {
     id: "mega",

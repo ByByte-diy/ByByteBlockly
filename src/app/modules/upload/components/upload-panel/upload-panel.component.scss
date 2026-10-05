@@ -24,6 +24,14 @@
   padding: 14px;
 }
 
+.upload-panel__hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--app-text-muted, var(--app-text));
+  opacity: 0.85;
+}
+
 .upload-panel__open-log {
   display: block;
   width: 100%;

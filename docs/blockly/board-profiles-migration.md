@@ -310,7 +310,7 @@ describe('BoardProfileService', () => {
 - [Board Profile Model](src/app/core/models/board-profile.model.ts)
 - [Board Profile Service](src/app/core/services/board-profile.service.ts)
 - [Blockly Globals](src/app/modules/blockly/utils/blockly-globals.ts)
-- [Block Architecture](src/app/modules/blockly/BLOCK_ARCHITECTURE.md)
+- [toolbox-architecture.md](./toolbox-architecture.md)
 
 ---
 

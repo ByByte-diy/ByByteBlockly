@@ -2,14 +2,18 @@ import {
   Component,
   OnInit,
   OnDestroy,
+  AfterViewInit,
   ElementRef,
-  HostListener,
   ChangeDetectorRef,
   inject,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { I18nService } from '../../i18n.service';
 import { LanguageInfo, SupportedLanguageCode } from '../../types/lang.type';
+import {
+  HEADER_POPOVER_IDS,
+  HeaderPopoverService,
+} from '@core/services/header-popover.service';
 
 const PLANET_ICON = "url('assets/icons/header/planet.svg')";
 
@@ -44,11 +48,13 @@ const PLANET_ICON = "url('assets/icons/header/planet.svg')";
     </div>
   `,
 })
-export class LangSwitcherComponent implements OnInit, OnDestroy {
+export class LangSwitcherComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly i18n = inject(I18nService);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly destroy$ = new Subject<void>();
+  private readonly headerPopover = inject(HeaderPopoverService);
+  private readonly popoverId = HEADER_POPOVER_IDS.language;
 
   readonly planetIcon = PLANET_ICON;
   open = false;
@@ -58,28 +64,19 @@ export class LangSwitcherComponent implements OnInit, OnDestroy {
 
   toggle(event: MouseEvent): void {
     event.stopPropagation();
-    this.open = !this.open;
-    this.cdr.detectChanges();
+    this.headerPopover.toggle(this.popoverId);
   }
 
   close(): void {
-    this.open = false;
-    this.cdr.detectChanges();
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (this.open && !this.elementRef.nativeElement.contains(event.target as Node)) {
-      this.close();
-    }
-  }
-
-  @HostListener('document:keydown.escape')
-  onEscape(): void {
-    this.close();
+    this.headerPopover.close(this.popoverId);
   }
 
   ngOnInit(): void {
+    this.headerPopover.activeId$.pipe(takeUntil(this.destroy$)).subscribe((id) => {
+      this.open = id === this.popoverId;
+      this.cdr.detectChanges();
+    });
+
     this.current = this.i18n.getCurrentLanguage();
     this.languages = this.i18n.getSupportedLanguages();
     this.syncCurrentLang();
@@ -93,7 +90,12 @@ export class LangSwitcherComponent implements OnInit, OnDestroy {
       });
   }
 
+  ngAfterViewInit(): void {
+    this.headerPopover.registerRoot(this.popoverId, this.elementRef.nativeElement);
+  }
+
   ngOnDestroy(): void {
+    this.headerPopover.unregisterRoot(this.popoverId);
     this.destroy$.next();
     this.destroy$.complete();
   }

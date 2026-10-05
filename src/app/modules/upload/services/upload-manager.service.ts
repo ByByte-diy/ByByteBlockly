@@ -103,9 +103,9 @@ export class UploadManagerService {
   uploadOnly(): Observable<UploadResult> {
     return new Observable(observer => {
       if (!this.lastCompileResult || !this.lastCompileResult.success) {
-        const error = 'First you need to compile the code';
-        this.updateProgress(UploadStatus.ERROR, error);
-        observer.error(new Error(error));
+        const errorKey = 'ui.upload_compile_first';
+        this.updateProgress(UploadStatus.ERROR, errorKey);
+        observer.error(new Error(errorKey));
         return;
       }
 
@@ -150,8 +150,8 @@ export class UploadManagerService {
       const uploadResult = await this.executeUpload(compileResult);
       
       return uploadResult.success;
-    } catch (err: any) {
-      this.updateProgress(UploadStatus.ERROR, `Error: ${err.message}`);
+    } catch (err: unknown) {
+      this.updateProgress(UploadStatus.ERROR, this.resolveErrorKey(err, 'ui.upload_error_short'));
       return false;
     }
   }
@@ -228,7 +228,7 @@ export class UploadManagerService {
     const port = this.deviceManager.getSelectedPort();
 
     if (!port) {
-      throw new Error('Port not selected');
+      throw new Error('ui.upload_select_board_port');
     }
 
     this.updateProgress(UploadStatus.UPLOADING, 'ui.upload_progress_uploading', 10);
@@ -236,21 +236,39 @@ export class UploadManagerService {
     return new Promise((resolve, reject) => {
       this.uploader.upload({
         board: board.fqbn,
+        boardId: board.id,
         port: port.path,
         hexPath: compileResult.hexPath,
-        verbose: true
+        hexContent: compileResult.hexContent,
+        verbose: true,
+        onProgress: (update) => {
+          this.updateProgress(
+            UploadStatus.UPLOADING,
+            update.message ?? 'ui.upload_progress_uploading',
+            update.percent,
+          );
+        },
       }).subscribe({
         next: (result) => {
           if (result.success) {
             this.updateProgress(UploadStatus.SUCCESS, 'ui.upload_success', 100);
+            if (result.output) {
+              this.appendBuildLog(`\n--- Upload ---\n${result.output.trim()}`);
+            }
           } else {
-            this.updateProgress(UploadStatus.ERROR, `Upload error:\n${result.error || result.output}`);
+            const message = this.resolveUploadErrorMessage(result);
+            this.updateProgress(UploadStatus.ERROR, message, this.lastProgressPercent);
+            this.appendBuildLog(this.formatUploadFailureLog(result));
           }
-          
+
           resolve(result);
         },
         error: (err) => {
-          this.updateProgress(UploadStatus.ERROR, `Upload error: ${err.message}`);
+          this.updateProgress(
+            UploadStatus.ERROR,
+            this.resolveErrorKey(err, 'ui.upload_error_short'),
+            this.lastProgressPercent,
+          );
           reject(err);
         }
       });
@@ -280,6 +298,50 @@ export class UploadManagerService {
       this.compileResultSubject.next(result);
       this.buildLogSubject.next(formatBuildLog(result));
     });
+  }
+
+  private appendBuildLog(text: string): void {
+    if (!text.trim()) {
+      return;
+    }
+
+    this.runInAngularZone(() => {
+      const current = this.buildLogSubject.value.trim();
+      this.buildLogSubject.next(current ? `${current}\n\n${text.trim()}` : text.trim());
+    });
+  }
+
+  private resolveUploadErrorMessage(result: UploadResult): string {
+    if (result.error?.startsWith('ui.')) {
+      return result.error;
+    }
+    if (result.error) {
+      return result.error.split('\n')[0];
+    }
+    return 'ui.upload_error_short';
+  }
+
+  private resolveErrorKey(err: unknown, fallback: string): string {
+    if (err && typeof err === 'object') {
+      const record = err as { message?: string; i18nKey?: string };
+      if (typeof record.i18nKey === 'string' && record.i18nKey.startsWith('ui.')) {
+        return record.i18nKey;
+      }
+      if (typeof record.message === 'string' && record.message.startsWith('ui.')) {
+        return record.message;
+      }
+    }
+    return fallback;
+  }
+
+  private formatUploadFailureLog(result: UploadResult): string {
+    const parts = ['--- Upload failed ---'];
+    if (result.output?.trim()) {
+      parts.push(result.output.trim());
+    } else if (result.error && !result.error.startsWith('ui.')) {
+      parts.push(result.error);
+    }
+    return parts.join('\n');
   }
 
   private runInAngularZone(action: () => void): void {

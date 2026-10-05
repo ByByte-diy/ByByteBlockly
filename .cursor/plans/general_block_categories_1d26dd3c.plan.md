@@ -45,7 +45,7 @@ isProject: false
 
 ## Контекст
 
-**Ціль:** переписати legacy-блоки з [`www/blocs&generateurs/`](www/blocs&generateurs/) на Angular згідно з архітектурою проєкту ([`ARCHITECTURE.md`](ARCHITECTURE.md), [`TOOLBOX_ARCHITECTURE.md`](TOOLBOX_ARCHITECTURE.md)).
+**Ціль:** переписати legacy-блоки з [`www/blocs&generateurs/`](www/blocs&generateurs/) на Angular згідно з архітектурою проєкту ([`docs/architecture/overview.md`](docs/architecture/overview.md), [`docs/blockly/toolbox-architecture.md`](docs/blockly/toolbox-architecture.md)).
 
 **Загальні категорії** — 11 груп програмування, не прив'язаних до конкретного залізa (на відміну від Otto, Sensors, IoT тощо). Нові ID категорій уже підготовлені в [`src/app/modules/language/translations/en.ts`](src/app/modules/language/translations/en.ts) та іконках [`src/app/modules/blockly/constants/category-icons.const.ts`](src/app/modules/blockly/constants/category-icons.const.ts).
 
@@ -76,7 +76,7 @@ src/app/modules/blockly/definitions/<name>/
 
 **Підключення:** додати модуль у [`src/app/modules/blockly/definitions/index.ts`](src/app/modules/blockly/definitions/index.ts).
 
-**Mutators:** через [`MutatorRegistry`](docs/MUTATOR_REGISTRY.md) (зразок: `definitions/logic/`).
+**Mutators:** через [`MutatorRegistry`](docs/blockly/mutator-registry.md) (зразок: `definitions/logic/`).
 
 **Legacy toolbox-референс:** [`www/toolbox/toolbox_arduino_all.xml`](www/toolbox/toolbox_arduino_all.xml).
 
@@ -317,7 +317,7 @@ gantt
 
 1. Створити `definitions/<name>/config.ts` з `CATEGORY_NAME`, `CATEGORY_COLOR`, `CATEGORY_ORDER`
 2. Перенести блоки з legacy JS → `*.block.ts` через `BlockBuilder`
-3. Mutators — через `MutatorRegistry` ([`docs/MUTATOR_REGISTRY.md`](docs/MUTATOR_REGISTRY.md))
+3. Mutators — через `MutatorRegistry` ([`docs/blockly/mutator-registry.md`](docs/blockly/mutator-registry.md))
 4. Arduino generator — з [`arduino_generateurs_cpp.js`](www/blocs&generateurs/arduino_generateurs_cpp.js) / [`blockly_generateurs_cpp.js`](www/blocs&generateurs/blockly_generateurs_cpp.js)
 5. Реєстрація — `index.ts` → `registerMany()` + `registerCategory()`
 6. Підключення — додати в [`definitions/index.ts`](src/app/modules/blockly/definitions/index.ts)

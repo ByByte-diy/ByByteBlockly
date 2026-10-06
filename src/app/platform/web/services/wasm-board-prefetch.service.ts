@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { DeviceManagerService } from '@app/modules/device/services/device-manager.service';
 import { IBoard } from '@app/modules/device/types/device-board.type';
-import { isAvr328pFqbn } from './web-avr-wasm.util';
-import { WasmAssetProvider } from './wasm-asset.provider';
-import { WasmPrefetchTier } from './wasm-tier-prefetch.util';
+import {
+  WasmAssetProvider,
+  WasmCompilerRegistry,
+  WasmMegaAssetProvider,
+  WasmPrefetchTier,
+} from '@modules/wasm-compiler';
 
-/**
- * Background prefetch of WASM tools/core tiers when user selects an AVR 328p board.
- */
+/** Web-only: prefetch WASM tools/core when the user selects a supported AVR board. */
 @Injectable()
 export class WasmBoardPrefetchService {
   private prefetchGeneration = 0;
 
   constructor(
     private readonly deviceManager: DeviceManagerService,
-    private readonly wasmAssets: WasmAssetProvider,
+    private readonly registry: WasmCompilerRegistry,
+    private readonly wasmAssets328p: WasmAssetProvider,
+    private readonly wasmAssetsMega: WasmMegaAssetProvider,
   ) {
     this.deviceManager.selectedBoard$.subscribe((board) => {
       void this.prefetchForBoard(board);
@@ -23,20 +26,22 @@ export class WasmBoardPrefetchService {
   }
 
   private async prefetchForBoard(board: IBoard): Promise<void> {
-    if (!isAvr328pFqbn(board.fqbn)) {
+    const family = this.registry.resolveFamily(board.fqbn);
+    if (!family) {
       return;
     }
 
+    const wasmAssets = family === 'avr-mega' ? this.wasmAssetsMega : this.wasmAssets328p;
     const generation = ++this.prefetchGeneration;
 
     try {
-      await this.wasmAssets.ensureValid();
+      await wasmAssets.ensureValid();
       const tiers: WasmPrefetchTier[] = ['tools', 'core'];
       for (const tier of tiers) {
         if (generation !== this.prefetchGeneration) {
           return;
         }
-        await this.wasmAssets.prefetchTier(tier);
+        await wasmAssets.prefetchTier(tier);
       }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);

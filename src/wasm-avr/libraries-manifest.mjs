@@ -19,10 +19,11 @@ export function mergeBybyteManifest(baseManifest, wave) {
     ...(baseManifest.includePaths || []),
     ...(wave.includePaths || []),
   ]);
+  const baseObjects = new Set(baseManifest.objectGroups?.base || []);
   const bybyte = unique([
     ...(baseManifest.objectGroups?.bybyte || []),
     ...(wave.objectPaths || []),
-  ]);
+  ]).filter((objectPath) => !baseObjects.has(objectPath));
 
   return {
     ...baseManifest,

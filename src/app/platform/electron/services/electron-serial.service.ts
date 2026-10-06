@@ -6,6 +6,7 @@ import {
   ISerialPortOptions,
   ISerialConnectionStatus,
 } from "@core/models";
+import { formatSerialPortLabel } from "@core/utils/serial-port-display.util";
 
 /**
  * Electron implementation of the serial port service
@@ -31,16 +32,21 @@ export class ElectronSerialService implements ISerial {
 
         const serialPorts: ISerialPortInfo[] = ports
           .filter((p: any) => p.vendorId) // Filter only with vendorId
-          .map((p: any) => ({
-            path: p.path || p.comName,
-            manufacturer: p.manufacturer,
-            serialNumber: p.serialNumber,
-            pnpId: p.pnpId,
-            locationId: p.locationId,
-            vendorId: p.vendorId,
-            productId: p.productId,
-            friendlyName: p.friendlyName,
-          }));
+          .map((p: any) => {
+            const path = p.path || p.comName;
+            const portInfo: ISerialPortInfo = {
+              path,
+              manufacturer: p.manufacturer,
+              serialNumber: p.serialNumber,
+              pnpId: p.pnpId,
+              locationId: p.locationId,
+              vendorId: p.vendorId,
+              productId: p.productId,
+              friendlyName: p.friendlyName,
+            };
+            portInfo.friendlyName = formatSerialPortLabel(portInfo);
+            return portInfo;
+          });
 
         resolve(serialPorts);
       } catch (err) {

@@ -24,9 +24,33 @@
           ]
         },
         {
+          "id": "Servo",
+          "headers": [
+            {
+              "from": "compilation/arduino/userlibs/libraries/Servo/src/Servo.h",
+              "virtual": "/libraries/Servo/src/Servo.h"
+            },
+            {
+              "from": "compilation/arduino/userlibs/libraries/Servo/src/avr/ServoTimers.h",
+              "virtual": "/libraries/Servo/src/avr/ServoTimers.h"
+            }
+          ],
+          "includePaths": [
+            "/libraries/Servo/src",
+            "/libraries/Servo/src/avr"
+          ],
+          "sources": [
+            {
+              "from": "compilation/arduino/userlibs/libraries/Servo/src/avr/Servo.cpp",
+              "object": "/objects/lib_Servo.o"
+            }
+          ]
+        },
+        {
           "id": "Otto",
           "depends": [
-            "EEPROM"
+            "EEPROM",
+            "Servo"
           ],
           "root": "src/wasm-avr/libraries/Otto",
           "headers": [
@@ -969,7 +993,8 @@
         {
           "id": "Quad",
           "depends": [
-            "EEPROM"
+            "EEPROM",
+            "Servo"
           ],
           "root": "src/wasm-avr/libraries/Quad",
           "headers": [

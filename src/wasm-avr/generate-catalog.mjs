@@ -9,9 +9,11 @@ import { hashAggregate, hashFile, formatSha256 } from './hash-utils.mjs';
 import { loadWaveCatalogs, mergeWaveCatalogs } from './libraries-manifest.mjs';
 import {
   WASM_AVR_328P_BUNDLE_ID,
+  WASM_AVR_MEGA_BUNDLE_ID,
   WASM_FAMILY_AVR_328P,
   bundleBaseUrl,
   resolveAvr328pBundleDir,
+  resolveAvrMegaBundleDir,
   sanitizeDeployVersion,
 } from './wasm-bundle-paths.mjs';
 
@@ -212,10 +214,22 @@ export async function generateCatalog({ destDir, rootDir = join(__dirname, '../.
  * @param {object} [options.wasmCatalog] - freshly built catalog (prepare pipeline)
  * @returns {Promise<object>}
  */
+function bundleEntryFromCatalog(catalog) {
+  return {
+    version: catalog.version,
+    contentHash: catalog.contentHash,
+    baseUrl: catalog.assetsBase,
+    catalogUrl: `${catalog.assetsBase}wasm-catalog.json`,
+    entryCount: catalog.entryCount,
+    totalBytes: catalog.totalBytes,
+  };
+}
+
 export async function generateCacheManifest({
   rootDir = join(__dirname, '../..'),
   assetsDir = join(rootDir, 'src/assets'),
   wasmCatalog,
+  megaCatalog,
 } = {}) {
   const packageJson = JSON.parse(
     await readFile(join(rootDir, 'package.json'), 'utf8'),
@@ -224,16 +238,16 @@ export async function generateCacheManifest({
   /** @type {Record<string, object>} */
   const bundles = {};
 
-  let catalog = wasmCatalog;
-  if (!catalog) {
+  let catalog328 = wasmCatalog;
+  if (!catalog328) {
     try {
       const bundleDir = await resolveAvr328pBundleDir(rootDir);
-      catalog = JSON.parse(await readFile(join(bundleDir, 'wasm-catalog.json'), 'utf8'));
+      catalog328 = JSON.parse(await readFile(join(bundleDir, 'wasm-catalog.json'), 'utf8'));
     } catch (error) {
-      catalog = await findLatestAvr328pCatalog(assetsDir);
-      if (!catalog) {
+      catalog328 = await findLatestAvr328pCatalog(assetsDir);
+      if (!catalog328) {
         if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
-          console.warn('wasm-catalog.json missing — run prepare:wasm-avr first');
+          console.warn('wasm-avr-328p catalog missing — run prepare:wasm-avr first');
         } else if (String(error?.message || error).includes('cache-manifest.json')) {
           console.warn('cache-manifest.json missing — run prepare:wasm-avr first');
         } else {
@@ -243,15 +257,22 @@ export async function generateCacheManifest({
     }
   }
 
-  if (catalog) {
-    bundles[WASM_AVR_328P_BUNDLE_ID] = {
-      version: catalog.version,
-      contentHash: catalog.contentHash,
-      baseUrl: catalog.assetsBase,
-      catalogUrl: `${catalog.assetsBase}wasm-catalog.json`,
-      entryCount: catalog.entryCount,
-      totalBytes: catalog.totalBytes,
-    };
+  if (catalog328) {
+    bundles[WASM_AVR_328P_BUNDLE_ID] = bundleEntryFromCatalog(catalog328);
+  }
+
+  let catalogMega = megaCatalog;
+  if (!catalogMega) {
+    try {
+      const bundleDir = await resolveAvrMegaBundleDir(rootDir);
+      catalogMega = JSON.parse(await readFile(join(bundleDir, 'wasm-catalog.json'), 'utf8'));
+    } catch {
+      // Mega bundle optional until prepare:wasm-avr -- prepare mega
+    }
+  }
+
+  if (catalogMega) {
+    bundles[WASM_AVR_MEGA_BUNDLE_ID] = bundleEntryFromCatalog(catalogMega);
   }
 
   const manifest = {

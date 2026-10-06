@@ -3,15 +3,15 @@
   "bundleId": "wasm-avr-328p",
   "version": "0.2.0+W1+W2+W3+W4+W5+W6+W7",
   "deployVersion": "v0.2.0-W1-W2-W3-W4-W5-W6-W7",
-  "contentHash": "sha256:e1dc060ce34864de634229474beece63e08ff69b4c9efe4482030cc718904a21",
+  "contentHash": "sha256:c801719ac3ea048fdb526bbff7e6671738917fb7f44e98f93ec82f8f4aab95f7",
   "assetsBase": "/assets/wasm/avr-328p/v0.2.0-W1-W2-W3-W4-W5-W6-W7/",
   "fqbn": [
     "arduino:avr:uno",
     "arduino:avr:nano"
   ],
-  "generatedAt": "2026-10-05T19:19:54.754Z",
+  "generatedAt": "2026-10-06T10:22:33.128Z",
   "entryCount": 696,
-  "totalBytes": 56565078,
+  "totalBytes": 56548689,
   "files": {
     "firmware-builder.js": {
       "sha256": "789a4de74cda397bbcea2dc8f928a9fc54bfcb41d3ae6d4e16cb3922229c1428",
@@ -790,8 +790,8 @@
       "size": 4987
     },
     "assets/fs/libraries/Servo/src/avr/ServoTimers.h": {
-      "sha256": "c18bf7dfd3804d0862572b4e0ea3b4e73431916771ceb531c28e88ed36ec4461",
-      "size": 2174
+      "sha256": "7cd16d444f224ea886ae6da8f9e2b5fa24bf6cd740923da1ea480df56dc7bb2b",
+      "size": 2231
     },
     "assets/fs/libraries/Servo/src/esp32/ServoTimers.h": {
       "sha256": "c6dd843a248d976fb320033bd13e5fb19fbadea98be0506f27810bed7004ffc8",
@@ -822,8 +822,8 @@
       "size": 2414
     },
     "assets/fs/libraries/Servo/src/Servo.h": {
-      "sha256": "baf96f1d65390abddb1c88121198480e4d993b7c9ef87657640082aa73944d7d",
-      "size": 5546
+      "sha256": "9d9945dcc3806ba52975f564c9bb0ca1a386227e0b8854fdae3cf82bd5b00b49",
+      "size": 5375
     },
     "assets/fs/libraries/Servo/src/stm32f4/ServoTimers.h": {
       "sha256": "c8e934ff558624c97a6623e94366a2dff6a495214591015ab69e44e292754b2f",
@@ -2746,8 +2746,8 @@
       "size": 4012
     },
     "assets/objects/lib_Servo.o": {
-      "sha256": "08f120a37cbe2e5ececee760f671ecdfafb37fa570459a8259e3fe84dc465c3d",
-      "size": 22020
+      "sha256": "9328f5593ff3552a7af462768a935cd9d049537a0e3a74707212830bcc3e798b",
+      "size": 5640
     },
     "assets/objects/lib_SoftwareSerial.o": {
       "sha256": "d0d237c742c3b9c1a0ae18921864b5495273acd081261bc2bd1db10af278ced2",
@@ -2794,8 +2794,8 @@
       "size": 54164
     },
     "assets/manifest.json": {
-      "sha256": "7a1b6705dc8f92e46d8d2461c35bddf2ac2c28b24e642930876ba66d95e8a9ad",
-      "size": 32486
+      "sha256": "7206e02eca991cca2ebe66bfe759e47f4a5c90a480da08dd1cc2a6b580c13d0b",
+      "size": 32591
     }
   },
   "tiers": {
@@ -2930,8 +2930,6 @@
         "/libraries/Firmata/utility/WiFiServerStream.h",
         "/libraries/Firmata/utility/WiFiStream.h",
         "/libraries/Firmata/utility/firmataDebug.h",
-        "/libraries/Servo/src/Servo.h",
-        "/libraries/Servo/src/avr/ServoTimers.h",
         "/libraries/Servo/src/esp32/ServoTimers.h",
         "/libraries/Servo/src/mbed/ServoTimers.h",
         "/libraries/Servo/src/megaavr/ServoTimers.h",
@@ -3380,6 +3378,20 @@
           "objects/lib_eeprom_avr.o"
         ]
       },
+      "Servo": {
+        "includes": [
+          "Servo.h",
+          "ServoTimers.h"
+        ],
+        "depends": [],
+        "headers": [
+          "/libraries/Servo/src/Servo.h",
+          "/libraries/Servo/src/avr/ServoTimers.h"
+        ],
+        "objects": [
+          "objects/lib_Servo.o"
+        ]
+      },
       "Otto": {
         "includes": [
           "Otto.h",
@@ -3390,7 +3402,8 @@
           "Otto_matrix.h"
         ],
         "depends": [
-          "EEPROM"
+          "EEPROM",
+          "Servo"
         ],
         "headers": [
           "/libraries/Otto/Otto.h",
@@ -3880,7 +3893,8 @@
           "Octosnake.h"
         ],
         "depends": [
-          "EEPROM"
+          "EEPROM",
+          "Servo"
         ],
         "headers": [
           "/libraries/Quad/Quad.h",

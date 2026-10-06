@@ -11,7 +11,8 @@ describe('build-log.util', () => {
     expect(classifyBuildLogLine('fatal error: limits.h: No such file')).toBe('error');
     expect(classifyBuildLogLine('note: candidate function not viable')).toBe('note');
     expect(classifyBuildLogLine('warning: unused variable')).toBe('warning');
-    expect(classifyBuildLogLine('flashBytes: 5292')).toBe('plain');
+    expect(classifyBuildLogLine('[sketch] sketch.cpp')).toBe('note');
+    expect(classifyBuildLogLine('flash: 5292 bytes')).toBe('plain');
   });
 
   it('formats compile output with flash stats', () => {
@@ -24,9 +25,18 @@ describe('build-log.util', () => {
     });
 
     expect(text).toContain('[cc1plus] ok');
-    expect(text).toContain('flashBytes: 5292');
-    expect(text).toContain('fitsTarget: true');
-    expect(text).toContain('hex length:');
+    expect(text).toContain('flash: 5292 bytes');
+    expect(text).toContain('fits target: yes');
+    expect(text).toContain('hex:');
+  });
+
+  it('omits ui.* error keys from build log text', () => {
+    const text = formatBuildLog({
+      success: false,
+      output: '',
+      error: 'ui.compile_code_empty',
+    });
+    expect(text).toBe('');
   });
 
   it('parses multiline log for UI rendering', () => {

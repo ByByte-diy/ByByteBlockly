@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  FlashAvrUploadError,
   getNanoAlternateProfile,
   getUploadProfilesWithFallbacks,
   mapBootloadStatusToI18n,
@@ -25,6 +26,12 @@ describe('web-avr-stk500.util', () => {
 
     expect(getNanoAlternateProfile(oldNano)?.baudRate).toBe(115200);
     expect(getUploadProfilesWithFallbacks(oldNano).map((p) => p.baudRate)).toEqual([115200, 57600]);
+  });
+
+  it('FlashAvrUploadError carries i18n key for UI', () => {
+    const err = new FlashAvrUploadError('ui.upload_nano_baud_exhausted', 'sync failed');
+    expect(err.i18nKey).toBe('ui.upload_nano_baud_exhausted');
+    expect(err.message).toBe('sync failed');
   });
 
   it('maps bootload status labels to i18n keys', () => {

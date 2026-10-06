@@ -1,15 +1,23 @@
 {
   "schemaVersion": 1,
   "appMinVersion": "0.0.0",
-  "generatedAt": "2026-10-05T20:05:52.817Z",
+  "generatedAt": "2026-10-06T10:22:33.958Z",
   "bundles": {
     "wasm-avr-328p": {
       "version": "0.2.0+W1+W2+W3+W4+W5+W6+W7",
-      "contentHash": "sha256:e1dc060ce34864de634229474beece63e08ff69b4c9efe4482030cc718904a21",
+      "contentHash": "sha256:c801719ac3ea048fdb526bbff7e6671738917fb7f44e98f93ec82f8f4aab95f7",
       "baseUrl": "/assets/wasm/avr-328p/v0.2.0-W1-W2-W3-W4-W5-W6-W7/",
       "catalogUrl": "/assets/wasm/avr-328p/v0.2.0-W1-W2-W3-W4-W5-W6-W7/wasm-catalog.json",
       "entryCount": 696,
-      "totalBytes": 56565078
+      "totalBytes": 56548689
+    },
+    "wasm-avr-mega": {
+      "version": "1.0.0+W1+W2+W3+W4+W5+W6+W7",
+      "contentHash": "sha256:fa0efbb8ec9186587ebf2251bc16592a4f20636346fe35cacd669bcfc2947586",
+      "baseUrl": "/assets/wasm/avr-mega/v1.0.0-W1-W2-W3-W4-W5-W6-W7/",
+      "catalogUrl": "/assets/wasm/avr-mega/v1.0.0-W1-W2-W3-W4-W5-W6-W7/wasm-catalog.json",
+      "entryCount": 642,
+      "totalBytes": 83516146
     }
   }
 }

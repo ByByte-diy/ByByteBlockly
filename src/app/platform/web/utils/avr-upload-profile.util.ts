@@ -3,6 +3,7 @@ import {
   AVR_UPLOAD_PROFILES_BY_BOARD_ID,
   AVR_UPLOAD_PROFILES_BY_FQBN,
   AvrUploadProfile,
+  AvrUploadProtocol,
   WEB_AVR_UPLOAD_BOARD_IDS,
 } from '../constants/avr-upload-profiles.const';
 
@@ -33,9 +34,21 @@ export function isWebAvrUploadBoard(boardId: string): boolean {
   return WEB_AVR_UPLOAD_BOARD_IDS.has(boardId);
 }
 
+function resolveWebAvrUploadProtocol(raw: string, fqbn: string): AvrUploadProtocol {
+  if (raw === 'stk500v1' || raw === 'stk500v2') {
+    return raw;
+  }
+
+  throw new AvrUploadUnsupportedError(
+    'unsupported_protocol',
+    'ui.upload_unsupported_protocol',
+    `Web upload does not support protocol "${raw}" yet (FQBN: ${fqbn})`,
+  );
+}
+
 /**
- * Resolves upload profile for Uno/Nano (STK500v1) boards.
- * Throws {@link AvrUploadUnsupportedError} for Mega, ESP, Leonardo, etc.
+ * Resolves upload profile for Uno/Nano (STK500v1) and Mega (STK500v2).
+ * Throws {@link AvrUploadUnsupportedError} for ESP, Leonardo, AVR109, etc.
  */
 export function resolveAvrUploadProfile(options: ResolveAvrUploadProfileOptions): AvrUploadProfile {
   const { fqbn, boardId } = options;
@@ -60,14 +73,10 @@ export function resolveAvrUploadProfile(options: ResolveAvrUploadProfileOptions)
     );
   }
 
-  const protocol = fqbnOverride?.protocol ?? flasherBoard?.protocol ?? 'stk500v1';
-  if (protocol !== 'stk500v1') {
-    throw new AvrUploadUnsupportedError(
-      'unsupported_protocol',
-      'ui.upload_unsupported_protocol',
-      `Web upload does not support protocol "${protocol}" yet (FQBN: ${normalizedFqbn})`,
-    );
-  }
+  const protocol = resolveWebAvrUploadProtocol(
+    fqbnOverride?.protocol ?? flasherBoard?.protocol ?? 'stk500v1',
+    normalizedFqbn,
+  );
 
   const flasherBoardKey =
     fqbnOverride?.flasherBoardKey ??
@@ -85,7 +94,7 @@ export function resolveAvrUploadProfile(options: ResolveAvrUploadProfileOptions)
   const profile: AvrUploadProfile = {
     boardId: resolvedBoardId,
     fqbn: normalizedFqbn,
-    protocol: 'stk500v1',
+    protocol,
     flasherBoardKey,
     baudRate,
     webSupported: fqbnOverride?.webSupported ?? isWebAvrUploadBoard(resolvedBoardId),
@@ -109,13 +118,19 @@ export function getFlasherBoardConfig(profile: AvrUploadProfile): Board {
   }
 
   const baudRate = profile.baudRate;
-  const timeout = Math.min(base.timeout ?? WEB_AVR_COMMAND_TIMEOUT_MS, WEB_AVR_COMMAND_TIMEOUT_MS);
+  const timeoutCap =
+    profile.protocol === 'stk500v2' ? 10000 : WEB_AVR_COMMAND_TIMEOUT_MS;
+  const timeout = Math.min(base.timeout ?? timeoutCap, timeoutCap);
+  const resetDelayMs =
+    profile.protocol === 'stk500v2'
+      ? Math.max(base.resetDelayMs ?? 200, 500)
+      : base.resetDelayMs;
 
-  if (base.baudRate === baudRate && base.timeout === timeout) {
+  if (base.baudRate === baudRate && base.timeout === timeout && base.resetDelayMs === resetDelayMs) {
     return base;
   }
 
-  return { ...base, baudRate, timeout };
+  return { ...base, baudRate, timeout, resetDelayMs };
 }
 
 function findFlasherBoardKey(board: Board): string | undefined {
@@ -139,6 +154,9 @@ function inferBoardIdFromFqbn(fqbn: string): string {
   }
   if (fqbn.startsWith('arduino:avr:uno')) {
     return 'uno';
+  }
+  if (fqbn.startsWith('arduino:avr:mega')) {
+    return 'mega';
   }
   return fqbn.replace(/[:]/g, '_');
 }

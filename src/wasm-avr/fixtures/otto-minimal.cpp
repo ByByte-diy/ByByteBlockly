@@ -1,9 +1,7 @@
 #include <Arduino.h>
 #include <Servo.h>
 #include <EEPROM.h>
-
-#include "/libraries/Otto/Oscillator.h"
-#include "/libraries/Otto/Otto.h"
+#include <Otto.h>
 
 Otto Otto;
 

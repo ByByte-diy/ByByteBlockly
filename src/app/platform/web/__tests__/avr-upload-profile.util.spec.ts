@@ -50,20 +50,29 @@ describe('avr-upload-profile.util', () => {
     }
   });
 
-  it('rejects Mega (STK500v2) on web', () => {
-    expect(() =>
-      resolveAvrUploadProfile({
-        boardId: 'mega',
-        fqbn: 'arduino:avr:mega',
-      }),
-    ).toThrow(AvrUploadUnsupportedError);
+  it('resolves Mega profile (STK500v2 @ 115200)', () => {
+    const profile = resolveAvrUploadProfile({
+      boardId: 'mega',
+      fqbn: 'arduino:avr:mega',
+    });
 
-    try {
-      resolveAvrUploadProfile({ boardId: 'mega', fqbn: 'arduino:avr:mega' });
-    } catch (err) {
-      expect(err).toBeInstanceOf(AvrUploadUnsupportedError);
-      expect((err as AvrUploadUnsupportedError).reason).toBe('unsupported_protocol');
-    }
+    expect(profile.flasherBoardKey).toBe('arduino-mega2560');
+    expect(profile.baudRate).toBe(115200);
+    expect(profile.protocol).toBe('stk500v2');
+  });
+
+  it('resolves ByByte Mega and FQBN with cpu option', () => {
+    const bybyte = resolveAvrUploadProfile({
+      boardId: 'bybyte_mega',
+      fqbn: 'arduino:avr:mega',
+    });
+    expect(bybyte.protocol).toBe('stk500v2');
+
+    const fqbnCpu = resolveAvrUploadProfile({
+      fqbn: 'arduino:avr:mega:cpu=atmega2560',
+    });
+    expect(fqbnCpu.flasherBoardKey).toBe('arduino-mega2560');
+    expect(fqbnCpu.protocol).toBe('stk500v2');
   });
 
   it('rejects unknown FQBN', () => {
@@ -85,8 +94,21 @@ describe('avr-upload-profile.util', () => {
     expect(board.signature).toEqual(BOARDS['arduino-nano-old'].signature);
   });
 
-  it('isWebAvrUploadBoard reflects phase-1 allow-list', () => {
+  it('isWebAvrUploadBoard reflects web upload allow-list', () => {
     expect(isWebAvrUploadBoard('uno')).toBe(true);
-    expect(isWebAvrUploadBoard('mega')).toBe(false);
+    expect(isWebAvrUploadBoard('mega')).toBe(true);
+    expect(isWebAvrUploadBoard('leonardo')).toBe(false);
+  });
+
+  it('uses longer command timeout cap for Mega STK500v2', () => {
+    const profile = resolveAvrUploadProfile({
+      boardId: 'mega',
+      fqbn: 'arduino:avr:mega',
+    });
+    const board = getFlasherBoardConfig(profile);
+
+    expect(board.timeout).toBe(10000);
+    expect(board.resetDelayMs).toBe(500);
+    expect(board.signature).toEqual(BOARDS['arduino-mega2560'].signature);
   });
 });

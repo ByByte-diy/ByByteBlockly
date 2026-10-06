@@ -15,6 +15,8 @@
 |---------|---------|
 | Sync failed / timeout | Перевірте USB-кабель (data, не charge-only); закрийте Serial Monitor в Arduino IDE |
 | Nano не відповідає | Спробуйте **New** ↔ **Old** bootloader у списку плат |
+| Mega `Signature mismatch … got [0x00, 0x00, 0x00]` | Wiring bootloader — fixed in app (skip broken signature parse); оновіть dev server |
+| Mega `command 0x4 failed, status=0xc0` | Wiring bootloader не підтримує SET_DEVICE_DESCRIPTOR — fixed in app |
 | Upload на wrong device | Переконайтесь, що обрано правильний COM у діалозі Chrome |
 | `setSignals` / `port.open is not a function` | Regression — див. transport adapter docs; не wrap native SerialPort |
 
@@ -23,7 +25,7 @@
 | Симптом | Рішення |
 |---------|---------|
 | stock npm manifest | `npm run prepare:wasm-avr`, restart dev server |
-| Unsupported board | Web compile лише AVR 328p; Mega/ESP — Electron |
+| Unsupported board | Web compile: AVR 328p + Mega; ESP — Electron |
 | Out of flash | Спростити sketch; WASM target = Uno/Nano flash size |
 
 ## Upload-only без compile

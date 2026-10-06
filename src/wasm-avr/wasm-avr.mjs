@@ -2,33 +2,54 @@
 /**
  * WASM AVR asset pipeline entry point.
  *
- *   node src/wasm-avr/wasm-avr.mjs              # prepare (default)
+ *   node src/wasm-avr/wasm-avr.mjs              # prepare 328p (default)
  *   node src/wasm-avr/wasm-avr.mjs prepare
+ *   node src/wasm-avr/wasm-avr.mjs prepare mega
+ *   node src/wasm-avr/wasm-avr.mjs prepare all   # 328p + Mega
  *   node src/wasm-avr/wasm-avr.mjs verify w5
  *   node src/wasm-avr/wasm-avr.mjs verify all
+ *   node src/wasm-avr/wasm-avr.mjs verify mega
+ *   node src/wasm-avr/wasm-avr.mjs verify mega-w7
  *   node src/wasm-avr/wasm-avr.mjs sync w6
  */
 import { generateW5Catalog } from './generate-w5-catalog.mjs';
 import { syncLibraries } from './sync-libraries.mjs';
 import { VERIFY_WAVES, verifyWave } from './verify-wave.mjs';
+import { verifyMega } from './verify-mega.mjs';
 
 function usage() {
   console.log(`Usage: node src/wasm-avr/wasm-avr.mjs [command] [args]
 
 Commands:
-  prepare              Build headers + .o assets (default)
-  verify <w1|…|w7|all> Run fixture link tests for a wave
+  prepare [328p|mega|all]  Build WASM assets (328p default; all = 328p + Mega)
+  verify <w1|…|w7|all|mega|mega-w7|…> 328p wave tests, or Mega (mega / mega-w1 / mega-w4 / mega-w7 / mega-all)
   sync <w5|w6|w7>      Copy vendored libraries from userlibs
 
 Examples:
   npm run prepare:wasm-avr
+  npm run prepare:wasm-avr -- prepare mega
   npm run prepare:wasm-avr -- verify w5
-  npm run prepare:wasm-avr -- verify all
+  npm run prepare:wasm-avr -- verify mega
   npm run prepare:wasm-avr -- sync w6
 `);
 }
 
-async function runPrepare() {
+async function runPrepare(target) {
+  const key = target?.toLowerCase();
+  if (key === 'all') {
+    await import('./prepare-bybyte-assets.mjs');
+    await import('./prepare-mega-assets.mjs');
+    return;
+  }
+  if (key === 'mega') {
+    await import('./prepare-mega-assets.mjs');
+    return;
+  }
+  if (key && key !== '328p' && key !== 'uno') {
+    console.error(`Unknown prepare target: ${target}`);
+    usage();
+    process.exit(1);
+  }
   await import('./prepare-bybyte-assets.mjs');
 }
 
@@ -37,6 +58,11 @@ async function runVerify(target) {
   if (!key || key === 'help' || key === '-h' || key === '--help') {
     usage();
     return 1;
+  }
+
+  if (key === 'mega' || key.startsWith('mega-')) {
+    const megaWave = key === 'mega' ? 'mega' : key.slice('mega-'.length);
+    return verifyMega(megaWave);
   }
 
   if (key === 'all') {
@@ -83,7 +109,7 @@ try {
   let exitCode = 0;
   switch (command) {
     case 'prepare':
-      await runPrepare();
+      await runPrepare(arg);
       break;
     case 'verify':
       exitCode = await runVerify(arg);

@@ -63,9 +63,9 @@ describe('WebSerialPortRegistry', () => {
     expect(registry.resolve(WEB_SERIAL_SELECTED_PATH)).toBe(port);
   });
 
-  it('builds friendly USB names from port info', () => {
+  it('builds friendly labels from VID/PID when known', () => {
     const infos = registry.syncAuthorizedPorts([mockPort('arduino')]);
-    expect(infos[0].friendlyName).toContain('USB Device');
+    expect(infos[0].friendlyName).toBe('Arduino Uno #1');
     expect(infos[0].vendorId).toBe(String(0x2341));
   });
 });

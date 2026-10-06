@@ -8,7 +8,7 @@
 | `modules/asset-cache/services/asset-cache.service.ts` | IDB + LRU store |
 | `modules/asset-cache/services/asset-cache-registry.service.ts` | Manifest validate / invalidate |
 | `modules/asset-cache/services/asset-cache-manifest.service.ts` | Load cache-manifest.json |
-| `platform/web/services/wasm-asset.provider.ts` | WASM bundle consumer |
+| `modules/wasm-compiler/services/wasm-asset.provider.ts` | WASM bundle consumer |
 
 ## Compile & Upload
 
@@ -16,8 +16,11 @@
 |------|------|
 | `modules/upload/services/upload-manager.service.ts` | Оркестратор compile/upload |
 | `modules/upload/components/upload-panel/*` | UI кнопки, progress, build log |
-| `platform/web/services/web-avr-wasm-compiler.service.ts` | WASM ICompiler |
-| `platform/web/services/web-avr-wasm.util.ts` | Sketch prep, manifest, sensors |
+| `modules/wasm-compiler/services/wasm-compiler.service.ts` | WASM ICompiler facade |
+| `modules/wasm-compiler/strategies/*` | AVR 328p / Mega compile strategies |
+| `modules/wasm-compiler/utils/sketch-preprocessor.ts` | Sketch prep, manifest, sensors |
+| `platform/web/services/browser-wasm-runtime.port.ts` | Chromium WasmRuntimePort |
+| `platform/web/services/wasm-board-prefetch.service.ts` | Lazy prefetch on board select |
 | `platform/web/services/web-uploader.service.ts` | Web IUploader |
 | `platform/web/utils/web-avr-stk500.util.ts` | flashAvrHex, Nano retry |
 | `platform/web/utils/web-serial-port-adapter.util.ts` | Flasher transport + setSignals |

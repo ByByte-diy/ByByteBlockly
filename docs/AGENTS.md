@@ -12,24 +12,31 @@ Angular 17 + Blockly 13. Два runtime: **Web** (`WebPlatformModule`) і **Elec
 src/app/
   core/interfaces/          # ICompiler, IUploader, …
   core/models/              # CompileResult, UploadOptions, …
-  platform/web/             # WASM compile, Web Serial upload
-  platform/electron/        # arduino-cli compile/upload
+  core/utils/               # i18n-error, serial-port-display, …
+  modules/wasm-compiler/    # Portable WASM compile (strategies, assets, registry)
   modules/upload/           # UploadManagerService, UI panel
   modules/device/           # Board/port selection
   modules/blockly/          # Blocks, toolbox, generators
   modules/code-editor/      # Generated / edited Arduino code
+  modules/asset-cache/      # IndexedDB + cache-manifest
+  platform/web/             # Browser wiring: Serial, upload, WasmRuntimePort
+  platform/electron/        # arduino-cli compile/upload
+src/wasm-avr/               # Prepare scripts, libraries.json, fixtures
 ```
 
 ## Compile + Upload (web, AVR)
 
 1. `UploadManagerService` — оркестратор (compile / upload / compile+upload).
-2. `WebAvrWasmCompilerService` — `ICompiler`, WASM, FQBN atmega328p (Uno/Nano).
-3. `WebUploaderService` — `IUploader`, STK500v1 через `webserial-flasher`.
-4. `WebSerialService` + `WebSerialPortRegistry` — порти та user gesture для `requestPort()`.
+2. `WasmCompilerService` (`@modules/wasm-compiler`) — facade `ICompiler`; FQBN → strategy:
+   - `Avr328pWasmCompilerStrategy` — Uno/Nano (horang)
+   - `AvrMegaWasmCompilerStrategy` — Mega 2560 (wasm-toolchains)
+3. `WebPlatformModule` — `WasmCompilerModule.forRoot(BrowserWasmRuntimePort)` + `WasmBoardPrefetchService`.
+4. `WebUploaderService` — `IUploader`, STK500v1/v2 через `webserial-flasher` (Uno/Nano/Mega).
+5. `WebSerialService` + `WebSerialPortRegistry` — порти та user gesture для `requestPort()`.
 
 **Критично:** не fallback на default port у upload; не Proxy навколо native `SerialPort`; `dtr`→`dataTerminalReady` у transport adapter.
 
-Документація: [compile-upload/README.md](./compile-upload/README.md).
+Документація: [compile-upload/README.md](./compile-upload/README.md), [architecture/platform-adapters.md](./architecture/platform-adapters.md).
 
 ## Blockly changes
 
@@ -40,7 +47,7 @@ src/app/
 - Мінімальний diff, існуючі конвенції.
 - Не commit без явного запиту.
 - Відповіді користувачу — **українською**.
-- Unit tests: `npm test` (Vitest).
+- Unit tests: `npm test` (Vitest); Blockly CI: `.github/workflows/blockly-tests.yml` (Node 22).
 
 ## Harness
 

@@ -16,6 +16,7 @@ import { ISerial } from '@core/interfaces';
 import { DeviceManagerService } from '../../services/device-manager.service';
 import { IBoard } from '@app/modules/device/types/device-board.type';
 import { ISerialPortInfo } from '@app/core/models/serial-port.model';
+import { formatSerialPortLabel } from '@core/utils/serial-port-display.util';
 import {
   WEB_SERIAL_REQUEST_NEW_PATH,
   isConnectableWebSerialPath,
@@ -58,6 +59,10 @@ export class DeviceSelectorComponent implements OnInit, AfterViewInit, OnDestroy
 
   get realPorts(): ISerialPortInfo[] {
     return this.ports.filter((port) => isConnectableWebSerialPath(port.path));
+  }
+
+  portLabel(port: ISerialPortInfo): string {
+    return formatSerialPortLabel(port);
   }
 
   toggle(event: MouseEvent): void {

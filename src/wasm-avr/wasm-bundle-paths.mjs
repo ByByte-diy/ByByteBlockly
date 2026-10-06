@@ -7,6 +7,9 @@ import { join } from 'node:path';
 export const WASM_AVR_328P_BUNDLE_ID = 'wasm-avr-328p';
 export const WASM_FAMILY_AVR_328P = 'avr-328p';
 
+export const WASM_AVR_MEGA_BUNDLE_ID = 'wasm-avr-mega';
+export const WASM_FAMILY_AVR_MEGA = 'avr-mega';
+
 /** URL-safe deploy directory name derived from bundle version string. */
 export function sanitizeDeployVersion(version) {
   return `v${version.replace(/\+/g, '-').replace(/[^a-zA-Z0-9._-]/g, '_')}`;
@@ -40,6 +43,23 @@ export async function resolveAvr328pBundleDir(rootDir) {
   if (!entry?.baseUrl) {
     throw new Error(
       'wasm-avr-328p missing from cache-manifest.json — run npm run prepare:wasm-avr',
+    );
+  }
+  return bundleDirFromBaseUrl(assetsDir, entry.baseUrl);
+}
+
+/**
+ * Resolve prepared AVR Mega bundle directory from cache-manifest.json.
+ * @param {string} rootDir - repo root
+ */
+export async function resolveAvrMegaBundleDir(rootDir) {
+  const assetsDir = join(rootDir, 'src/assets');
+  const manifestPath = join(assetsDir, 'cache-manifest.json');
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+  const entry = manifest.bundles?.[WASM_AVR_MEGA_BUNDLE_ID];
+  if (!entry?.baseUrl) {
+    throw new Error(
+      'wasm-avr-mega missing from cache-manifest.json — run npm run prepare:wasm-avr -- prepare mega',
     );
   }
   return bundleDirFromBaseUrl(assetsDir, entry.baseUrl);

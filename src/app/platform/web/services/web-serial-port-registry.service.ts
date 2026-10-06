@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ISerialPortInfo } from '@core/models';
+import { formatWebSerialDeviceLabel } from '@core/utils/serial-port-display.util';
 import {
   WEB_SERIAL_SELECTED_PATH,
   webSerialPathForIndex,
@@ -144,9 +145,7 @@ export class WebSerialPortRegistry {
 
     return {
       path,
-      friendlyName: vendorId
-        ? `USB Device (${vendorId}:${productId ?? '?'})`
-        : `Web Serial Device ${index + 1}`,
+      friendlyName: formatWebSerialDeviceLabel(index, vendorId, productId),
       vendorId: vendorId != null ? String(vendorId) : undefined,
       productId: productId != null ? String(productId) : undefined,
     };

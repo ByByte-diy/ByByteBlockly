@@ -4,8 +4,10 @@ import { ICompiler, IUploader } from '@core/interfaces';
 import { CompileResult, UploadResult } from '@core/models';
 import { DeviceManagerService } from '../../device/services/device-manager.service';
 import { CodeEditorService } from '../../code-editor/services/code-editor.service';
-import { formatBuildLog } from '../utils/build-log.util';
+import { COMPILE_CODE_EMPTY_I18N } from '@core/constants/compile-i18n.const';
 import { clampProgressPercent } from '@core/utils/compile-progress.util';
+import { isUiI18nKey, resolveUiErrorKey, resolveUiErrorMessage } from '@core/utils/i18n-error.util';
+import { formatBuildLog } from '../utils/build-log.util';
 
 /**
  * Status of the upload process
@@ -151,7 +153,7 @@ export class UploadManagerService {
       
       return uploadResult.success;
     } catch (err: unknown) {
-      this.updateProgress(UploadStatus.ERROR, this.resolveErrorKey(err, 'ui.upload_error_short'));
+      this.updateProgress(UploadStatus.ERROR, resolveUiErrorKey(err, 'ui.upload_error_short'));
       return false;
     }
   }
@@ -169,7 +171,11 @@ export class UploadManagerService {
         output: '',
         error: message,
       });
-      this.updateProgress(UploadStatus.ERROR, 'ui.compile_error_short', this.lastProgressPercent);
+      this.updateProgress(
+        UploadStatus.ERROR,
+        resolveUiErrorKey(err, 'ui.compile_error_short'),
+        this.lastProgressPercent,
+      );
       throw err;
     }
   }
@@ -183,7 +189,7 @@ export class UploadManagerService {
 
     const code = this.codeEditorService.getEffectiveCode();
     if (!code) {
-      throw new Error('Code is empty or not generated');
+      throw new Error(COMPILE_CODE_EMPTY_I18N);
     }
 
     // Compile
@@ -207,7 +213,11 @@ export class UploadManagerService {
           if (result.success) {
             this.updateProgress(UploadStatus.SUCCESS, 'ui.compile_success', 100);
           } else {
-            this.updateProgress(UploadStatus.ERROR, 'ui.compile_error_short', this.lastProgressPercent);
+            this.updateProgress(
+              UploadStatus.ERROR,
+              resolveUiErrorMessage(result.error, 'ui.compile_error_short'),
+              this.lastProgressPercent,
+            );
           }
 
           resolve(result);
@@ -256,7 +266,7 @@ export class UploadManagerService {
               this.appendBuildLog(`\n--- Upload ---\n${result.output.trim()}`);
             }
           } else {
-            const message = this.resolveUploadErrorMessage(result);
+            const message = resolveUiErrorMessage(result.error, 'ui.upload_error_short');
             this.updateProgress(UploadStatus.ERROR, message, this.lastProgressPercent);
             this.appendBuildLog(this.formatUploadFailureLog(result));
           }
@@ -266,7 +276,7 @@ export class UploadManagerService {
         error: (err) => {
           this.updateProgress(
             UploadStatus.ERROR,
-            this.resolveErrorKey(err, 'ui.upload_error_short'),
+            resolveUiErrorKey(err, 'ui.upload_error_short'),
             this.lastProgressPercent,
           );
           reject(err);
@@ -311,34 +321,11 @@ export class UploadManagerService {
     });
   }
 
-  private resolveUploadErrorMessage(result: UploadResult): string {
-    if (result.error?.startsWith('ui.')) {
-      return result.error;
-    }
-    if (result.error) {
-      return result.error.split('\n')[0];
-    }
-    return 'ui.upload_error_short';
-  }
-
-  private resolveErrorKey(err: unknown, fallback: string): string {
-    if (err && typeof err === 'object') {
-      const record = err as { message?: string; i18nKey?: string };
-      if (typeof record.i18nKey === 'string' && record.i18nKey.startsWith('ui.')) {
-        return record.i18nKey;
-      }
-      if (typeof record.message === 'string' && record.message.startsWith('ui.')) {
-        return record.message;
-      }
-    }
-    return fallback;
-  }
-
   private formatUploadFailureLog(result: UploadResult): string {
     const parts = ['--- Upload failed ---'];
     if (result.output?.trim()) {
       parts.push(result.output.trim());
-    } else if (result.error && !result.error.startsWith('ui.')) {
+    } else if (result.error && !isUiI18nKey(result.error)) {
       parts.push(result.error);
     }
     return parts.join('\n');

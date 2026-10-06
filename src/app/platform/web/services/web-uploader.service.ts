@@ -8,6 +8,7 @@ import {
   resolveAvrUploadProfile,
 } from '../utils/avr-upload-profile.util';
 import {
+  FlashAvrUploadError,
   flashAvrHex,
   mapBootloadStatusToI18n,
   mapUploadPhasePercent,
@@ -181,6 +182,10 @@ export class WebUploaderService implements IUploader {
 
     if (err instanceof WebSerialRequestError) {
       return { success: false, output: '', error: err.i18nKey };
+    }
+
+    if (err instanceof FlashAvrUploadError) {
+      return { success: false, output: err.message, error: err.i18nKey };
     }
 
     const message = err instanceof Error ? err.message : String(err);

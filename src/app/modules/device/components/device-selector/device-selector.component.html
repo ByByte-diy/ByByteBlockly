@@ -34,7 +34,7 @@
             >
               @for (port of realPorts; track port.path) {
                 <option [ngValue]="port.path">
-                  {{ port.friendlyName || port.path }}
+                  {{ portLabel(port) }}
                 </option>
               }
             </select>

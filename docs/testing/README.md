@@ -12,7 +12,7 @@ npm test
 |------|---------|
 | `upload-manager.service.spec.ts` | Orchestration |
 | `web-avr-stk500.util.spec.ts` | STK500, Nano fallback |
-| `web-avr-wasm.util.spec.ts` | WASM helpers |
+| `modules/wasm-compiler/__tests__/*` | WASM compiler (strategies, resolver, prefetch) |
 | `web-serial-port-registry.service.spec.ts` | Port registry |
 | `web-serial-port-adapter.util.spec.ts` | Transport adapter |
 | `avr-upload-profile.util.spec.ts` | Board profiles |
@@ -23,6 +23,7 @@ npm test
 - [ ] Connect device (user gesture)
 - [ ] Uno: compile + upload
 - [ ] Nano New: compile + upload
+- [ ] Mega / ByByte Mega: compile + upload (STK500v2)
 - [ ] Upload-only after compile
 - [ ] Error without port selected
 - [ ] Serial Monitor closed during upload

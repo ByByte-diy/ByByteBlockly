@@ -1,8 +1,15 @@
-import { STK500, STK500SyncError } from 'webserial-flasher';
+import {
+  STK500,
+  STK500SignatureMismatchError,
+  STK500SyncError,
+} from 'webserial-flasher';
 import { AvrUploadProfile } from '../constants/avr-upload-profiles.const';
 import { WebSerialPortHandle } from '../services/web-serial-port-registry.service';
 import { getFlasherBoardConfig } from './avr-upload-profile.util';
+import { createStk500v2Programmer } from './stk500v2-wiring.util';
 import { createFlasherWebSerialTransport } from './web-serial-port-adapter.util';
+
+export { isWiringStk500v2Board } from './stk500v2-wiring.util';
 
 export interface FlashAvrHexOptions {
   port: WebSerialPortHandle;
@@ -14,6 +21,17 @@ export interface FlashAvrHexOptions {
 
 export interface FlashAvrHexResult {
   output: string;
+}
+
+/** Upload failure with UI i18n key (technical detail may remain in message / build log). */
+export class FlashAvrUploadError extends Error {
+  readonly i18nKey: string;
+
+  constructor(i18nKey: string, detail?: string) {
+    super(detail ?? i18nKey);
+    this.name = 'FlashAvrUploadError';
+    this.i18nKey = i18nKey;
+  }
 }
 
 const NANO_BOARD_IDS = new Set(['nano', 'nano_new', 'nanooptiboot', 'bybyte_nano']);
@@ -43,6 +61,10 @@ export function mapUploadPhasePercent(stkPercent: number): number {
 
 export function isStk500SyncFailure(err: unknown): boolean {
   return err instanceof STK500SyncError;
+}
+
+export function isStk500SignatureMismatch(err: unknown): boolean {
+  return err instanceof STK500SignatureMismatchError;
 }
 
 /** Alternate Nano bootloader baud when sync fails (old 57600 ↔ new 115200). */
@@ -117,25 +139,34 @@ async function attemptFlash(options: FlashAvrHexOptions): Promise<FlashAvrHexRes
   const logs: string[] = [];
   const board = getFlasherBoardConfig(options.profile);
   logs.push(
-    `Upload profile: ${options.profile.boardId} @ ${board.baudRate} baud (${options.profile.flasherBoardKey})`,
+    `Upload profile: ${options.profile.boardId} @ ${board.baudRate} baud ` +
+      `(${options.profile.protocol}, ${options.profile.flasherBoardKey})`,
   );
 
-  await triggerBootloaderReset(options.port);
+  if (options.profile.protocol === 'stk500v1') {
+    await triggerBootloaderReset(options.port);
+  } else {
+    await triggerMegaBootloaderReset(options.port);
+  }
 
   const transport = createFlasherWebSerialTransport(options.port);
 
   try {
     await transport.open(board.baudRate);
 
-    const stk = new STK500(transport, board, {
-      retry: { syncAttempts: 4, retryDelayMs: 250 },
-      logger: (level, message) => {
-        logs.push(`[${level}] ${message}`);
-        if (message.includes('sync attempt') || message.includes('resetDevice')) {
-          options.onProgress?.(5, message);
-        }
-      },
-    });
+    const logger = (level: string, message: string) => {
+      logs.push(`[${level}] ${message}`);
+      if (message.includes('sync attempt') || message.includes('resetDevice') || message.includes('Syncing')) {
+        options.onProgress?.(5, message);
+      }
+    };
+
+    const retry = { syncAttempts: options.profile.protocol === 'stk500v2' ? 5 : 4, retryDelayMs: 250 };
+
+    const stk =
+      options.profile.protocol === 'stk500v2'
+        ? createStk500v2Programmer(transport, board, { retry, logger }, options.profile.flasherBoardKey)
+        : new STK500(transport, board, { retry, logger });
 
     await stk.bootload(options.hexContent, (status, percentage) => {
       options.onProgress?.(percentage, status);
@@ -146,6 +177,33 @@ async function attemptFlash(options: FlashAvrHexOptions): Promise<FlashAvrHexRes
   } finally {
     await transport.close().catch(() => undefined);
   }
+}
+
+/**
+ * STK500v2 (Mega wiring bootloader): DTR reset @ 115200 before opening the flasher transport.
+ * Gives the bootloader time to start before sign-on (CH340 clones need a longer window).
+ */
+async function triggerMegaBootloaderReset(port: WebSerialPortHandle): Promise<void> {
+  if (port.readable || port.writable) {
+    await port.close().catch(() => undefined);
+  }
+
+  await port.open({
+    baudRate: 115200,
+    dataBits: 8,
+    stopBits: 1,
+    parity: 'none',
+  });
+
+  if (port.setSignals) {
+    await port.setSignals({ dataTerminalReady: false, requestToSend: false }).catch(() => undefined);
+    await delay(250);
+    await port.setSignals({ dataTerminalReady: true, requestToSend: true }).catch(() => undefined);
+  }
+
+  await delay(750);
+  await port.close().catch(() => undefined);
+  await delay(200);
 }
 
 /** Classic 1200-baud reset — helps CH340 / clone Nano boards enter bootloader. */
@@ -181,9 +239,7 @@ function enrichFlashError(err: unknown, attemptIndex: number, totalAttempts: num
   const base = err instanceof Error ? err : new Error(String(err));
 
   if (totalAttempts > 1 && attemptIndex === totalAttempts - 1 && isStk500SyncFailure(err)) {
-    return new Error(
-      `${base.message}\nTried both Nano bootloader speeds (57600 and 115200). Pick the matching board profile or check the USB cable.`,
-    );
+    throw new FlashAvrUploadError('ui.upload_nano_baud_exhausted', base.message);
   }
 
   return base;

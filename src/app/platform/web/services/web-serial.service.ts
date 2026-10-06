@@ -16,6 +16,7 @@ import {
   mapWebSerialRequestError,
 } from '../utils/web-serial-request-error.util';
 import { isSecureContextForWebSerial } from '../utils/web-serial-support.util';
+import { formatWebSerialDeviceLabel } from '@core/utils/serial-port-display.util';
 
 /** Subset of `navigator.serial` used by this service (DOM lib may omit Web Serial types). */
 interface NavigatorSerialApi {
@@ -130,11 +131,13 @@ export class WebSerialService implements ISerial {
 
   private toPortInfo(port: WebSerialPortHandle): ISerialPortInfo {
     const info = port.getInfo?.() ?? {};
+    const canonicalPath = this.portRegistry.findPathForPort(port) ?? WEB_SERIAL_SELECTED_PATH;
+    const indexMatch = /^web-serial-(\d+)$/.exec(canonicalPath);
+    const deviceIndex = indexMatch ? Number(indexMatch[1]) : 0;
+
     return {
-      path: WEB_SERIAL_SELECTED_PATH,
-      friendlyName: info.usbProductId
-        ? `USB Device (${info.usbVendorId}:${info.usbProductId})`
-        : 'Web Serial Device',
+      path: canonicalPath,
+      friendlyName: formatWebSerialDeviceLabel(deviceIndex, info.usbVendorId, info.usbProductId),
       vendorId: info.usbVendorId != null ? String(info.usbVendorId) : undefined,
       productId: info.usbProductId != null ? String(info.usbProductId) : undefined,
     };

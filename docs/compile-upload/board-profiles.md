@@ -11,6 +11,8 @@
 - `nano_new` (New Bootloader, 115200)
 - `nanooptiboot`
 - `bybyte_nano`
+- `mega`
+- `bybyte_mega`
 
 ## Таблиця профілів
 
@@ -21,6 +23,8 @@
 | nano_new | arduino:avr:nano:cpu=atmega328 | arduino-nano | 115200 | stk500v1 |
 | nanooptiboot | arduino:avr:nano | arduino-nano | 115200 | stk500v1 |
 | bybyte_nano | arduino:avr:nano | arduino-nano | 115200 | stk500v1 |
+| mega | arduino:avr:mega | arduino-mega2560 | 115200 | stk500v2 |
+| bybyte_mega | arduino:avr:mega | arduino-mega2560 | 115200 | stk500v2 |
 
 ## Resolve logic
 
@@ -38,7 +42,7 @@
 |-------|-------------------|------------|
 | Uno | ✅ | ✅ |
 | Nano (old/new) | ✅ | ✅ |
-| Mega | ❌ | ❌ (STK500v2 — planned) |
+| Mega / ByByte Mega | ✅ (WASM) | ✅ STK500v2 @ 115200 |
 | ESP8266/32 | ❌ | ❌ |
 
 ## Користувачеві: який Nano обрати?

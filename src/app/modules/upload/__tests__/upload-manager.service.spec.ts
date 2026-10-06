@@ -79,16 +79,38 @@ describe('UploadManagerService', () => {
     );
     expect(progressEvents).toContain(55);
     expect(progressEvents).toContain(100);
-    expect(await firstValueFrom(service.buildLog$)).toBe('ok');
+    expect(await firstValueFrom(service.buildLog$)).toContain('ok');
   });
 
   it('fails when effective code is empty', async () => {
     codeEditorService.getEffectiveCode.mockReturnValue('');
 
     const compilePromise = firstValueFrom(service.compileOnly());
-    const expectation = expect(compilePromise).rejects.toThrow('Code is empty or not generated');
+    const expectation = expect(compilePromise).rejects.toThrow('ui.compile_code_empty');
     await expectation;
     expect(compiler.compile).not.toHaveBeenCalled();
+  });
+
+  it('shows i18n key when compiler returns empty-code failure', async () => {
+    compiler.compile.mockReturnValue(
+      of({
+        success: false,
+        output: '',
+        error: 'ui.compile_code_empty',
+      }),
+    );
+
+    let lastProgress: UploadProgress | undefined;
+    service.progress$.subscribe((event) => {
+      lastProgress = event;
+    });
+
+    const result = await firstValueFrom(service.compileOnly());
+
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('ui.compile_code_empty');
+    expect(lastProgress?.message).toBe('ui.compile_code_empty');
+    expect(await firstValueFrom(service.buildLog$)).toBe('');
   });
 
   it('reports compiler errors', async () => {

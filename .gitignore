@@ -17,6 +17,7 @@
 /dist
 /build
 /node_modules/
+/.cache/
 /src/assets/wasm-avr/
 .angular/
 *.log

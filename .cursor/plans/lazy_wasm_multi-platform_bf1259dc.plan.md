@@ -21,11 +21,11 @@ todos:
     content: "F2: assets/wasm/{avr-328p,...}, content-addressed paths, Cloudflare cache rules, prefetch on board select"
     status: completed
   - id: f3-mega-spike
-    content: "F3: spike wasm-toolchains Mega (Blink), prepare-mega-assets.mjs, перезбір ByByte .o для avr6"
-    status: pending
+    content: "F3: spike + prepare-mega-assets.mjs ✅ (69 .o avr6)"
+    status: completed
   - id: f3-mega-routing
-    content: "F3: WebWasmCompilerService facade + Mega FQBN + verify mega fixtures"
-    status: pending
+    content: "F3: WebWasmCompilerService facade + Mega FQBN + browser index.js ✅; verify mega fixtures ✅"
+    status: completed
   - id: f4-esp32-spike
     content: "F4: spike ESP32 bundle, prepare-esp32-assets.mjs, esp32 library catalog з generators scan"
     status: pending
@@ -437,19 +437,24 @@ CI (optional): `wrangler pages deploy` / API purge manifest URL після relea
 
 **Мета:** web compile для `arduino:avr:mega:cpu=atmega2560` ([`bybyte.profiles.ts`](src/app/modules/blockly/platforms/bybyte/bybyte.profiles.ts)).
 
-### 3.1 Spike wasm-toolchains AVR Mega
+### 3.1 Spike wasm-toolchains AVR Mega ✅
 
-Локально (one-off, не в CI спочатку):
+Виконано (2026-03-06):
 
-1. Клон [wasm-toolchains](https://github.com/begeistert/wasm-toolchains) або взяти готовий `avrwasm.tar` з release
-2. `node tools/arduino-wasm/build-sketch.cjs … mega examples/sketches/Blink.ino out.hex`
-3. Документ spike: [`docs/compile-upload/wasm-avr-assets.md`](docs/compile-upload/wasm-avr-assets.md) — розділ Mega
+1. `avrwasm.tar` (release `avr-v1.0.0`, sha256 `639a7459…`) → `.cache/avrwasm-dist/`
+2. Harness: wasm-toolchains tag `avr-v1.0.0`; Node compile via `compile-mega-library-object.cjs` + `wasm-toolchains-dist.cjs`
+3. Документ: [`docs/compile-upload/wasm-avr-assets.md`](docs/compile-upload/wasm-avr-assets.md) — розділ Mega
 
-**Рішення після spike:** або vendor AVR bundle з wasm-toolchains (self-hosted extract), або розширити horang-corp recipe для `avr6` — рекомендація: **vendor wasm-toolchains AVR dist** (Mega вже в `recipe.js`: `atmega2560`, `avr6`).
+Нюанси spike:
 
-### 3.2 Prepare pipeline Mega
+- Web tar кладе WASM у `tools/`; Node harness очікує `cc1plus.js` у корені dist — spike-скрипт flatten-ить.
+- Windows: шляхи MEMFS мають бути з `/` (патч у `wasm-toolchains-dist.cjs`).
 
-Новий [`src/wasm-avr/prepare-mega-assets.mjs`](src/wasm-avr/prepare-mega-assets.mjs):
+**Рішення:** **vendor wasm-toolchains AVR dist** для Mega (`atmega2560`, `avr6` у `recipe.js`). Horang не розширюємо.
+
+### 3.2 Prepare pipeline Mega ✅
+
+[`src/wasm-avr/prepare-mega-assets.mjs`](src/wasm-avr/prepare-mega-assets.mjs) (`npm run prepare:wasm-avr -- prepare mega`):
 
 - Input: wasm-toolchains `dist-web/` (AVR, multilib avr6)
 - Output: `src/assets/wasm/avr-mega/`
@@ -484,10 +489,10 @@ compile(options) {
 Розширити FQBN:
 - `arduino:avr:mega`, `arduino:avr:mega:cpu=atmega2560`
 
-### 3.5 Verify Mega
+### 3.5 Verify Mega ✅
 
-- Fixtures: Blink, Servo, Stepper на Mega
-- `npm run prepare:wasm-avr -- verify mega-w4` (новий verify script)
+- Fixtures: Blink, Otto (W1), Stepper (W4), Quad (W7) — `verify-mega.mjs` + `verify-mega-build.cjs`
+- `npm run prepare:wasm-avr -- verify mega` або `npm run prepare:wasm-avr -- verify mega-w7`
 
 ### Критерій готовності
 

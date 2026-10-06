@@ -1,5 +1,5 @@
-/** STK500v1 upload protocol (Arduino Uno/Nano and compatible 328P boards). */
-export type AvrUploadProtocol = 'stk500v1';
+/** AVR bootloader protocols supported in web upload. */
+export type AvrUploadProtocol = 'stk500v1' | 'stk500v2';
 
 /**
  * AVR upload profile for webserial-flasher.
@@ -16,13 +16,15 @@ export interface AvrUploadProfile {
   webSupported: boolean;
 }
 
-/** Board IDs with web STK500v1 upload support (phase 1 scope). */
+/** Board IDs with web AVR upload support. */
 export const WEB_AVR_UPLOAD_BOARD_IDS = new Set<string>([
   'uno',
   'nano',
   'nano_new',
   'nanooptiboot',
   'bybyte_nano',
+  'mega',
+  'bybyte_mega',
 ]);
 
 /**
@@ -70,6 +72,22 @@ export const AVR_UPLOAD_PROFILES_BY_BOARD_ID: Readonly<Record<string, AvrUploadP
     baudRate: 115200,
     webSupported: true,
   },
+  mega: {
+    boardId: 'mega',
+    fqbn: 'arduino:avr:mega',
+    protocol: 'stk500v2',
+    flasherBoardKey: 'arduino-mega2560',
+    baudRate: 115200,
+    webSupported: true,
+  },
+  bybyte_mega: {
+    boardId: 'bybyte_mega',
+    fqbn: 'arduino:avr:mega',
+    protocol: 'stk500v2',
+    flasherBoardKey: 'arduino-mega2560',
+    baudRate: 115200,
+    webSupported: true,
+  },
 };
 
 /** FQBN suffix overrides when board id is unknown. */
@@ -84,6 +102,12 @@ export const AVR_UPLOAD_PROFILES_BY_FQBN: Readonly<Record<string, Partial<AvrUpl
     flasherBoardKey: 'arduino-nano',
     baudRate: 115200,
     protocol: 'stk500v1',
+    webSupported: true,
+  },
+  'arduino:avr:mega:cpu=atmega2560': {
+    flasherBoardKey: 'arduino-mega2560',
+    baudRate: 115200,
+    protocol: 'stk500v2',
     webSupported: true,
   },
 };

@@ -15,14 +15,18 @@ const LOAD_HEADERS = `async function loadHeaders(fs, manifest, timings, headerFi
   timings.headersFsMs = performance.now() - start;
 }`;
 
-const SELECTED_OBJECTS = `function selectedObjectPaths(manifest, sensors, bybyteObjects) {
-  return [
+const SELECTED_OBJECTS = `function uniqueObjectPaths(paths) {
+  return [...new Set(paths)];
+}
+
+function selectedObjectPaths(manifest, sensors, bybyteObjects) {
+  return uniqueObjectPaths([
     "/objects/core_abi.o",
     ...manifest.objectGroups.base,
     ...(bybyteObjects ?? manifest.objectGroups.bybyte ?? []),
     ...(sensors.has(SENSOR.OLED) ? manifest.objectGroups.oled : []),
     ...(sensors.has(SENSOR.TOF) ? manifest.objectGroups.tof : []),
-  ];
+  ]);
 }`;
 
 export function patchFirmwareBuilderSource(source) {
@@ -73,7 +77,7 @@ export function patchFirmwareBuilderSource(source) {
     );
   }
 
-  if (!out.includes('function selectedObjectPaths(manifest, sensors, bybyteObjects)')) {
+  if (!out.includes('function uniqueObjectPaths(paths)')) {
     out = out.replace(
       /function selectedObjectPaths\(manifest, sensors(?:, bybyteObjects)?\) \{\r?\n  return \[[\s\S]*?\];\r?\n\}/,
       SELECTED_OBJECTS,

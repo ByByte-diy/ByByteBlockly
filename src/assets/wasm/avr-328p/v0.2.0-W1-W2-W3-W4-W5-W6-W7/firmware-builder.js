@@ -177,14 +177,18 @@ async function loadHeaders(fs, manifest, timings, headerFiles) {
   timings.headersFsMs = performance.now() - start;
 }
 
+function uniqueObjectPaths(paths) {
+  return [...new Set(paths)];
+}
+
 function selectedObjectPaths(manifest, sensors, bybyteObjects) {
-  return [
+  return uniqueObjectPaths([
     "/objects/core_abi.o",
     ...manifest.objectGroups.base,
     ...(bybyteObjects ?? manifest.objectGroups.bybyte ?? []),
     ...(sensors.has(SENSOR.OLED) ? manifest.objectGroups.oled : []),
     ...(sensors.has(SENSOR.TOF) ? manifest.objectGroups.tof : []),
-  ];
+  ]);
 }
 
 async function loadLinkInputs(fs, manifest, objectPaths, firmwareObject, timings) {

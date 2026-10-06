@@ -1,0 +1,18 @@
+Using built-in specs.
+Reading specs from /opt/avr-native/lib/gcc/avr/15.2.0/device-specs/specs-atmega2560
+COLLECT_GCC=avr-gcc
+COLLECT_LTO_WRAPPER=/opt/avr-native/libexec/gcc/avr/15.2.0/lto-wrapper
+Target: avr
+Configured with: /src/configure --build=x86_64-pc-linux-gnu --host=x86_64-pc-linux-gnu --target=avr --prefix=/opt/avr-native --enable-languages=c,c++ --disable-bootstrap --disable-nls --disable-shared --disable-libssp --disable-libada --disable-libquadmath --disable-libgomp --disable-libvtv --disable-libstdcxx --with-dwarf2 MAKEINFO=missing
+Thread model: single
+Supported LTO compression algorithms: zlib
+gcc version 15.2.0 (GCC) 
+COMPILER_PATH=/opt/avr-native/libexec/gcc/avr/15.2.0/:/opt/avr-native/libexec/gcc/avr/15.2.0/:/opt/avr-native/libexec/gcc/avr/:/opt/avr-native/lib/gcc/avr/15.2.0/:/opt/avr-native/lib/gcc/avr/
+LIBRARY_PATH=/opt/avr-native/lib/gcc/avr/15.2.0/avr6/:/opt/avr-native/lib/gcc/avr/15.2.0/
+COLLECT_GCC_OPTIONS= '-v' '-o' '/tmp/probe.elf' '-mdouble=32' '-mlong-double=64' '-specs=device-specs/specs-atmega2560' '-mmcu=avr6' '-dumpdir' '/tmp/probe.elf.'
+ /opt/avr-native/libexec/gcc/avr/15.2.0/collect2 -plugin /opt/avr-native/libexec/gcc/avr/15.2.0/liblto_plugin.so -plugin-opt=/opt/avr-native/libexec/gcc/avr/15.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/cczYOrkH.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lm -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-latmega2560 -mavr6 -Tdata 0x800200 -o /tmp/probe.elf crtatmega2560.o -L/opt/avr-native/lib/gcc/avr/15.2.0/avr6 -L/opt/avr-native/lib/gcc/avr/15.2.0 /tmp/probe.o --start-group -lgcc -lm -lc -latmega2560 --end-group
+/usr/bin/avr-ld: cannot find crtatmega2560.o: No such file or directory
+/usr/bin/avr-ld: cannot find -lm
+/usr/bin/avr-ld: cannot find -lc
+/usr/bin/avr-ld: cannot find -latmega2560
+collect2: error: ld returned 1 exit status

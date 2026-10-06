@@ -1,0 +1,63 @@
+.simple-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 16px;
+}
+
+.simple-dialog {
+  width: min(420px, 100%);
+  background: var(--app-surface);
+  color: var(--app-text);
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  box-shadow: var(--app-header-panel-shadow);
+  padding: 20px 24px;
+  font-size: 14px;
+}
+
+.simple-dialog__title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.simple-dialog__message {
+  margin: 0 0 20px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.simple-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.simple-dialog__btn {
+  min-width: 88px;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  color: var(--app-text);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--app-hover, rgba(127, 127, 127, 0.12));
+  }
+}
+
+.simple-dialog__btn--primary {
+  font-weight: 600;
+}
+
+.simple-dialog__btn--secondary {
+  opacity: 0.9;
+}

@@ -27,14 +27,14 @@ todos:
     content: "F3: WebWasmCompilerService facade + Mega FQBN + browser index.js ✅; verify mega fixtures ✅"
     status: completed
   - id: f4-esp32-spike
-    content: "F4: spike ESP32 bundle, prepare-esp32-assets.mjs, esp32 library catalog з generators scan"
-    status: pending
+    content: "F4.1: spike ESP32 bundle ✅ — prepare-esp32-assets.mjs, verify:esp32 Blink, binContent, docs/wasm-esp32-spike.md"
+    status: completed
   - id: f4-esp32-compiler
-    content: "F4: WebEsp32WasmCompilerService + binContent у CompileResult + lazy ESP32 tiers"
-    status: pending
+    content: "F4.2–4.3 ✅ Esp32WasmCompilerStrategy, wasm-catalog tiers, prefetch esp32-only, libraries.esp.json"
+    status: completed
   - id: f5-ui-cache-gpl
     content: "F5: progress UI, cache status/settings, manual purge, GPL notices, test matrix incl. version bump"
-    status: pending
+    status: completed
 isProject: false
 ---
 

@@ -7,7 +7,9 @@
   --toolbox-category-min-height: 48px;
   --toolbox-row-min-height: 36px;
   --toolbox-category-gap: 10px;
-  --toolbox-div-min-width: 148px;
+  --toolbox-color-strip-gap: 8px;
+  --toolbox-div-min-width: 164px;
+  --toolbox-inline-padding: 8px;
   --toolbox-nested-extra-indent: 6px;
   --toolbox-chevron-size: 8px;
   --toolbox-icon-filter-selected: brightness(0) invert(1);
@@ -36,14 +38,14 @@
   /* Keep Blockly inline padding-left for nested depth (do not use padding shorthand). */
   padding-top: 6px !important;
   padding-bottom: 6px !important;
-  padding-right: 10px !important;
+  padding-right: 12px !important;
   white-space: normal !important;
   position: relative;
   overflow: hidden;
 }
 
 .blocklyToolboxCategory.toolbox-cat--collapsible {
-  padding-right: 6px !important;
+  padding-right: 12px !important;
 }
 
 .blocklyToolboxCategory.toolbox-cat--nested .blocklyToolboxCategoryLabel {
@@ -63,6 +65,7 @@
   width: 18px;
   height: 18px;
   margin-inline-start: auto;
+  margin-inline-end: 2px;
   flex-shrink: 0;
   opacity: 0.55;
   color: var(--toolbox-text);
@@ -140,6 +143,7 @@
   gap: var(--toolbox-category-gap) !important;
   width: 100%;
   min-height: var(--toolbox-row-min-height);
+  margin-inline-start: var(--toolbox-color-strip-gap) !important;
   position: relative;
   z-index: 1;
 }
@@ -198,6 +202,50 @@
 .blocklyToolboxDiv {
   min-width: var(--toolbox-div-min-width) !important;
   padding-top: 4px;
-  padding-inline: 2px;
+  padding-inline: 2px var(--toolbox-inline-padding);
   overflow-x: hidden;
+}
+
+/* Blockly v13 scrolls `.blocklyToolbox` (overflow-y: auto), not the outer div. */
+.blocklyToolbox {
+  padding-inline-end: var(--toolbox-inline-padding);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  &::-webkit-scrollbar-button,
+  &::-webkit-scrollbar-corner {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  &:hover {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--toolbox-text) 38%, transparent) transparent;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: color-mix(in srgb, var(--toolbox-text) 34%, transparent);
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background-clip: padding-box;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: color-mix(in srgb, var(--toolbox-text) 50%, transparent);
+      background-clip: padding-box;
+    }
+  }
 }

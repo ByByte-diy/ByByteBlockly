@@ -13,8 +13,7 @@ import { CompileResult } from '@core/models';
 import { UploadManagerService, UploadStatus } from '../../services/upload-manager.service';
 import { DeviceManagerService } from '../../../device/services/device-manager.service';
 import { BuildLogPanelService } from '../../services/build-log-panel.service';
-import { isValidDevicePortPath } from '@platform/web/constants/web-serial-paths.const';
-import { getWebSerialSupport } from '@platform/web/utils/web-serial-support.util';
+import { getWebSerialSupport, isValidDevicePortPath } from '@platform/web/web-serial';
 import {
   HEADER_POPOVER_IDS,
   HeaderPopoverService,
@@ -38,6 +37,7 @@ export class UploadPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   status: UploadStatus = UploadStatus.IDLE;
   message = 'ui.compile_ready';
+  messageParams: Record<string, string | number> = {};
   isProcessing = false;
   progressValue = 0;
   progressIndeterminate = false;
@@ -80,13 +80,16 @@ export class UploadPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       this.uploadManager.status$.subscribe((status) => {
         this.status = status;
         this.isProcessing =
-          status === UploadStatus.COMPILING || status === UploadStatus.UPLOADING;
+          status === UploadStatus.PREFETCHING ||
+          status === UploadStatus.COMPILING ||
+          status === UploadStatus.UPLOADING;
       }),
     );
 
     this.subscriptions.push(
       this.uploadManager.progress$.subscribe((progress) => {
         this.message = progress.message;
+        this.messageParams = progress.messageParams ?? {};
         this.syncProgressBar(progress.status, progress.progress);
         this.cdr.detectChanges();
       }),
@@ -108,13 +111,13 @@ export class UploadPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subscriptions.push(
       this.uploadManager.compileResult$.subscribe((result) => {
-        this.canUploadOnly = !!(result?.success && result.hexContent);
+        this.canUploadOnly = !!(result?.success && (result.hexContent || result.binContent));
         this.cdr.detectChanges();
       }),
     );
 
     const lastResult = this.uploadManager.getLastCompileResult();
-    this.canUploadOnly = !!(lastResult?.success && lastResult.hexContent);
+    this.canUploadOnly = !!(lastResult?.success && (lastResult.hexContent || lastResult.binContent));
   }
 
   ngOnDestroy(): void {
@@ -227,7 +230,10 @@ export class UploadPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private syncProgressBar(status: UploadStatus, progress?: number): void {
-    const active = status === UploadStatus.COMPILING || status === UploadStatus.UPLOADING;
+    const active =
+      status === UploadStatus.PREFETCHING ||
+      status === UploadStatus.COMPILING ||
+      status === UploadStatus.UPLOADING;
     this.showProgressBar = active;
 
     if (!active) {
@@ -259,6 +265,7 @@ export class UploadPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         return 'header-status-dot--success';
       case UploadStatus.ERROR:
         return 'header-status-dot--error';
+      case UploadStatus.PREFETCHING:
       case UploadStatus.COMPILING:
       case UploadStatus.UPLOADING:
         return 'header-status-dot--processing';
@@ -273,6 +280,7 @@ export class UploadPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         return 'header-status-bar--success';
       case UploadStatus.ERROR:
         return 'header-status-bar--error';
+      case UploadStatus.PREFETCHING:
       case UploadStatus.COMPILING:
       case UploadStatus.UPLOADING:
         return 'header-status-bar--processing';

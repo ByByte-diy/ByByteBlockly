@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { WASM_AVR_MEGA_COMPILER } from '../constants/wasm-compiler-messages.const';
+import type { AvrWasmFamily } from '../constants/wasm-family.types';
 import { WasmRuntimePort } from '../ports/wasm-runtime.port';
 import { WasmMegaAssetProvider } from '../services/wasm-mega-asset.provider';
 import {
   AvrWasmCompilerStrategyBase,
-  WasmAvrFamily,
   WasmCompileInvokeArgs,
   WasmSelectiveLoad,
 } from './avr-wasm-compiler.strategy.base';
@@ -12,7 +12,7 @@ import {
 /** WASM compile strategy for ATmega2560 (Mega). */
 @Injectable()
 export class AvrMegaWasmCompilerStrategy extends AvrWasmCompilerStrategyBase {
-  static override readonly family: WasmAvrFamily = 'avr-mega';
+  static override readonly family: AvrWasmFamily = 'avr-mega';
 
   static readonly SUPPORTED_FQBNS = ['arduino:avr:mega'] as const;
 

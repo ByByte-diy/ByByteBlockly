@@ -18,6 +18,13 @@
 /build
 /node_modules/
 /.cache/
-/src/assets/wasm-avr/
+
+# WASM bundles (~330 MB) — npm run prepare:wasm-avr / prepare:wasm-esp
+/src/assets/wasm/avr-328p/
+/src/assets/wasm/avr-mega/
+/src/assets/wasm/esp32/
+/src/assets/cache-manifest.json
+
+/deploy/out/
 .angular/
 *.log

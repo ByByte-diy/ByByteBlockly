@@ -131,6 +131,12 @@ export interface BlockMetadata {
     | "python"
   )[];
 
+  /** Required concrete board IDs (e.g. OttoESP, bybyte_nano). */
+  requiredBoardIds?: string[];
+
+  /** Hide block on these board IDs. */
+  hiddenBoardIds?: string[];
+
   /** Required platform (web/electron) */
   requiredPlatform?: PlatformT;
 

@@ -2,7 +2,6 @@ import { CATEGORY_PALETTE } from "../../constants/category-palette.const";
 import { BlockLevelE, PlatformT } from "../../types";
 import { PLATFORMS_ALL } from "@app/modules/device/constants/device-boards.const";
 import { IToolboxCategoryConfig } from "../../types/toolbox.types";
-import { BYBYTE_EXCLUSIVE_BOARD_IDS } from "../shared/robot-boards.const";
 
 /** Top-level Robot Otto container (replaces legacy CAT_ROBOT). */
 export const OTTO_CONTAINER_CATEGORY = "%{BKY_CAT_ROBOT_OTTO}";
@@ -25,9 +24,24 @@ export const CATEGORY_PLATFORMS = Array.from(PLATFORMS_ALL) as PlatformT[];
 export const TOOLBOX_LEVEL = BlockLevelE.BEGINNER;
 export const CATEGORY_ORDER = 14;
 
-/** Optional block-level hints (legacy toolbox XML); categories are not board-gated. */
-export const OTTO_WHEELS_BOARD_IDS = ["mrtx", "MRTnode", "uno_mrtx", "OttoESP", "Ottoky", "esp8266", "esp32", "wemosD1miniPro"] as const;
-export const NINJA_WIFI_BOARD_IDS = ["OttoESP", "MRTnode", "esp8266"] as const;
+/**
+ * Boards that show the Robot Otto toolbox container.
+ * AVR Uno/Mega (web WASM Otto), OttoESP (Escornabot), MRT kits (wheels/ninja).
+ * ESP32 / generic ESP8266 / ByByte — no container (no Otto.h web compile or wrong kit).
+ */
+export const OTTO_CONTAINER_BOARD_IDS = [
+  "uno",
+  "nano",
+  "nano_new",
+  "mega",
+  "OttoESP",
+  "mrtx",
+  "uno_mrtx",
+  "MRTnode",
+] as const;
+
+export const OTTO_WHEELS_BOARD_IDS = ["mrtx", "MRTnode", "uno_mrtx", "OttoESP"] as const;
+export const NINJA_WIFI_BOARD_IDS = ["OttoESP", "MRTnode"] as const;
 
 /** Legacy Blockly.Msg.OTTO9_DIY_URL — do not translate */
 export const OTTO_DIY_URL = "https://www.ottodiy.com/";
@@ -203,30 +217,33 @@ export const OTTO_CONTAINER_CATEGORY_CONFIG: IToolboxCategoryConfig = {
   subOrder: 1,
   minLevel: TOOLBOX_LEVEL,
   isContainer: true,
-  hiddenBoardIds: [...BYBYTE_EXCLUSIVE_BOARD_IDS],
+  requiredBoardIds: [...OTTO_CONTAINER_BOARD_IDS],
 };
 
-export const OTTO_BIPED_CATEGORY_CONFIG = createSubcategoryConfig(
-  BIPED_CATEGORY,
-  0
-);
+/** Otto biped (Otto.h) — AVR web WASM only; Ottoky/ESP32 need arduino-cli until Otto ships in ESP32 bundle. */
+export const OTTO_BIPED_CATEGORY_CONFIG: IToolboxCategoryConfig = {
+  ...createSubcategoryConfig(BIPED_CATEGORY, 0),
+  requiredBoardTypes: ['arduino'],
+};
 
-export const OTTO_ARMS_CATEGORY_CONFIG = createSubcategoryConfig(
-  ARMS_CATEGORY,
-  1
-);
+/** Otto arms (Servo/Wire) — AVR kits with biped; not on ESP web targets. */
+export const OTTO_ARMS_CATEGORY_CONFIG: IToolboxCategoryConfig = {
+  ...createSubcategoryConfig(ARMS_CATEGORY, 1),
+  requiredBoardTypes: ['arduino'],
+};
 
-export const OTTO_QUAD_CATEGORY_CONFIG = createSubcategoryConfig(
-  QUAD_CATEGORY,
-  2
-);
+/** Otto Quad (8 servos) — AVR WASM only; hidden on ESP32/ESP8266 toolboxes. */
+export const OTTO_QUAD_CATEGORY_CONFIG: IToolboxCategoryConfig = {
+  ...createSubcategoryConfig(QUAD_CATEGORY, 2),
+  requiredBoardTypes: ['arduino'],
+};
 
-export const OTTO_WHEELS_CATEGORY_CONFIG = createSubcategoryConfig(
-  WHEELS_CATEGORY,
-  3
-);
+export const OTTO_WHEELS_CATEGORY_CONFIG: IToolboxCategoryConfig = {
+  ...createSubcategoryConfig(WHEELS_CATEGORY, 3),
+  requiredBoardIds: [...OTTO_WHEELS_BOARD_IDS],
+};
 
-export const OTTO_NINJA_CATEGORY_CONFIG = createSubcategoryConfig(
-  CAT_ROBOT_OTTO_NINJA,
-  4
-);
+export const OTTO_NINJA_CATEGORY_CONFIG: IToolboxCategoryConfig = {
+  ...createSubcategoryConfig(CAT_ROBOT_OTTO_NINJA, 4),
+  requiredBoardIds: [...NINJA_WIFI_BOARD_IDS],
+};

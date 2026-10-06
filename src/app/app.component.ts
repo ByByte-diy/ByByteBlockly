@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { I18nService } from './modules/language';
 import { ThemeService } from './core/services/theme.service';
-import { AssetCacheRegistry } from '@modules/asset-cache';
+import { AssetCacheRefreshService } from '@modules/asset-cache';
+import { AssetCacheUiService } from '@app/modules/upload/services/asset-cache-ui.service';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +15,14 @@ export class AppComponent implements OnInit {
   constructor(
     private i18n: I18nService,
     private theme: ThemeService,
-    private assetCacheRegistry: AssetCacheRegistry,
+    private assetCacheRefresh: AssetCacheRefreshService,
+    private assetCacheUi: AssetCacheUiService,
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.theme.initialize();
-    void this.assetCacheRegistry.validate().catch(() => undefined);
+    this.assetCacheRefresh.start();
+    this.assetCacheUi.start();
     await this.i18n.initialize();
   }
 }

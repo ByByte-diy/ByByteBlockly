@@ -22,6 +22,7 @@ src/app/
   platform/web/             # Browser wiring: Serial, upload, WasmRuntimePort
   platform/electron/        # arduino-cli compile/upload
 src/wasm-avr/               # Prepare scripts, libraries.json, fixtures
+src/wasm-esp/               # ESP32 spike (F4.1): prepare, verify, recipe-esp.js
 ```
 
 ## Compile + Upload (web, AVR)
@@ -36,7 +37,7 @@ src/wasm-avr/               # Prepare scripts, libraries.json, fixtures
 
 **Критично:** не fallback на default port у upload; не Proxy навколо native `SerialPort`; `dtr`→`dataTerminalReady` у transport adapter.
 
-Документація: [compile-upload/README.md](./compile-upload/README.md), [architecture/platform-adapters.md](./architecture/platform-adapters.md).
+Документація: [compile-upload/README.md](./compile-upload/README.md), [architecture/platform-adapters.md](./architecture/platform-adapters.md). ESP32: [wasm-esp32-spike.md](./compile-upload/wasm-esp32-spike.md), обмеження [esp32-web-compile-constraints.md](./compile-upload/esp32-web-compile-constraints.md). Production deploy (WASM на CDN): [deploy/README.md](../deploy/README.md).
 
 ## Blockly changes
 

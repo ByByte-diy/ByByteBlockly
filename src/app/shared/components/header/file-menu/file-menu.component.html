@@ -1,0 +1,57 @@
+<div class="header-dropdown">
+  <button
+    type="button"
+    class="header-icon-btn"
+    title="File"
+    aria-label="File menu"
+    (click)="toggle($event)"
+  >
+    <span class="header-icon-mask" [style.--icon]="folderIcon" aria-hidden="true"></span>
+  </button>
+  @if (open) {
+    <div class="header-dropdown__menu" role="menu" aria-label="File menu">
+      <button type="button" class="header-menu-item" (click)="onNew()">
+        <span class="header-menu-item__icon" [style.--icon]="fileNewIcon" aria-hidden="true"></span>
+        {{ 'ui.btn_new' | translate }}
+      </button>
+      <button type="button" class="header-menu-item" (click)="onOpen()">
+        <span class="header-menu-item__icon" [style.--icon]="fileOpenIcon" aria-hidden="true"></span>
+        {{ 'ui.btn_open' | translate }}
+      </button>
+      <button type="button" class="header-menu-item" (click)="onSave()">
+        <span class="header-menu-item__icon" [style.--icon]="fileSaveIcon" aria-hidden="true"></span>
+        {{ 'ui.btn_save' | translate }}
+      </button>
+      <button type="button" class="header-menu-item" (click)="onSaveAs()">
+        <span class="header-menu-item__icon" [style.--icon]="fileSaveIcon" aria-hidden="true"></span>
+        {{ 'ui.btn_save_as' | translate }}
+      </button>
+      <hr class="header-menu-divider" />
+      <button
+        type="button"
+        class="header-menu-item"
+        [disabled]="checkingCompilerUpdates"
+        (click)="onCheckCompilerUpdates()"
+      >
+        {{ 'ui.btn_check_compiler_updates' | translate }}
+      </button>
+      <button
+        type="button"
+        class="header-menu-item"
+        [disabled]="clearingDownloadCache"
+        (click)="onClearDownloadCache()"
+      >
+        {{ 'ui.btn_clear_download_cache' | translate }}
+      </button>
+    </div>
+  }
+</div>
+
+@if (dialog) {
+  <app-simple-dialog
+    [config]="dialog"
+    (primary)="onDialogPrimary()"
+    (secondary)="onDialogSecondary()"
+    (dismiss)="onDialogDismiss()"
+  />
+}

@@ -37,6 +37,26 @@ describe('ToolboxBuilder matrix', () => {
         }
       });
 
+      it('includes gated blocks when required', () => {
+        if (!matrixCase.mustIncludeBlocks?.length) {
+          return;
+        }
+        const blockTypes = collectBlockTypes(toolbox());
+        for (const type of matrixCase.mustIncludeBlocks) {
+          expect(blockTypes).toContain(type);
+        }
+      });
+
+      it('excludes gated blocks', () => {
+        if (!matrixCase.mustExcludeBlocks?.length) {
+          return;
+        }
+        const blockTypes = collectBlockTypes(toolbox());
+        for (const type of matrixCase.mustExcludeBlocks) {
+          expect(blockTypes).not.toContain(type);
+        }
+      });
+
       it('has a non-empty toolbox', () => {
         const tb = toolbox();
         expect(tb.contents.length).toBeGreaterThan(0);

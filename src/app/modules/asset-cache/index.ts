@@ -4,6 +4,7 @@ export * from './models/asset-cache.model';
 export * from './services/asset-cache.service';
 export * from './services/asset-cache-manifest.service';
 export * from './services/asset-cache-registry.service';
+export * from './services/asset-cache-refresh.service';
 export {
   AssetCacheStore,
   MemoryAssetCacheStore,

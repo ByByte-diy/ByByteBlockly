@@ -1,4 +1,6 @@
-/** Build-log and probe messages for AVR WASM compiler backends. */
+import { isDevMode } from '@angular/core';
+
+/** Build-log and probe messages for WASM compiler backends. */
 
 export interface WasmCompilerProfile {
   manifestFile: string;
@@ -23,6 +25,17 @@ export const WASM_AVR_328P_COMPILER: WasmCompilerProfile = {
   installCoreMessage: 'AVR WASM assets are bundled; core install is not required on web.',
 };
 
+export const WASM_ESP32_COMPILER: WasmCompilerProfile = {
+  manifestFile: 'manifest.json',
+  invalidManifestDetail:
+    'invalid ESP32 wasm-toolchains manifest — run npm run prepare:wasm-esp and restart ng serve',
+  toolchainLabel: 'ESP32 WASM toolchain is missing',
+  toolchainHint: 'Run npm run prepare:wasm-esp and restart the web app.',
+  moduleExportError: 'ESP32 WASM module does not export compile()',
+  installCoreMessage: 'ESP32 WASM assets are bundled; core install is not required on web.',
+  boardArg: 'esp32',
+};
+
 export const WASM_AVR_MEGA_COMPILER: WasmCompilerProfile = {
   manifestFile: 'bybyte-manifest.json',
   invalidManifestDetail:
@@ -38,5 +51,8 @@ export function formatWasmToolchainMissingError(
   profile: Pick<WasmCompilerProfile, 'toolchainLabel' | 'toolchainHint'>,
   detail: string,
 ): string {
-  return `${profile.toolchainLabel} (${detail}). ${profile.toolchainHint}`;
+  const hint = isDevMode() ? profile.toolchainHint : '';
+  return hint
+    ? `${profile.toolchainLabel} (${detail}). ${hint}`
+    : `${profile.toolchainLabel} (${detail}).`;
 }

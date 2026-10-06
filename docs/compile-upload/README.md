@@ -20,8 +20,10 @@ ICompiler   IUploader
 | Документ | Зміст |
 |----------|--------|
 | [pipeline.md](./pipeline.md) | Оркестрація, статуси, UI |
-| [web-compilation.md](./web-compilation.md) | WASM AVR compiler |
+| [web-compilation.md](./web-compilation.md) | WASM compiler (AVR + ESP32) |
+| [esp32-web-compile-constraints.md](./esp32-web-compile-constraints.md) | ESP32/ESP8266 limits, desktop-only libs (F4.4) |
 | [wasm-avr-assets.md](./wasm-avr-assets.md) | Waves W0–W7, prepare script |
+| [deploy/README.md](../../deploy/README.md) | Production: SPA vs WASM CDN, `build:web` + deploy |
 | [web-upload.md](./web-upload.md) | STK500v1 + v2, Web Serial, transport |
 | [board-profiles.md](./board-profiles.md) | Uno, Nano, Mega 2560, baud, FQBN |
 | [troubleshooting.md](./troubleshooting.md) | Типові помилки |

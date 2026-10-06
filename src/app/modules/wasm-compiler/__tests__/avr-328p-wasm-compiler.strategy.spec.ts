@@ -11,7 +11,7 @@ describe('Avr328pWasmCompilerStrategy', () => {
   let runtime: WasmRuntimePort;
   let wasmAssets: Pick<
     WasmAssetProvider,
-    'ensureValid' | 'loadCatalog' | 'prefetchCatalogPaths' | 'resolveAssetsBase'
+    'ensureValid' | 'loadCatalog' | 'prefetchCatalogPaths' | 'resolveAssetsBase' | 'syncBundle'
   >;
 
   beforeEach(() => {
@@ -30,6 +30,7 @@ describe('Avr328pWasmCompilerStrategy', () => {
       resolveAssetsBase: vi
         .fn()
         .mockResolvedValue('http://localhost:4200/assets/wasm/avr-328p/v0.2.0-W1/'),
+      syncBundle: vi.fn().mockResolvedValue(undefined),
     };
     strategy = new Avr328pWasmCompilerStrategy(
       wasmAssets as WasmAssetProvider,
@@ -89,7 +90,7 @@ describe('Avr328pWasmCompilerStrategy', () => {
     );
 
     expect(result.success).toBe(false);
-    expect(result.error).toBe('ui.compile_wasm_toolchain_missing');
+    expect(result.error).toBe('ui.compile_wasm_toolchain_missing_avr');
     expect(result.output).toContain(WASM_AVR_328P_COMPILER.toolchainLabel);
   });
 });

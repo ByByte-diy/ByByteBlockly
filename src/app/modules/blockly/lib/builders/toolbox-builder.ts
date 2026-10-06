@@ -15,6 +15,11 @@ import { getCategoryIconCssClass, getCategoryIconFile } from "../../constants/ca
 import { categoryHueToToolboxColour } from "../../constants/category-colour.const";
 import { CATEGORY_PALETTE } from "../../constants/category-palette.const";
 import { isElectron } from "@app/platform/platform";
+import {
+  isBlockVisible,
+  isCategoryVisible,
+  ToolboxVisibilityContext,
+} from "../visibility/toolbox-visibility.util";
 
 /**
  * Builder for creating Blockly toolbox configurations
@@ -103,13 +108,8 @@ export class ToolboxBuilder {
    * Collect blocks visible for the current board / level / exclusions
    */
   private collectFilteredBlocks(): BlockDefinition[] {
-    let blocks = BlockRegistry.getAll();
-
-    if (this.options.boardId) {
-      blocks = BlockRegistry.getFiltered({ board: this.options.boardId });
-    }
-
-    blocks = this.filterBlocksByBoardType(blocks);
+    const ctx = this.buildVisibilityContext();
+    let blocks = BlockRegistry.getAll().filter((block) => isBlockVisible(block, ctx));
 
     if (this.options.excludeCategories?.length) {
       const excluded = new Set(this.options.excludeCategories);
@@ -119,7 +119,7 @@ export class ToolboxBuilder {
     }
 
     const userLevel = this.resolveUserLevel();
-    blocks = blocks.filter((block) => block.level <= userLevel);
+    blocks = blocks.filter((block) => (block.level ?? block.config.level) <= userLevel);
 
     return blocks.filter(
       (block) =>
@@ -127,6 +127,15 @@ export class ToolboxBuilder {
         block.category !== "Shadow" &&
         !block.config.tags?.includes("hidden")
     );
+  }
+
+  private buildVisibilityContext(): ToolboxVisibilityContext {
+    return {
+      boardId: this.options.boardId,
+      boardType: this.options.boardType,
+      userLevel: this.resolveUserLevel(),
+      appPlatform: isElectron() ? "electron" : "web",
+    };
   }
 
   /**
@@ -137,27 +146,6 @@ export class ToolboxBuilder {
   }
 
   /**
-   * Filter blocks by board type
-   */
-  private filterBlocksByBoardType(
-    blocks: BlockDefinition[]
-  ): BlockDefinition[] {
-    return blocks.filter((block) => {
-      if (block.metadata?.requiredBoardTypes) {
-        return block.metadata.requiredBoardTypes.includes(
-          this.options.boardType
-        );
-      }
-
-      if (block.category.toLowerCase().includes("esp")) {
-        return this.options.boardType.includes("esp");
-      }
-
-      return true;
-    });
-  }
-
-  /**
    * Whether a toolbox category should appear for the current board / app platform
    */
   private _isCategoryVisible(config: IToolboxCategoryConfig): boolean {
@@ -165,41 +153,7 @@ export class ToolboxBuilder {
       return false;
     }
 
-    if (
-      config.requiredBoardTypes?.length &&
-      !config.requiredBoardTypes.includes(this.options.boardType)
-    ) {
-      return false;
-    }
-
-    if (config.requiredBoardIds?.length) {
-      if (
-        !this.options.boardId ||
-        !config.requiredBoardIds.includes(this.options.boardId)
-      ) {
-        return false;
-      }
-    }
-
-    if (config.hiddenBoardIds?.length && this.options.boardId) {
-      if (config.hiddenBoardIds.includes(this.options.boardId)) {
-        return false;
-      }
-    }
-
-    if (config.requiredPlatform && config.requiredPlatform !== "both") {
-      const appPlatform = isElectron() ? "electron" : "web";
-      if (config.requiredPlatform !== appPlatform) {
-        return false;
-      }
-    }
-
-    const userLevel = this.resolveUserLevel();
-    if (config.minLevel !== undefined && config.minLevel > userLevel) {
-      return false;
-    }
-
-    return true;
+    return isCategoryVisible(config, this.buildVisibilityContext());
   }
 
   /**

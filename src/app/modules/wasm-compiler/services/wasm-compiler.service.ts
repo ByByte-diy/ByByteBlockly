@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
-import { COMPILE_WASM_UNSUPPORTED_BOARD_I18N } from '@core/constants/compile-i18n.const';
 import { ICompiler } from '@core/interfaces';
 import { CompileOptions, CompileResult } from '@core/models';
+import { resolveWasmUnsupportedBoardI18n } from '../utils/wasm-unsupported-board.util';
 import { WasmCompilerRegistry } from './wasm-compiler-registry.service';
 
 /**
@@ -20,7 +20,7 @@ export class WasmCompilerService implements ICompiler {
         Promise.resolve({
           success: false,
           output: '',
-          error: COMPILE_WASM_UNSUPPORTED_BOARD_I18N,
+          error: resolveWasmUnsupportedBoardI18n(options.board),
           fqbn: options.board,
         } satisfies CompileResult),
       );

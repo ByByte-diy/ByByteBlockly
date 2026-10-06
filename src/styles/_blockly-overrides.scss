@@ -17,12 +17,42 @@ app-blockly-editor {
     overflow-x: hidden !important;
   }
 
+  .blocklyToolbox {
+    background-color: var(--toolbox-bg) !important;
+    color: var(--toolbox-text) !important;
+  }
+
   .blocklyFlyoutBackground {
     fill: var(--toolbox-flyout-bg) !important;
   }
 
   .blocklyFlyout {
     z-index: 10;
+  }
+
+  /* Workspace SVG scrollbars — subtle, hover-only (not the category sidebar). */
+  .blocklyMainWorkspaceScrollbar.blocklyScrollbarVertical,
+  .blocklyMainWorkspaceScrollbar.blocklyScrollbarHorizontal {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  &:has(.blocklySvg:hover) .blocklyMainWorkspaceScrollbar.blocklyScrollbarVertical,
+  &:has(.blocklySvg:hover) .blocklyMainWorkspaceScrollbar.blocklyScrollbarHorizontal,
+  .blocklyMainWorkspaceScrollbar.blocklyScrollbarVertical:hover,
+  .blocklyMainWorkspaceScrollbar.blocklyScrollbarHorizontal:hover {
+    opacity: 1;
+  }
+
+  .blocklyScrollbarBackground {
+    fill: transparent !important;
+    opacity: 0 !important;
+  }
+
+  .blocklyScrollbarHandle {
+    fill: color-mix(in srgb, var(--toolbox-text) 34%, transparent) !important;
+    fill-opacity: 1 !important;
+    rx: 3;
   }
 
   .blocklyText,

@@ -12,6 +12,17 @@
     <header class="build-log-panel__header">
       <h2 class="build-log-panel__title">{{ 'ui.build_log_title' | translate }}</h2>
       <div class="build-log-panel__actions">
+        @if (buildLog.trim()) {
+          <button
+            type="button"
+            class="build-log-panel__btn build-log-panel__btn--icon"
+            [title]="'ui.build_log_clear' | translate"
+            [attr.aria-label]="'ui.build_log_clear' | translate"
+            (click)="clearBuildLog($event)"
+          >
+            <span class="build-log-panel__icon" [style.--icon]="clearIcon" aria-hidden="true"></span>
+          </button>
+        }
         @if (lastCompileResult?.hexContent) {
           <button
             type="button"

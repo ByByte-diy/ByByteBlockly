@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "platform": "esp32",
+  "description": "ESP32 web-compile library map. Harvested libs ship in esp32wasm.tar link closure; ByByte-only libs are backlog until F4.2 harvest extends the bundle.",
+  "harvested": [
+    {
+      "id": "NeoPixel",
+      "includes": ["Adafruit_NeoPixel.h"],
+      "vfsPrefix": "vfs/root/Arduino/libraries/Adafruit_NeoPixel/"
+    },
+    {
+      "id": "DHT",
+      "includes": ["DHT.h"],
+      "vfsPrefix": "vfs/root/Arduino/libraries/DHT_sensor_library/"
+    },
+    {
+      "id": "Adafruit_BusIO",
+      "includes": ["Adafruit_I2CDevice.h", "Adafruit_SPIDevice.h"],
+      "vfsPrefix": "vfs/root/Arduino/libraries/Adafruit_BusIO/"
+    },
+    {
+      "id": "Adafruit_Unified_Sensor",
+      "includes": ["Adafruit_Sensor.h"],
+      "vfsPrefix": "vfs/root/Arduino/libraries/Adafruit_Unified_Sensor/"
+    },
+    {
+      "id": "Keypad",
+      "includes": ["Keypad.h"],
+      "vfsPrefix": "vfs/root/Arduino/libraries/Keypad/"
+    }
+  ],
+  "coreIncludes": [
+    "Arduino.h",
+    "WiFi.h",
+    "HTTPClient.h",
+    "esp_now.h"
+  ],
+  "avrWebOnly": [
+    {
+      "includes": ["Quad.h", "Octosnake.h"],
+      "reason": "Otto Quad spider — AVR web compile only (Uno/Mega); not ported to ESP32 WASM"
+    },
+    {
+      "includes": ["Otto.h", "Otto_humanoid.h"],
+      "reason": "Otto biped — web compile on AVR Uno/Mega only; for Ottoky/ESP32 use arduino-cli (desktop)"
+    },
+    {
+      "includes": ["Stepper.h"],
+      "reason": "ByByte Stepper — AVR web compile only (Uno/Mega)"
+    }
+  ],
+  "desktopOnly": [
+    {
+      "includes": ["escornabot.h", "Bot.h"],
+      "reason": "Escornabot — OttoESP (ESP8266) only; not in ESP32 WASM bundle"
+    },
+    {
+      "includes": ["MRT_esp32_Motor.h"],
+      "reason": "ByByte MRT motor — not in esp32wasm harvest; use desktop arduino-cli"
+    },
+    {
+      "includes": ["BleKeyboard.h", "BleMouse.h"],
+      "reason": "Third-party BLE HID — not in harvest bundle"
+    },
+    {
+      "includes": ["ESP32Time.h"],
+      "reason": "ByByte RTC helper — not in harvest bundle"
+    },
+    {
+      "includes": ["MFRC522.h"],
+      "reason": "MFRC522 — not in harvest bundle"
+    },
+    {
+      "includes": ["TinyGPSPlus.h"],
+      "reason": "TinyGPSPlus — not in harvest bundle"
+    },
+    {
+      "includes": ["AsyncTCP.h", "ESPAsyncWebServer.h"],
+      "reason": "Async web server stack — desktop only (F4.4)"
+    },
+    {
+      "includes": ["Firebase_ESP_Client.h", "Firebase.h"],
+      "reason": "Firebase ESP client — desktop arduino-cli only (F4.4)"
+    }
+  ]
+}

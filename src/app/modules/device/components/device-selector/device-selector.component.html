@@ -40,44 +40,33 @@
             </select>
             <button
               type="button"
-              class="header-btn"
-              (click)="refreshPorts()"
-              [disabled]="isRefreshing"
-              [title]="'ui.refresh_ports' | translate"
-            >
-              {{ isRefreshing ? '⟳' : '↻' }}
-            </button>
-          </div>
-          <div class="header-action-row device-selector__secondary-actions">
-            <button
-              type="button"
-              class="header-btn header-btn--secondary"
+              class="header-btn header-btn--icon"
               (click)="requestNewPort()"
               [disabled]="isRefreshing"
+              [title]="'ui.refresh_ports' | translate"
+              [attr.aria-label]="'ui.refresh_ports' | translate"
             >
-              {{ 'ui.connect_device' | translate }}
+              <span
+                class="header-icon-mask device-selector__refresh-icon"
+                [style.--icon]="refreshIcon"
+                aria-hidden="true"
+              ></span>
             </button>
           </div>
         } @else {
-          <div class="header-action-row">
-            <button
-              type="button"
-              class="header-btn header-btn--primary device-selector__connect-btn"
-              (click)="requestNewPort()"
-              [disabled]="isRefreshing"
-            >
-              {{ 'ui.connect_device' | translate }}
-            </button>
-            <button
-              type="button"
-              class="header-btn"
-              (click)="refreshPorts()"
-              [disabled]="isRefreshing"
-              [title]="'ui.refresh_ports' | translate"
-            >
-              {{ isRefreshing ? '⟳' : '↻' }}
-            </button>
-          </div>
+          <button
+            type="button"
+            class="header-btn header-btn--primary device-selector__refresh-btn"
+            (click)="requestNewPort()"
+            [disabled]="isRefreshing"
+          >
+            <span
+              class="header-icon-mask device-selector__refresh-icon"
+              [style.--icon]="refreshIcon"
+              aria-hidden="true"
+            ></span>
+            {{ 'ui.refresh_ports' | translate }}
+          </button>
           <p class="device-selector__hint">{{ 'ui.web_serial_hint' | translate }}</p>
         }
         @if (environmentHintKey) {

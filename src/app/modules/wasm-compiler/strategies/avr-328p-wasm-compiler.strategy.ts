@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { WASM_AVR_328P_COMPILER } from '../constants/wasm-compiler-messages.const';
+import type { AvrWasmFamily } from '../constants/wasm-family.types';
 import { WasmRuntimePort } from '../ports/wasm-runtime.port';
 import { WasmAssetProvider } from '../services/wasm-asset.provider';
 import { detectWasmSensors } from '../utils/wasm-library-resolver';
 import {
   AvrWasmCompilerStrategyBase,
-  WasmAvrFamily,
   WasmCompileInvokeArgs,
   WasmSelectiveLoad,
 } from './avr-wasm-compiler.strategy.base';
@@ -13,7 +13,7 @@ import {
 /** WASM compile strategy for ATmega328p (Uno / Nano). */
 @Injectable()
 export class Avr328pWasmCompilerStrategy extends AvrWasmCompilerStrategyBase {
-  static override readonly family: WasmAvrFamily = 'avr-328p';
+  static override readonly family: AvrWasmFamily = 'avr-328p';
 
   static readonly SUPPORTED_FQBNS = ['arduino:avr:uno', 'arduino:avr:nano'] as const;
 

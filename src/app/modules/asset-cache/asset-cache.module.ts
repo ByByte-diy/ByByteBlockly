@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AssetCacheService } from './services/asset-cache.service';
 import { AssetCacheManifestService } from './services/asset-cache-manifest.service';
 import { AssetCacheRegistry } from './services/asset-cache-registry.service';
+import { AssetCacheRefreshService } from './services/asset-cache-refresh.service';
 
 /**
  * Unified downloadable asset cache (IndexedDB + manifest validation).
@@ -14,6 +15,7 @@ import { AssetCacheRegistry } from './services/asset-cache-registry.service';
     AssetCacheService,
     AssetCacheManifestService,
     AssetCacheRegistry,
+    AssetCacheRefreshService,
   ],
 })
 export class AssetCacheModule {

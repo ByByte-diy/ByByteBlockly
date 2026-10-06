@@ -3,8 +3,9 @@ import { CATEGORY_NAME as LOGIC_CATEGORY } from "../definitions/logic/config";
 import { CATEGORY_NAME as PORTS_CATEGORY } from "../definitions/ports/config";
 import { CATEGORY_NAME as MOTORS_CATEGORY } from "../definitions/motors/config";
 import { CATEGORY_NAME as IOT_CATEGORY } from "../definitions/iot/config";
-import { OTTO_CONTAINER_CATEGORY } from "../platforms/otto/config";
+import { BIPED_CATEGORY, OTTO_CONTAINER_CATEGORY } from "../platforms/otto/config";
 import { BYBYTE_CONTAINER_CATEGORY } from "../platforms/bybyte/config";
+import { CATEGORY_NAME as ESCORNABOT_CATEGORY } from "../platforms/escornabot/config";
 
 export interface ToolboxMatrixCase {
   boardId: string;
@@ -38,7 +39,15 @@ interface BoardRules {
   mustIncludeCategories?: string[];
   mustExcludeCategories?: string[];
   levelRules?: Partial<
-    Record<BlockLevelE, { mustInclude?: string[]; mustExclude?: string[] }>
+    Record<
+      BlockLevelE,
+      {
+        mustInclude?: string[];
+        mustExclude?: string[];
+        mustIncludeBlocks?: string[];
+        mustExcludeBlocks?: string[];
+      }
+    >
   >;
 }
 
@@ -49,35 +58,49 @@ const BOARD_RULES: Record<string, BoardRules> = {
       [BlockLevelE.BEGINNER]: {
         mustInclude: [LOGIC_CATEGORY],
         mustExclude: [PORTS_CATEGORY, MOTORS_CATEGORY],
+        mustIncludeBlocks: ["otto_configuration"],
       },
       [BlockLevelE.ADVANCED]: {
-        mustInclude: [PORTS_CATEGORY],
+        mustInclude: [PORTS_CATEGORY, BIPED_CATEGORY],
       },
     },
   },
   esp32: {
-    mustIncludeCategories: [OTTO_CONTAINER_CATEGORY],
+    mustExcludeCategories: [OTTO_CONTAINER_CATEGORY, ESCORNABOT_CATEGORY],
     levelRules: {
       [BlockLevelE.ADVANCED]: {
         mustInclude: [IOT_CATEGORY],
+        mustExcludeBlocks: ["escornabot_init", "otto_configuration"],
       },
     },
   },
   esp8266: {
-    mustIncludeCategories: [OTTO_CONTAINER_CATEGORY],
+    mustExcludeCategories: [OTTO_CONTAINER_CATEGORY, ESCORNABOT_CATEGORY],
     levelRules: {
       [BlockLevelE.ADVANCED]: {
         mustInclude: [IOT_CATEGORY],
+        mustExcludeBlocks: ["escornabot_init", "otto_configuration"],
       },
     },
   },
   OttoESP: {
     mustIncludeCategories: [OTTO_CONTAINER_CATEGORY],
-    mustExcludeCategories: [BYBYTE_CONTAINER_CATEGORY],
+    mustExcludeCategories: [BYBYTE_CONTAINER_CATEGORY, BIPED_CATEGORY],
+    levelRules: {
+      [BlockLevelE.ADVANCED]: {
+        mustInclude: [ESCORNABOT_CATEGORY],
+        mustIncludeBlocks: ["escornabot_init"],
+        mustExcludeBlocks: ["otto_configuration"],
+      },
+    },
   },
   Ottoky: {
-    mustIncludeCategories: [OTTO_CONTAINER_CATEGORY],
-    mustExcludeCategories: [BYBYTE_CONTAINER_CATEGORY],
+    mustExcludeCategories: [OTTO_CONTAINER_CATEGORY, BYBYTE_CONTAINER_CATEGORY],
+    levelRules: {
+      [BlockLevelE.BEGINNER]: {
+        mustExcludeBlocks: ["otto_configuration"],
+      },
+    },
   },
   bybyte_nano: {
     mustExcludeCategories: [OTTO_CONTAINER_CATEGORY],
@@ -106,6 +129,8 @@ function buildMatrix(): ToolboxMatrixCase[] {
           ...(rules.mustExcludeCategories ?? []),
           ...(levelRule.mustExclude ?? []),
         ],
+        mustIncludeBlocks: levelRule.mustIncludeBlocks,
+        mustExcludeBlocks: levelRule.mustExcludeBlocks,
         minBlockCount: 5,
         expectCustomCategories: userLevel >= BlockLevelE.INTERMEDIATE,
       });

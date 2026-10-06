@@ -95,6 +95,16 @@ When user selects a supported AVR board, `WasmBoardPrefetchService` (`platform/w
 
 Production `ng build` ships only `cache-manifest.json` from assets; WASM files are fetched from static host/CDN at runtime.
 
+Bundle sizes (see `src/assets/cache-manifest.json` → `totalBytes`):
+
+| Bundle | ≈ size |
+|--------|--------|
+| `wasm-avr-328p` | ~57 MB |
+| `wasm-avr-mega` | ~84 MB |
+| `wasm-esp32` | ~192 MB |
+
+Deploy pipeline: [deploy/README.md](../../deploy/README.md) (`build:web`, `deploy:sync-wasm`, `deploy/static-headers`).
+
 ## Mega2560 (ATmega2560)
 
 328p uses `@horang-corp/avr-gcc-wasm` (monolithic driver + `compile({ selectiveLoad })`).
@@ -155,7 +165,7 @@ Fixtures live in `src/wasm-avr/fixtures/` (`blink-minimal.cpp`, `otto-minimal.cp
 | Wiring | `platform/web/web-platform.module.ts` | `WasmCompilerModule.forRoot` + `ICompiler` binding |
 | Asset cache | `modules/asset-cache/` | IndexedDB, `cache-manifest.json` validation |
 
-Prepare scripts і fixtures — `src/wasm-avr/` (не Angular). Generated bundles — `src/assets/wasm/{avr-328p,avr-mega}/` (gitignored).
+Prepare scripts і fixtures — `src/wasm-avr/`, `src/wasm-esp/` (не Angular). Versioned bundles — `src/assets/wasm/{family}/{version}/` — **gitignored** (`.o`, `.wasm`, catalogs); regenerate через `prepare:wasm-*`.
 
 ## Related
 

@@ -15,6 +15,7 @@ import { UploadManagerService } from '../../services/upload-manager.service';
 
 const CLOSE_ICON = "url('assets/icons/header/close.svg')";
 const COPY_ICON = "url('assets/icons/header/copy.svg')";
+const CLEAR_ICON = "url('assets/icons/header/clear.svg')";
 const HEX_ICON = "url('assets/icons/header/hex.svg')";
 const COPY_FEEDBACK_MS = 2000;
 
@@ -38,6 +39,7 @@ export class BuildLogPanelComponent implements OnInit, OnDestroy {
 
   readonly closeIcon = CLOSE_ICON;
   readonly copyIcon = COPY_ICON;
+  readonly clearIcon = CLEAR_ICON;
   readonly hexIcon = HEX_ICON;
 
   isOpen = this.buildLogPanelService.isPanelOpen();
@@ -114,6 +116,19 @@ export class BuildLogPanelComponent implements OnInit, OnDestroy {
       }, COPY_FEEDBACK_MS);
     } catch {
       // clipboard may be unavailable
+    }
+  }
+
+  clearBuildLog(event: MouseEvent): void {
+    event.stopPropagation();
+    if (!this.buildLog.trim()) {
+      return;
+    }
+    this.uploadManager.clearBuildLog();
+    this.copyFeedback = false;
+    if (this.copyFeedbackTimer) {
+      clearTimeout(this.copyFeedbackTimer);
+      this.copyFeedbackTimer = null;
     }
   }
 

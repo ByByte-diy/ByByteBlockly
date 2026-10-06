@@ -25,12 +25,17 @@
   }
 }
 
-.device-selector__connect-btn {
-  flex: 1;
+.device-selector__refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
 }
 
-.device-selector__secondary-actions {
-  margin-top: 8px;
+.device-selector__refresh-icon {
+  width: var(--app-header-icon-size);
+  height: var(--app-header-icon-size);
 }
 
 .device-selector__hint {

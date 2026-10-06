@@ -14,6 +14,7 @@ import { formatBuildLog } from '../utils/build-log.util';
  */
 export enum UploadStatus {
   IDLE = 'idle',
+  PREFETCHING = 'prefetching',
   COMPILING = 'compiling',
   UPLOADING = 'uploading',
   SUCCESS = 'success',
@@ -27,6 +28,7 @@ export interface UploadProgress {
   status: UploadStatus;
   message: string;
   progress?: number;
+  messageParams?: Record<string, string | number>;
 }
 
 /**
@@ -250,6 +252,8 @@ export class UploadManagerService {
         port: port.path,
         hexPath: compileResult.hexPath,
         hexContent: compileResult.hexContent,
+        binContent: compileResult.binContent,
+        flashAppAddress: compileResult.flashAppAddress,
         verbose: true,
         onProgress: (update) => {
           this.updateProgress(
@@ -285,10 +289,76 @@ export class UploadManagerService {
     });
   }
 
+  /** Background WASM tier download (board select); skipped while compile/upload runs. */
+  reportPrefetchProgress(update: {
+    completed: number;
+    total: number;
+    downloadedMb?: number;
+    totalMb?: number;
+  }): void {
+    if (this.isCompileOrUploadActive()) {
+      return;
+    }
+
+    const percent =
+      update.total > 0 ? clampProgressPercent((update.completed / update.total) * 100) : undefined;
+    const messageParams: Record<string, string | number> = {
+      completed: update.completed,
+      total: update.total,
+    };
+    if (update.downloadedMb != null && update.totalMb != null) {
+      messageParams.downloadedMb = update.downloadedMb;
+      messageParams.totalMb = update.totalMb;
+    }
+
+    this.updateProgress(
+      UploadStatus.PREFETCHING,
+      update.downloadedMb != null ? 'ui.compile_progress_prefetch_mb' : 'ui.compile_progress_prefetch',
+      percent,
+      messageParams,
+    );
+  }
+
+  finishPrefetch(): void {
+    if (this.statusSubject.value === UploadStatus.PREFETCHING) {
+      this.updateProgress(UploadStatus.IDLE, 'ui.compile_ready');
+    }
+  }
+
+  /** Clears build log panel text; keeps last compile result for hex download. */
+  clearBuildLog(): void {
+    this.runInAngularZone(() => {
+      this.buildLogSubject.next('');
+    });
+  }
+
+  notifyCompilerCacheUpdated(): void {
+    if (!this.isCompileOrUploadActive()) {
+      this.updateProgress(UploadStatus.IDLE, 'ui.cache_compiler_updated');
+    }
+  }
+
+  notifyCacheCleared(): void {
+    if (!this.isCompileOrUploadActive()) {
+      this.updateProgress(UploadStatus.IDLE, 'ui.cache_cleared');
+    }
+  }
+
+  notifyCacheUpToDate(): void {
+    if (!this.isCompileOrUploadActive()) {
+      this.updateProgress(UploadStatus.IDLE, 'ui.cache_up_to_date');
+    }
+  }
+
   /**
    * Updates the status and progress
    */
-  private updateProgress(status: UploadStatus, message: string, progress?: number): void {
+  private updateProgress(
+    status: UploadStatus,
+    message: string,
+    progress?: number,
+    messageParams?: Record<string, string | number>,
+  ): void {
     this.runInAngularZone(() => {
       const clamped = clampProgressPercent(progress);
       if (clamped != null) {
@@ -299,8 +369,14 @@ export class UploadManagerService {
         status,
         message,
         progress: clamped,
+        messageParams,
       });
     });
+  }
+
+  private isCompileOrUploadActive(): boolean {
+    const status = this.statusSubject.value;
+    return status === UploadStatus.COMPILING || status === UploadStatus.UPLOADING;
   }
 
   private publishBuildLog(result: CompileResult): void {

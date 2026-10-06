@@ -1,5 +1,6 @@
 import { CATEGORY_PALETTE } from "../../constants/category-palette.const";
 import { BlockLevelE, PlatformT } from "../../types";
+import { IToolboxCategoryConfig } from "../../types/toolbox.types";
 import { PLATFORMS_ALL } from "@app/modules/device/constants/device-boards.const";
 import { OTTO_CONTAINER_CATEGORY } from "../otto/config";
 
@@ -55,3 +56,13 @@ export const BUTTON_OPTIONS: [string, string][] = [
 
 export const ESCORNABOT_HELP_URL = "https://escornabot.com/es/index";
 export const ESCORNABOT_APP_URL = "https://escornabot.com/es/descargas";
+
+export const ESCORNABOT_CATEGORY_CONFIG: IToolboxCategoryConfig = {
+  name: CATEGORY_NAME,
+  colour: MOVEMENT_COLOR,
+  order: CATEGORY_ORDER,
+  subOrder: ESCORNABOT_SUB_ORDER,
+  parentCategory: OTTO_CONTAINER_CATEGORY,
+  minLevel: TOOLBOX_LEVEL,
+  requiredBoardIds: [...ESCORNABOT_BOARD_IDS],
+};

@@ -1,23 +1,20 @@
 import { Observable, from, of } from 'rxjs';
 import {
   COMPILE_CODE_EMPTY_I18N,
-  COMPILE_WASM_TOOLCHAIN_MISSING_I18N,
   COMPILE_WASM_UNSUPPORTED_BOARD_I18N,
 } from '@core/constants/compile-i18n.const';
 import { CompileOptions, CompileProgressUpdate, CompileResult } from '@core/models';
 import { createProgressSimulator } from '@core/utils/compile-progress.util';
-import {
-  formatWasmToolchainMissingError,
-  WASM_PROBE_ASSET_CACHE_PREFIX,
-  WasmCompilerProfile,
-} from '../constants/wasm-compiler-messages.const';
+import { compileWasmToolchainMissingI18n, COMPILE_WASM_TOOLCHAIN_UPDATING_I18N } from '../constants/compile-wasm-i18n.const';
+import { formatWasmToolchainMissingError, WasmCompilerProfile } from '../constants/wasm-compiler-messages.const';
 import { WasmRuntimePort } from '../ports/wasm-runtime.port';
 import { WasmCompilerStrategy } from '../wasm-compiler-strategy.interface';
 import { WasmAssetProvider } from '../services/wasm-asset.provider';
 import { injectForwardDeclarations } from '../utils/sketch-preprocessor';
 import { resolveWasmLibraries } from '../utils/wasm-library-resolver';
+import { probeWasmToolchain } from '../utils/wasm-toolchain-probe.util';
 
-export type WasmAvrFamily = 'avr-328p' | 'avr-mega';
+import type { AvrWasmFamily, WasmFamily } from '../constants/wasm-family.types';
 
 export interface WasmSelectiveLoad {
   headerFiles: string[];
@@ -44,7 +41,7 @@ export interface WasmCompileInvokeArgs {
 type WasmCompileFn = (args: WasmCompileInvokeArgs) => Promise<WasmBuildResult>;
 
 type WasmStrategyConstructor = typeof AvrWasmCompilerStrategyBase & {
-  readonly family: WasmAvrFamily;
+  readonly family: WasmFamily;
   supportsFqbn(fqbn: string): boolean;
 };
 
@@ -53,7 +50,7 @@ type WasmStrategyConstructor = typeof AvrWasmCompilerStrategyBase & {
  * Concrete strategies declare supported FQBNs and board-specific profile / invoke args.
  */
 export abstract class AvrWasmCompilerStrategyBase implements WasmCompilerStrategy {
-  static readonly family: WasmAvrFamily | null = null;
+  static readonly family: AvrWasmFamily | null = null;
 
   static normalizeFqbn(fqbn: string): string {
     return (fqbn || '').split(':').slice(0, 3).join(':');
@@ -98,7 +95,7 @@ export abstract class AvrWasmCompilerStrategyBase implements WasmCompilerStrateg
     protected readonly runtime: WasmRuntimePort,
   ) {}
 
-  get family(): WasmAvrFamily {
+  get family(): AvrWasmFamily {
     return (this.constructor as WasmStrategyConstructor).family;
   }
 
@@ -126,36 +123,16 @@ export abstract class AvrWasmCompilerStrategyBase implements WasmCompilerStrateg
     selectiveLoad: WasmSelectiveLoad,
   ): WasmCompileInvokeArgs;
 
-  protected async probeTools(): Promise<{ ok: boolean; detail: string }> {
-    const profile = this.getCompilerProfile();
-
-    try {
-      await this.wasmAssets.ensureValid();
-      await this.wasmAssets.loadCatalog();
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : String(error);
-      return { ok: false, detail: `${WASM_PROBE_ASSET_CACHE_PREFIX}: ${message}` };
-    }
-
-    const assetsBase = await this.wasmAssets.resolveAssetsBase();
-    const manifestUrl = new URL(profile.manifestFile, assetsBase).href;
-
-    try {
-      const response = await this.runtime.fetch(manifestUrl, { method: 'GET' });
-      if (!response.ok) {
-        return { ok: false, detail: `${response.status} ${manifestUrl}` };
-      }
-
-      const manifest = await response.json();
-      if (!this.isManifestValid(manifest)) {
-        return { ok: false, detail: profile.invalidManifestDetail };
-      }
-
-      return { ok: true, detail: manifestUrl };
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : String(error);
-      return { ok: false, detail: `${message} (${manifestUrl})` };
-    }
+  protected probeTools(onUpdating?: () => void): Promise<{ ok: boolean; detail: string }> {
+    return probeWasmToolchain(
+      this.wasmAssets,
+      this.runtime,
+      this.getCompilerProfile(),
+      (manifest) => this.isManifestValid(manifest),
+      {
+        onUpdating,
+      },
+    );
   }
 
   protected abstract isManifestValid(manifest: unknown): boolean;
@@ -174,12 +151,17 @@ export abstract class AvrWasmCompilerStrategyBase implements WasmCompilerStrateg
     }
 
     this.reportProgress(options, { percent: 8, message: 'ui.compile_progress_checking_tools' });
-    const tools = await this.probeTools();
+    const tools = await this.probeTools(() => {
+      this.reportProgress(options, {
+        percent: 12,
+        message: COMPILE_WASM_TOOLCHAIN_UPDATING_I18N,
+      });
+    });
     if (!tools.ok) {
       return {
         success: false,
         output: formatWasmToolchainMissingError(profile, tools.detail),
-        error: COMPILE_WASM_TOOLCHAIN_MISSING_I18N,
+        error: compileWasmToolchainMissingI18n(this.family),
         fqbn,
       };
     }

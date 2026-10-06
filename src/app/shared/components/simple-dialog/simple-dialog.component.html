@@ -1,0 +1,30 @@
+<div class="simple-dialog-backdrop" (click)="onBackdropClick($event)">
+  <div
+    class="simple-dialog"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'simple-dialog-title'"
+  >
+    <h2 id="simple-dialog-title" class="simple-dialog__title">
+      {{ config.titleKey | translate }}
+    </h2>
+    <p class="simple-dialog__message">
+      {{ config.messageKey | translate: config.messageParams }}
+    </p>
+    <div class="simple-dialog__actions">
+      @if (config.mode === 'confirm') {
+        <button type="button" class="simple-dialog__btn simple-dialog__btn--secondary" (click)="onSecondaryClick()">
+          {{ secondaryLabelKey | translate }}
+        </button>
+      }
+      <button
+        type="button"
+        class="simple-dialog__btn"
+        [class.simple-dialog__btn--primary]="config.mode === 'confirm'"
+        (click)="onPrimaryClick()"
+      >
+        {{ primaryLabelKey | translate }}
+      </button>
+    </div>
+  </div>
+</div>

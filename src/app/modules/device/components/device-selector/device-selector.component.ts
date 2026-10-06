@@ -19,14 +19,13 @@ import { ISerialPortInfo } from '@app/core/models/serial-port.model';
 import { formatSerialPortLabel } from '@core/utils/serial-port-display.util';
 import {
   WEB_SERIAL_REQUEST_NEW_PATH,
-  isConnectableWebSerialPath,
-} from '@platform/web/constants/web-serial-paths.const';
-import {
   WebSerialRequestError,
   getWebSerialEnvironmentHintKey,
-} from '@platform/web/utils/web-serial-request-error.util';
+  isConnectableWebSerialPath,
+} from '@platform/web/web-serial';
 
 const CHIP_ICON = "url('assets/icons/header/chip.svg')";
+const REFRESH_ICON = "url('assets/icons/header/refresh.svg')";
 
 @Component({
   selector: 'app-device-selector',
@@ -35,6 +34,7 @@ const CHIP_ICON = "url('assets/icons/header/chip.svg')";
 })
 export class DeviceSelectorComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly chipIcon = CHIP_ICON;
+  readonly refreshIcon = REFRESH_ICON;
   open = false;
 
   boards: IBoard[] = [];

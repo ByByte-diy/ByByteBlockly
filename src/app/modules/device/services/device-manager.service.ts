@@ -9,7 +9,7 @@ import {
   WEB_SERIAL_REQUEST_NEW_PATH,
   isConnectableWebSerialPath,
   isValidDevicePortPath,
-} from '@platform/web/constants/web-serial-paths.const';
+} from '@platform/web/web-serial';
 import { BlocksLoaderService } from '@app/modules/blockly/services/blocks-loader.service';
 
 /** Legacy alias IDs kept for block/XML compatibility but hidden from the board picker. */

@@ -30,8 +30,34 @@ export class WasmAssetProvider {
     return this.bundleId;
   }
 
-  async ensureValid(force = false): Promise<void> {
-    await this.registry.ensureBundleValid(this.bundleId, force);
+  async ensureValid(forceRefresh = false): Promise<void> {
+    if (forceRefresh) {
+      this.manifestService.clear();
+      this.clearCatalogCache();
+      await this.manifestService.load(true);
+    }
+    await this.registry.ensureBundleValid(this.bundleId, forceRefresh);
+  }
+
+  /**
+   * Reload remote manifest, evict stale IndexedDB entries, optionally prefetch tiers.
+   * Used before compile and on board-select warm-up when cache may be outdated.
+   */
+  async syncBundle(options?: {
+    force?: boolean;
+    prefetchTiers?: WasmPrefetchTier[];
+    onPrefetchProgress?: (progress: AssetPrefetchProgress) => void;
+  }): Promise<void> {
+    const force = options?.force ?? true;
+    await this.ensureValid(force);
+
+    if (!options?.prefetchTiers?.length) {
+      return;
+    }
+
+    for (const tier of options.prefetchTiers) {
+      await this.prefetchTier(tier, options.onPrefetchProgress);
+    }
   }
 
   async loadCatalog(force = false): Promise<BundleCatalog> {

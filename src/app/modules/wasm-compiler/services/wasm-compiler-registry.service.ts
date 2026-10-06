@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { WasmCompilerStrategy } from '../wasm-compiler-strategy.interface';
 import { WASM_COMPILER_STRATEGIES } from '../wasm-compiler.tokens';
-import { WasmAvrFamily } from '../strategies/avr-wasm-compiler.strategy.base';
+import { WasmFamily } from '../constants/wasm-family.types';
 
 /** Resolves the WASM compile strategy for a board FQBN. */
 @Injectable()
@@ -14,7 +14,7 @@ export class WasmCompilerRegistry {
     return this.strategies.find((strategy) => strategy.supportsFqbn(fqbn)) ?? null;
   }
 
-  resolveFamily(fqbn: string): WasmAvrFamily | null {
+  resolveFamily(fqbn: string): WasmFamily | null {
     return this.resolve(fqbn)?.family ?? null;
   }
 

@@ -50,7 +50,7 @@
         <div class="header-status-bar" [ngClass]="getStatusBarClass()">
           <span class="header-status-bar__message">
             @if (isI18nKey(message)) {
-              {{ message | translate }}
+              {{ message | translate: messageParams }}
             } @else {
               {{ message }}
             }

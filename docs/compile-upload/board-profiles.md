@@ -43,7 +43,8 @@
 | Uno | ✅ | ✅ |
 | Nano (old/new) | ✅ | ✅ |
 | Mega / ByByte Mega | ✅ (WASM) | ✅ STK500v2 @ 115200 |
-| ESP8266/32 | ❌ | ❌ |
+| ESP32 | ✅ WASM | ✅ esptool-js |
+| ESP8266 | ❌ (`compile_wasm_esp8266_desktop_only`) | ❌ |
 
 ## Користувачеві: який Nano обрати?
 

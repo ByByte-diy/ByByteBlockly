@@ -8,6 +8,10 @@ export interface CompileResult {
   hexPath?: string;
   hexContent?: string;
   binPath?: string;
+  /** Base64-encoded flash app image (ESP32 WASM compile). */
+  binContent?: string;
+  /** Flash offset for binContent (ESP32 app partition). */
+  flashAppAddress?: number;
   flashBytes?: number;
   fitsTarget?: boolean;
   fqbn?: string;
@@ -65,6 +69,10 @@ export interface UploadOptions {
   hexPath?: string;
   /** In-memory Intel HEX from WASM compile (web). */
   hexContent?: string;
+  /** Base64 app .bin from ESP32 WASM compile (web). */
+  binContent?: string;
+  /** Flash offset for binContent (default 0x10000 for ESP32). */
+  flashAppAddress?: number;
   programmer?: string;
   verbose?: boolean;
   onProgress?: (update: UploadProgressUpdate) => void;

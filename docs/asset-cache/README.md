@@ -27,4 +27,4 @@ Platform consumers (наприклад `WasmAssetProvider` у `platform/web/`) �
 - Build: `src/assets/cache-manifest.json` — `generate-catalog.mjs` (`generateCacheManifest`)
 - Runtime: `AssetCacheRegistry.validate()` на boot; `ensureBundleValid()` перед compile
 
-Деталі WASM: [compile-upload/wasm-avr-assets.md](../compile-upload/wasm-avr-assets.md).
+Деталі WASM: [compile-upload/wasm-avr-assets.md](../compile-upload/wasm-avr-assets.md). Production deploy: [deploy/README.md](../../deploy/README.md).

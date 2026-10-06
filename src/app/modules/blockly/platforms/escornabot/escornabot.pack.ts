@@ -1,16 +1,8 @@
 import { BlockRegistry } from "../../lib/registry/block-registry";
-import { IToolboxCategoryConfig } from "../../types/toolbox.types";
 import { IPlatformPack } from "../platform-pack.types";
 import { ESCORNABOT_BLOCKS } from "./escornabot.blocks";
-import {
-  CATEGORY_NAME,
-  CATEGORY_ORDER,
-  ESCORNABOT_BOARD_IDS,
-  ESCORNABOT_SUB_ORDER,
-  MOVEMENT_COLOR,
-  ROBOT_CONTAINER_CATEGORY,
-  TOOLBOX_LEVEL,
-} from "./config";
+import { ESCORNABOT_BOARD_IDS, ESCORNABOT_CATEGORY_CONFIG } from "./config";
+import { gateBlocksToBoards } from "../shared/pack-toolbox.helpers";
 
 export const escornabotPack: IPlatformPack = {
   id: "escornabot",
@@ -25,17 +17,10 @@ export const escornabotPack: IPlatformPack = {
   },
 
   initializeCategories() {
-    BlockRegistry.registerCategory(CATEGORY_NAME, {
-      name: CATEGORY_NAME,
-      colour: MOVEMENT_COLOR,
-      order: CATEGORY_ORDER,
-      subOrder: ESCORNABOT_SUB_ORDER,
-      parentCategory: ROBOT_CONTAINER_CATEGORY,
-      minLevel: TOOLBOX_LEVEL,
-    } as IToolboxCategoryConfig);
+    BlockRegistry.registerCategory(ESCORNABOT_CATEGORY_CONFIG.name, ESCORNABOT_CATEGORY_CONFIG);
   },
 
   initializeBlocks() {
-    BlockRegistry.registerMany(ESCORNABOT_BLOCKS);
+    BlockRegistry.registerMany(gateBlocksToBoards(ESCORNABOT_BLOCKS, ESCORNABOT_BOARD_IDS));
   },
 };

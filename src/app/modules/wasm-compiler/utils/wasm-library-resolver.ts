@@ -49,7 +49,17 @@ const INCLUDE_RE = /#include\s*[<"]([^">]+)[">]/g;
 function isWasmToolchainsCatalog(catalog?: BundleCatalog): boolean {
   if (!catalog) return false;
   const record = catalog as { layout?: string; bundleId?: string };
-  return record.layout === 'wasm-toolchains' || record.bundleId === 'wasm-avr-mega';
+  return (
+    record.layout === 'wasm-toolchains' ||
+    record.bundleId === 'wasm-avr-mega' ||
+    isEsp32Catalog(catalog)
+  );
+}
+
+export function isEsp32Catalog(catalog?: BundleCatalog): boolean {
+  if (!catalog) return false;
+  const record = catalog as { layout?: string; bundleId?: string };
+  return record.layout === 'wasm-toolchains-esp32' || record.bundleId === 'wasm-esp32';
 }
 
 /** Virtual path → catalog file key (horang vs wasm-toolchains layout). */

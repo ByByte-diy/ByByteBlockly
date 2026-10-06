@@ -27,8 +27,12 @@ npm run start:web          # Chrome/Edge → http://localhost:4200
 npm run start:electron     # Desktop (arduino-cli upload)
 npm run prepare:wasm-avr   # WASM toolchain (web compile)
 npm test
-npm run build:web
+npm run build:web          # production SPA (WASM excluded from dist)
+npm run deploy:web         # build:web + sync WASM into dist (single static host)
+npm run deploy:verify      # assert dist has manifest, no accidental wasm blobs
 ```
+
+Production WASM (~332 MB, ESP32 ~192 MB) — CDN / static host: [deploy/README.md](../deploy/README.md).
 
 ## Платформи
 
